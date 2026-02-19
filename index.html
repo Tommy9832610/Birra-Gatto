@@ -3,101 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - ALPHA TRADER</title>
+    <title>BIRRA AI - QUANTUM FLUX</title>
     <style>
-        :root { --gold: #ffcc00; --bg: #000; --card: #0d0d0d; --green: #00ff41; --red: #ff3131; }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        :root { --gold: #ffcc00; --bg: #000; --card: #0a0a0a; --green: #00ff41; --red: #ff3131; }
         
-        .ticker-wrap { background: #111; border-bottom: 1px solid var(--gold); padding: 10px; overflow: hidden; }
-        .ticker-move { display: inline-block; white-space: nowrap; animation: ticker 40s linear infinite; color: var(--gold); font-size: 0.8rem; font-weight: bold; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        /* Reset e Stabilità */
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; height: 100vh; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        .header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #1a1a1a; }
-        .logo { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; box-shadow: 0 0 20px rgba(255,204,0,0.2); }
+        /* News Ticker Ultra-Fluido */
+        .ticker-container { height: 35px; background: #111; border-bottom: 1px solid var(--gold); overflow: hidden; display: flex; align-items: center; }
+        .ticker-text { white-space: nowrap; will-change: transform; animation: scroll 40s linear infinite; color: var(--gold); font-size: 0.75rem; font-weight: bold; transform: translate3d(0,0,0); }
+        @keyframes scroll { from { transform: translate3d(0,0,0); } to { transform: translate3d(-100%,0,0); } }
 
-        .price-section { padding: 30px 20px; text-align: center; }
-        #btc-price { font-size: 3.2rem; font-weight: 900; margin: 0; color: white; letter-spacing: -1px; }
-        #price-change { font-size: 1.2rem; font-weight: bold; margin-top: 10px; }
+        /* Header Fisso (Zero Salti) */
+        .header { height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 1px solid #111; }
+        .logo-orbit { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--gold); position: relative; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(255,204,0,0.1); }
+        .logo-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
 
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px; }
-        .card { background: var(--card); border: 1px solid #1a1a1a; padding: 20px; border-radius: 20px; }
-        .card-label { font-size: 0.7rem; color: #555; text-transform: uppercase; letter-spacing: 2px; }
-        .card-val { font-size: 1.1rem; font-weight: bold; margin-top: 8px; }
+        /* Prezzo con font tabellare (i numeri non ballano) */
+        .price-zone { padding: 20px; text-align: center; }
+        #btc-price { font-size: 3.2rem; font-weight: 900; font-variant-numeric: tabular-nums; margin: 0; transform: translate3d(0,0,0); }
+        
+        /* Novità: Market Pressure Bar */
+        .pressure-wrap { padding: 0 25px; margin-top: 10px; }
+        .pressure-label { display: flex; justify-content: space-between; font-size: 0.6rem; color: #555; text-transform: uppercase; margin-bottom: 5px; }
+        .pressure-bar { height: 4px; background: #111; border-radius: 2px; overflow: hidden; display: flex; }
+        #buy-fill { width: 50%; background: var(--green); transition: width 0.5s ease; }
+        #sell-fill { width: 50%; background: var(--red); transition: width 0.5s ease; }
 
-        .btn-trade { background: var(--gold); color: black; border: none; padding: 22px; border-radius: 18px; width: calc(100% - 40px); margin: 25px 20px; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; cursor: pointer; display: block; text-decoration: none; text-align: center; }
+        /* Griglia Stats */
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 20px; }
+        .card { background: var(--card); border: 1px solid #1a1a1a; padding: 15px; border-radius: 18px; }
+        .label { font-size: 0.6rem; color: #444; text-transform: uppercase; letter-spacing: 1px; }
+        .val { font-size: 1rem; font-weight: bold; margin-top: 5px; }
+
+        .btn-action { position: absolute; bottom: 20px; left: 20px; right: 20px; background: var(--gold); color: black; border: none; padding: 20px; border-radius: 18px; font-weight: 900; font-size: 1rem; text-transform: uppercase; text-align: center; text-decoration: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
-    <div class="ticker-wrap">
-        <div class="ticker-move" id="news-ticker">RECUPERO NEWS IN CORSO... CARICAMENTO DATI DAL MERCATO REALE...</div>
+    <div class="ticker-container">
+        <div class="ticker-text" id="news">CARICAMENTO INTELLIGENCE IN CORSO... +++ RILEVAMENTO BALENE ATTIVO +++ NEWS LIVE DA BINANCE +++</div>
     </div>
 
     <div class="header">
-        <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo" alt="Birra AI" onerror="this.src='https://via.placeholder.com/100/ffcc00/000000?text=Birra+AI'">
-        <div style="color: var(--gold); font-size: 0.7rem; margin-top: 15px; letter-spacing: 4px; font-weight: bold;">ALPHA TRADER SYSTEM</div>
-    </div>
-
-    <div class="price-section">
-        <div class="card-label">Bitcoin / USD</div>
-        <div id="btc-price">LODING...</div>
-        <div id="price-change">--%</div>
-    </div>
-
-    <div class="stats-grid">
-        <div class="card">
-            <div class="card-label">Sentiment</div>
-            <div id="sentiment" class="card-val" style="color: var(--gold);">NEUTRAL</div>
+        <div class="logo-orbit">
+            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img" alt="Birra AI" onerror="this.src='https://via.placeholder.com/80/ffcc00/000000?text=AI'">
         </div>
-        <div class="card">
-            <div class="card-label">Volume 24h</div>
-            <div id="volume" class="card-val">--</div>
+        <div style="color: var(--gold); font-size: 0.7rem; margin-top: 15px; letter-spacing: 3px; font-weight: bold;">ALPHA TRADER v6.0</div>
+    </div>
+
+    <div class="price-zone">
+        <div id="btc-price">$ --.---</div>
+        <div id="change" style="font-weight: bold; margin-top: 5px;">0.00%</div>
+    </div>
+
+    <div class="pressure-wrap">
+        <div class="pressure-label"><span>Buyers</span><span>Sellers</span></div>
+        <div class="pressure-bar">
+            <div id="buy-fill"></div>
+            <div id="sell-fill"></div>
         </div>
     </div>
 
-    <a href="https://www.binance.com/it/register?ref=TUO_CODICE" class="btn-trade">Inizia a Guadagnare</a>
+    <div class="stats">
+        <div class="card">
+            <div class="label">Signal</div>
+            <div id="signal" class="val">SCANNING</div>
+        </div>
+        <div class="card">
+            <div class="label">Volatility</div>
+            <div id="vol" class="val">STABLE</div>
+        </div>
+    </div>
+
+    <a href="https://www.binance.com" class="btn-action">Esegui Ordine Ora</a>
 
     <script>
-        async function updateMarket() {
+        let lastPrice = 0;
+
+        async function updateData() {
             try {
-                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true');
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
                 const data = await res.json();
-                
                 const price = data.bitcoin.usd;
                 const change = data.bitcoin.usd_24h_change;
-                const vol = data.bitcoin.usd_24h_vol;
 
-                document.getElementById('btc-price').innerText = "$" + price.toLocaleString();
-                
-                const changeEl = document.getElementById('price-change');
-                changeEl.innerText = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
-                changeEl.style.color = change >= 0 ? '#00ff41' : '#ff3131';
+                // Aggiornamento prezzo senza sfarfallio
+                const el = document.getElementById('btc-price');
+                el.innerText = "$" + price.toLocaleString();
+                el.style.color = price >= lastPrice ? 'white' : '#ff3131';
+                lastPrice = price;
 
-                document.getElementById('volume').innerText = "$" + (vol / 1000000000).toFixed(2) + "B";
+                const changeEl = document.getElementById('change');
+                changeEl.innerText = (change >= 0 ? '+' : '') + change.toFixed(2) + "%";
+                changeEl.style.color = change >= 0 ? var(--green) : var(--red);
 
-                const sent = document.getElementById('sentiment');
-                if(change > 0.5) { sent.innerText = "BULLISH"; sent.style.color = "#00ff41"; }
-                else if(change < -0.5) { sent.innerText = "BEARISH"; sent.style.color = "#ff3131"; }
-                else { sent.innerText = "NEUTRAL"; sent.style.color = "#ffcc00"; }
+                // Simulazione Market Pressure
+                const buyPower = 50 + (change * 2);
+                document.getElementById('buy-fill').style.width = Math.min(Math.max(buyPower, 10), 90) + "%";
 
-            } catch (e) { 
-                document.getElementById('btc-price').innerText = "ERROR";
-            }
-        }
+                const sig = document.getElementById('signal');
+                if(change > 1) { sig.innerText = "STRONG BUY"; sig.style.color = var(--green); }
+                else if(change < -1) { sig.innerText = "SELL ALERT"; sig.style.color = var(--red); }
+                else { sig.innerText = "NEUTRAL"; sig.style.color = var(--gold); }
 
-        async function updateNews() {
-            try {
-                const res = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=IT');
-                const data = await res.json();
-                const titles = data.Data.slice(0, 8).map(n => n.title.toUpperCase()).join('  +++  ');
-                document.getElementById('news-ticker').innerText = titles + " +++ ";
             } catch (e) { }
         }
 
-        setInterval(updateMarket, 15000);
-        setInterval(updateNews, 300000);
-        updateMarket();
-        updateNews();
+        async function getNews() {
+            try {
+                const res = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=IT');
+                const d = await res.json();
+                const titles = d.Data.slice(0, 5).map(n => n.title.toUpperCase()).join(' +++ ');
+                document.getElementById('news').innerText = titles + " +++ ";
+            } catch (e) {}
+        }
+
+        setInterval(updateData, 10000);
+        updateData();
+        getNews();
     </script>
 </body>
 </html>
