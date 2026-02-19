@@ -1,68 +1,103 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - LIVE NEWS</title>
+    <title>BIRRA AI - ALPHA TRADER</title>
     <style>
-        :root { --gold: #ffcc00; --bg: #000; --green: #00ff41; }
-        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        :root { --gold: #ffcc00; --bg: #000; --card: #0d0d0d; --green: #00ff41; --red: #ff3131; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
         
-        /* NEWS TICKER REALE */
-        .news-ticker { background: #111; padding: 10px; font-size: 0.8rem; border-bottom: 1px solid var(--gold); overflow: hidden; position: relative; }
-        .news-scroll { display: inline-block; white-space: nowrap; animation: scroll 30s linear infinite; color: var(--gold); font-weight: bold; }
-        @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .ticker-wrap { background: #111; border-bottom: 1px solid var(--gold); padding: 10px; overflow: hidden; }
+        .ticker-move { display: inline-block; white-space: nowrap; animation: ticker 40s linear infinite; color: var(--gold); font-size: 0.8rem; font-weight: bold; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        .header { padding: 25px; text-align: center; }
-        .logo { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 20px rgba(255,204,0,0.3); object-fit: cover; }
-        
-        .price-box { font-size: 2.5rem; font-weight: 800; margin: 20px 0; color: white; text-align: center; }
-        .btn-gold { background: var(--gold); color: #000; border: none; padding: 20px; border-radius: 15px; width: calc(100% - 40px); margin: 20px; font-weight: 800; text-transform: uppercase; cursor: pointer; }
+        .header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #1a1a1a; }
+        .logo { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; box-shadow: 0 0 20px rgba(255,204,0,0.2); }
+
+        .price-section { padding: 30px 20px; text-align: center; }
+        #btc-price { font-size: 3.2rem; font-weight: 900; margin: 0; color: white; letter-spacing: -1px; }
+        #price-change { font-size: 1.2rem; font-weight: bold; margin-top: 10px; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px; }
+        .card { background: var(--card); border: 1px solid #1a1a1a; padding: 20px; border-radius: 20px; }
+        .card-label { font-size: 0.7rem; color: #555; text-transform: uppercase; letter-spacing: 2px; }
+        .card-val { font-size: 1.1rem; font-weight: bold; margin-top: 8px; }
+
+        .btn-trade { background: var(--gold); color: black; border: none; padding: 22px; border-radius: 18px; width: calc(100% - 40px); margin: 25px 20px; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; cursor: pointer; display: block; text-decoration: none; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div class="news-ticker">
-        <div class="news-scroll" id="live-news">CARICAMENTO ULTIME NOTIZIE DAL MERCATO CRYPTO... ATTENDERE...</div>
+    <div class="ticker-wrap">
+        <div class="ticker-move" id="news-ticker">RECUPERO NEWS IN CORSO... CARICAMENTO DATI DAL MERCATO REALE...</div>
     </div>
 
     <div class="header">
-        <img src="https://raw.githubusercontent.com/Tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo" alt="Birra Gatto">
-        <div style="color: var(--gold); margin-top: 10px; letter-spacing: 2px;">BIRRA AI LIVE FEED</div>
+        <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo" alt="Birra AI" onerror="this.src='https://via.placeholder.com/100/ffcc00/000000?text=Birra+AI'">
+        <div style="color: var(--gold); font-size: 0.7rem; margin-top: 15px; letter-spacing: 4px; font-weight: bold;">ALPHA TRADER SYSTEM</div>
     </div>
 
-    <div class="price-box" id="btc-price">$ --.---</div>
+    <div class="price-section">
+        <div class="card-label">Bitcoin / USD</div>
+        <div id="btc-price">LODING...</div>
+        <div id="price-change">--%</div>
+    </div>
 
-    <button class="btn-gold" onclick="window.open('https://www.binance.com')">Vai su Binance</button>
+    <div class="stats-grid">
+        <div class="card">
+            <div class="card-label">Sentiment</div>
+            <div id="sentiment" class="card-val" style="color: var(--gold);">NEUTRAL</div>
+        </div>
+        <div class="card">
+            <div class="card-label">Volume 24h</div>
+            <div id="volume" class="card-val">--</div>
+        </div>
+    </div>
+
+    <a href="https://www.binance.com/it/register?ref=TUO_CODICE" class="btn-trade">Inizia a Guadagnare</a>
 
     <script>
-        // FUNZIONE PER LE NEWS REALI
-        async function fetchNews() {
+        async function updateMarket() {
             try {
-                // Usiamo un feed pubblico di notizie crypto
-                const response = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=IT');
-                const data = await response.json();
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true');
+                const data = await res.json();
                 
-                // Prendiamo i primi 5 titoli e li uniamo
-                const headlines = data.Data.slice(0, 5).map(n => n.title.toUpperCase()).join('  +++  ');
-                document.getElementById('live-news').innerText = headlines + " +++ ";
-            } catch (e) {
-                document.getElementById('live-news').innerText = "ERRORE CONNESSIONE NEWS - CONTROLLA INTERNET";
+                const price = data.bitcoin.usd;
+                const change = data.bitcoin.usd_24h_change;
+                const vol = data.bitcoin.usd_24h_vol;
+
+                document.getElementById('btc-price').innerText = "$" + price.toLocaleString();
+                
+                const changeEl = document.getElementById('price-change');
+                changeEl.innerText = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                changeEl.style.color = change >= 0 ? '#00ff41' : '#ff3131';
+
+                document.getElementById('volume').innerText = "$" + (vol / 1000000000).toFixed(2) + "B";
+
+                const sent = document.getElementById('sentiment');
+                if(change > 0.5) { sent.innerText = "BULLISH"; sent.style.color = "#00ff41"; }
+                else if(change < -0.5) { sent.innerText = "BEARISH"; sent.style.color = "#ff3131"; }
+                else { sent.innerText = "NEUTRAL"; sent.style.color = "#ffcc00"; }
+
+            } catch (e) { 
+                document.getElementById('btc-price').innerText = "ERROR";
             }
         }
 
-        async function fetchPrice() {
-            const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-            const data = await res.json();
-            document.getElementById('btc-price').innerText = "$" + data.bitcoin.usd.toLocaleString();
+        async function updateNews() {
+            try {
+                const res = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=IT');
+                const data = await res.json();
+                const titles = data.Data.slice(0, 8).map(n => n.title.toUpperCase()).join('  +++  ');
+                document.getElementById('news-ticker').innerText = titles + " +++ ";
+            } catch (e) { }
         }
 
-        // Avvio
-        fetchNews();
-        fetchPrice();
-        setInterval(fetchPrice, 20000);
-        setInterval(fetchNews, 300000); // Aggiorna news ogni 5 minuti
+        setInterval(updateMarket, 15000);
+        setInterval(updateNews, 300000);
+        updateMarket();
+        updateNews();
     </script>
 </body>
 </html>
