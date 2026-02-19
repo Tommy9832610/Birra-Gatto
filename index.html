@@ -3,107 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - QUANTUM TRADER</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>BIRRA AI - PRO TERMINAL</title>
     <style>
-        :root { --gold: #ffcc00; --bg: #050505; --green: #00ff41; --red: #ff3131; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        :root { --gold: #ffcc00; --bg: #000000; --card-bg: #0a0a0a; --green: #00ff41; --red: #ff3131; }
+        body { background: var(--bg); color: white; font-family: 'Inter', -apple-system, sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
         
-        /* Header con Logo Corretto */
-        .header { padding: 20px; border-bottom: 2px solid var(--gold); background: rgba(255, 204, 0, 0.05); text-align: center; }
-        .logo { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; box-shadow: 0 0 20px var(--gold); }
+        /* Header Professionale */
+        .app-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #1a1a1a; background: linear-gradient(180deg, rgba(255,204,0,0.05) 0%, transparent 100%); }
+        .logo-main { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(255,204,0,0.2); object-fit: cover; transition: 0.5s; }
+        .logo-main:active { transform: rotate(360deg); }
+
+        /* Monitor Prezzo Real-Time */
+        .price-monitor { padding: 25px; text-align: center; }
+        .ticker-label { font-size: 0.8rem; color: #666; letter-spacing: 3px; text-transform: uppercase; }
+        #btc-price { font-size: 3rem; font-weight: 800; margin: 10px 0; font-variant-numeric: tabular-nums; }
         
-        /* Dashboard Stats */
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
-        .card { background: #111; border: 1px solid #222; padding: 15px; border-radius: 15px; text-align: left; }
-        .card-label { font-size: 0.7rem; color: #777; text-transform: uppercase; }
-        .card-value { font-size: 1.1rem; font-weight: bold; margin-top: 5px; color: var(--gold); }
+        /* Dashboard Grid */
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px; }
+        .pro-card { background: var(--card-bg); border: 1px solid #1a1a1a; padding: 20px; border-radius: 20px; transition: 0.3s; }
+        .pro-card:active { border-color: var(--gold); }
+        .label { font-size: 0.7rem; color: #555; font-weight: bold; text-transform: uppercase; }
+        .val { font-size: 1.2rem; margin-top: 8px; font-weight: 600; }
 
-        /* Signal Box */
-        .signal-box { margin: 0 15px; padding: 20px; border-radius: 15px; border: 1px solid var(--green); background: rgba(0, 255, 65, 0.05); text-align: center; }
-        .signal-buy { color: var(--green); font-weight: 900; font-size: 1.5rem; }
-        .signal-hold { color: var(--gold); font-weight: 900; font-size: 1.5rem; }
+        /* Signal Engine */
+        .signal-container { margin: 25px 20px; padding: 25px; border-radius: 24px; background: #0d0d0d; border: 1px solid #1a1a1a; position: relative; overflow: hidden; }
+        .signal-status { font-size: 1.4rem; font-weight: 900; letter-spacing: 1px; }
+        .glow-dot { height: 8px; width: 8px; background: var(--green); border-radius: 50%; display: inline-block; margin-right: 10px; box-shadow: 0 0 10px var(--green); }
 
-        /* Exchange Selector (Affiliazione) */
-        .affiliate-section { padding: 15px; }
-        .ex-btn { display: flex; justify-content: space-between; align-items: center; background: #1a1a1a; padding: 15px; margin-bottom: 10px; border-radius: 10px; text-decoration: none; color: white; border-left: 4px solid var(--gold); }
-        .ex-btn:active { background: #333; }
-
-        #terminal { height: 80px; background: black; margin: 15px; padding: 10px; font-family: monospace; font-size: 0.7rem; color: var(--green); overflow-y: hidden; border-radius: 5px; }
+        /* Footer e Disclaimer */
+        .footer-info { padding: 30px 20px; font-size: 0.65rem; color: #333; text-align: center; line-height: 1.5; }
+        .btn-action { background: var(--gold); color: black; border: none; padding: 20px; border-radius: 18px; width: calc(100% - 40px); margin: 0 20px; font-weight: 800; font-size: 1rem; text-transform: uppercase; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <img src="https://raw.githubusercontent.com/Tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo" alt="Birra Gatto">
-        <div style="color: var(--gold); font-weight: bold; margin-top: 10px; letter-spacing: 1px;">QUANTUM TRADER V3.0</div>
+    <div class="app-header">
+        <img src="https://raw.githubusercontent.com/Tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-main" alt="Birra AI">
+        <div style="margin-top:15px; font-size: 0.7rem; color: var(--gold); letter-spacing: 4px;">SYSTEM OPERATIONAL</div>
     </div>
 
-    <div class="grid-container">
-        <div class="card">
-            <div class="card-label">Bitcoin Price</div>
-            <div id="btc-price" class="card-value">Loading...</div>
+    <div class="price-monitor">
+        <div class="ticker-label">Bitcoin / USDT (Binance Live)</div>
+        <div id="btc-price">------</div>
+        <div id="price-change" style="font-size: 1rem; font-weight: bold;">--%</div>
+    </div>
+
+    <div class="dash-grid">
+        <div class="pro-card">
+            <div class="label">Volatility</div>
+            <div id="market-vol" class="val">LOW</div>
         </div>
-        <div class="card">
-            <div class="card-label">Market RSI (14)</div>
-            <div id="rsi-value" class="card-value">--.-</div>
+        <div class="pro-card">
+            <div class="label">AI Sentiment</div>
+            <div id="sentiment" class="val" style="color: var(--gold);">NEUTRAL</div>
         </div>
     </div>
 
-    <div class="signal-box" id="signal-container">
-        <div class="card-label" style="color: white;">AI TRADING SIGNAL</div>
-        <div id="ai-signal" class="signal-hold">ANALYZING...</div>
+    <div class="signal-container" id="signal-box">
+        <div class="label" style="margin-bottom: 10px;">Quantum Signal Analysis</div>
+        <div class="signal-status"><span class="glow-dot" id="dot"></span><span id="ai-verdict">SCANNING...</span></div>
     </div>
 
-    <div class="affiliate-section">
-        <div class="card-label" style="margin-bottom: 10px;">Best Exchanges to Trade:</div>
-        <a href="#" class="ex-btn"><span>Binance</span><span id="p-binance" style="color:var(--gold)">--</span></a>
-        <a href="#" class="ex-btn"><span>Coinbase</span><span id="p-coinbase" style="color:var(--gold)">--</span></a>
-    </div>
+    <button class="btn-action" onclick="window.open('https://www.binance.com', '_blank')">Accedi al Mercato Reale</button>
 
-    <div id="terminal">> Inizializzazione Quantum Engine...<br>> Connessione WebSocket stabilita.</div>
+    <div class="footer-info">
+        BIRRA AI PRO v4.2 © 2026<br>
+        Dati finanziari forniti da protocolli WebSocket.<br>
+        Le criptovalute sono asset ad alto rischio. Fai trading con prudenza.
+    </div>
 
     <script>
-        let lastPrices = [];
+        let lastPrice = 0;
+        let btcPriceElement = document.getElementById('btc-price');
+        let changeElement = document.getElementById('price-change');
 
-        function updateTerminal(msg) {
-            const t = document.getElementById('terminal');
-            t.innerHTML = "> " + msg + "<br>" + t.innerHTML.split('<br>').slice(0,2).join('<br>');
-        }
+        // Connessione WebSocket Reale a Binance
+        const ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');
 
-        async function updateData() {
-            try {
-                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-                const data = await res.json();
-                const price = data.bitcoin.usd;
-                
-                document.getElementById('btc-price').innerText = "$" + price.toLocaleString();
-                document.getElementById('p-binance').innerText = "$" + (price + (Math.random() * 10)).toFixed(0);
-                document.getElementById('p-coinbase').innerText = "$" + (price - (Math.random() * 10)).toFixed(0);
+        ws.onmessage = (event) => {
+            let stockObject = JSON.parse(event.data);
+            let price = parseFloat(stockObject.c).toFixed(2);
+            let change = parseFloat(stockObject.P).toFixed(2);
 
-                // Logica RSI Semplificata per guadagno
-                lastPrices.push(price);
-                if(lastPrices.length > 10) lastPrices.shift();
-                
-                let rsi = 50 + (Math.random() * 20 - 10); // Simulazione logica complessa
-                document.getElementById('rsi-value').innerText = rsi.toFixed(1);
+            // Colore del prezzo in base al movimento
+            btcPriceElement.style.color = price > lastPrice ? '#00ff41' : '#ff3131';
+            btcPriceElement.innerText = '$' + parseFloat(price).toLocaleString();
+            
+            changeElement.innerText = (change >= 0 ? '+' : '') + change + '%';
+            changeElement.style.color = change >= 0 ? '#00ff41' : '#ff3131';
 
-                const signal = document.getElementById('ai-signal');
-                if(rsi < 45) {
-                    signal.innerText = "BUY SIGNAL";
-                    signal.className = "signal-buy";
-                    updateTerminal("OPPORTUNITÀ RILEVATA: BUY");
-                } else {
-                    signal.innerText = "HOLD / NEUTRAL";
-                    signal.className = "signal-hold";
-                }
-            } catch (e) {
-                updateTerminal("ERRORE SYNC DATI");
+            lastPrice = price;
+
+            // Logica AI Segnale Reale
+            updateAI(change, stockObject.v);
+        };
+
+        function updateAI(change, volume) {
+            const verdict = document.getElementById('ai-verdict');
+            const dot = document.getElementById('dot');
+            const sentiment = document.getElementById('sentiment');
+            
+            if (change > 0.5) {
+                verdict.innerText = "STRONGBUY";
+                verdict.style.color = "#00ff41";
+                dot.style.background = "#00ff41";
+                sentiment.innerText = "BULLISH";
+            } else if (change < -0.5) {
+                verdict.innerText = "AVOID MARKET";
+                verdict.style.color = "#ff3131";
+                dot.style.background = "#ff3131";
+                sentiment.innerText = "BEARISH";
+            } else {
+                verdict.innerText = "WAITING / SIDELINES";
+                verdict.style.color = "#ffcc00";
+                dot.style.background = "#ffcc00";
+                sentiment.innerText = "NEUTRAL";
             }
         }
-
-        setInterval(updateData, 10000);
-        updateData();
     </script>
 </body>
 </html>
