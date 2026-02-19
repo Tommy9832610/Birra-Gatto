@@ -3,54 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - ELITE TERMINAL</title>
+    <title>BIRRA AI - QUANTUM ELITE</title>
     <style>
         :root { --gold: #ffcc00; --bg: #000; --card: #0d0d0d; --green: #00ff41; --red: #ff3131; }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         
-        .header { padding: 20px; text-align: center; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: center; gap: 15px; }
+        /* Reset per stabilità S25 Ultra */
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        /* Header e Logo */
+        .header { padding: 20px; text-align: center; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: center; gap: 15px; background: #000; }
         .logo-box { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--gold); overflow: hidden; box-shadow: 0 0 20px rgba(255,204,0,0.2); }
         .logo-img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Selettore Multi-Coin Professionale */
+        /* Selettore Crypto */
         .coin-selector { display: flex; justify-content: space-around; padding: 15px; background: #050505; border-bottom: 1px solid #111; }
-        .coin-btn { background: #111; border: 1px solid #333; color: #888; padding: 10px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.8rem; }
+        .coin-btn { background: #111; border: 1px solid #333; color: #888; padding: 10px 18px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.8rem; }
         .coin-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(255,204,0,0.1); }
 
+        /* Prezzo Tabellare (No sfarfallio) */
         .price-section { padding: 25px 20px; text-align: center; }
         #main-price { font-size: 3.2rem; font-weight: 900; color: white; margin: 0; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
+        #price-perc { font-weight: bold; margin-top: 5px; font-size: 1.1rem; }
         
-        .chart-box { height: 320px; margin: 10px; border-radius: 20px; overflow: hidden; border: 1px solid #1a1a1a; position: relative; }
+        /* Grafico */
+        .chart-box { height: 320px; margin: 10px; border-radius: 20px; overflow: hidden; border: 1px solid #1a1a1a; background: #000; }
 
-        /* Stats Dashboard */
+        /* Dashboard Stats */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px; }
         .stat-card { background: var(--card); padding: 15px; border-radius: 18px; border: 1px solid #1a1a1a; }
         .label { font-size: 0.6rem; color: #555; text-transform: uppercase; letter-spacing: 1px; }
-        .val { font-size: 1.1rem; font-weight: bold; margin-top: 5px; }
+        .val { font-size: 1.1rem; font-weight: bold; margin-top: 5px; color: var(--gold); }
 
-        /* Tasto "Opera" con animazione e apertura forzata */
-        .btn-trade { display: block; background: linear-gradient(45deg, var(--gold), #ffaa00); color: black; text-decoration: none; text-align: center; padding: 22px; margin: 25px 15px; border-radius: 20px; font-weight: 900; text-transform: uppercase; border: none; width: calc(100% - 30px); cursor: pointer; box-shadow: 0 10px 30px rgba(255, 204, 0, 0.2); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        /* Tasto Oro - Fix Finale */
+        .btn-trade { 
+            display: block; 
+            background: linear-gradient(45deg, var(--gold), #ffaa00); 
+            color: black; 
+            text-decoration: none; 
+            text-align: center; 
+            padding: 22px; 
+            margin: 25px 15px; 
+            border-radius: 20px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            border: none; 
+            width: calc(100% - 30px); 
+            cursor: pointer; 
+            box-shadow: 0 10px 30px rgba(255, 204, 0, 0.3); 
+            animation: pulseElite 2s infinite;
+            font-size: 1.1rem;
+        }
+
+        @keyframes pulseElite {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
         <div class="logo-box">
-            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img" onerror="this.src='https://via.placeholder.com/70/ffcc00/000000?text=AI'">
+            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img" alt="Birra AI" onerror="this.src='https://via.placeholder.com/70/ffcc00/000000?text=GAITO'">
         </div>
-        <div style="font-weight: 900; letter-spacing: 3px; color: var(--gold);">QUANTUM ELITE</div>
+        <div style="font-weight: 900; letter-spacing: 3px; color: var(--gold); font-size: 1rem;">QUANTUM ELITE</div>
     </div>
 
     <div class="coin-selector">
-        <div class="coin-btn active" onclick="switchCoin('BTCUSDT', this)">BTC</div>
-        <div class="coin-btn" onclick="switchCoin('ETHUSDT', this)">ETH</div>
-        <div class="coin-btn" onclick="switchCoin('SOLUSDT', this)">SOL</div>
+        <div class="coin-btn active" onclick="switchCoin('BTCUSDT', this)">BITCOIN</div>
+        <div class="coin-btn" onclick="switchCoin('ETHUSDT', this)">ETHEREUM</div>
+        <div class="coin-btn" onclick="switchCoin('SOLUSDT', this)">SOLANA</div>
     </div>
 
     <div class="price-section">
         <div id="main-price">$ --.---</div>
-        <div id="price-perc" style="font-weight: bold; margin-top: 5px;">0.00%</div>
+        <div id="price-perc">0.00%</div>
     </div>
 
     <div class="chart-box">
@@ -59,22 +88,22 @@
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="label">AI Neural Signal</div>
+            <div class="label">AI Signal</div>
             <div id="ai-sig" class="val">ANALYZING...</div>
         </div>
         <div class="stat-card">
-            <div class="label">Volatilità</div>
-            <div id="vol-status" class="val">STABILE</div>
+            <div class="label">Target $100k</div>
+            <div id="target-roi" class="val">--%</div>
         </div>
     </div>
 
-    <button class="btn-trade" onclick="forceOpenBinance()">⚡ OPERA CON BIRRA AI</button>
+    <button class="btn-trade" onclick="launchBinance()">⚡ OPERA CON BIRRA AI</button>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
         let currentSymbol = 'BTCUSDT';
 
-        // Inizializzazione TradingView
+        // Caricamento Grafico TradingView
         function loadChart(symbol) {
             new TradingView.widget({
                 "autosize": true,
@@ -86,7 +115,6 @@
                 "locale": "it",
                 "enable_publishing": false,
                 "hide_top_toolbar": true,
-                "hide_legend": true,
                 "save_image": false,
                 "container_id": "tradingview_widget"
             });
@@ -107,27 +135,46 @@
                 const price = parseFloat(d.lastPrice);
                 const perc = parseFloat(d.priceChangePercent);
 
-                document.getElementById('main-price').innerText = "$" + price.toLocaleString();
+                document.getElementById('main-price').innerText = "$" + price.toLocaleString(undefined, {minimumFractionDigits: 2});
                 const pEl = document.getElementById('price-perc');
                 pEl.innerText = (perc >= 0 ? '+' : '') + perc.toFixed(2) + "%";
                 pEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
 
                 const sig = document.getElementById('ai-sig');
-                if(perc > 1.5) { sig.innerText = "STRONG BUY"; sig.style.color = "#00ff41"; }
-                else if(perc < -1.5) { sig.innerText = "SELL ALERT"; sig.style.color = "#ff3131"; }
+                if(perc > 1) { sig.innerText = "STRONG BUY"; sig.style.color = "#00ff41"; }
+                else if(perc < -1) { sig.innerText = "SELL ALERT"; sig.style.color = "#ff3131"; }
                 else { sig.innerText = "HOLD"; sig.style.color = "#ffcc00"; }
-            } catch (e) { console.log("Error sync"); }
+
+                // ROI Target 100k (per BTC)
+                if(currentSymbol === 'BTCUSDT') {
+                    const roi = ((100000 - price) / price * 100).toFixed(1);
+                    document.getElementById('target-roi').innerText = "+" + roi + "%";
+                } else {
+                    document.getElementById('target-roi').innerText = "N/A";
+                }
+            } catch (e) { console.log("API Error"); }
         }
 
-        function forceOpenBinance() {
-            // Sostituisci questo URL con il tuo link referral per guadagnare
-            const url = "https://www.binance.com/it/register?ref=TUO_CODICE";
-            window.open(url, '_blank', 'location=yes');
+        // --- IL FIX PER IL TASTO ---
+        function launchBinance() {
+            // Sostituisci questo URL con il tuo link referral personale
+            const binanceUrl = "https://www.binance.com/it/register?ref=TUO_CODICE";
+            
+            // Prova diverse tecniche per forzare l'apertura fuori dalla WebView dell'app
+            try {
+                let win = window.open(binanceUrl, '_blank');
+                if (!win || win.closed || typeof win.closed == 'undefined') {
+                    window.location.assign(binanceUrl);
+                }
+            } catch (e) {
+                window.location.href = binanceUrl;
+            }
         }
 
+        // Avvio iniziale
         loadChart(currentSymbol);
         updateData();
-        setInterval(updateData, 10000);
+        setInterval(updateData, 10000); // Aggiorna ogni 10 secondi
     </script>
 </body>
 </html>
