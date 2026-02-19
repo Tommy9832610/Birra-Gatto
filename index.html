@@ -6,119 +6,99 @@
     <title>BIRRA AI - ARBITRAGE SCANNER</title>
     <style>
         :root { --gold: #ffcc00; --bg: #0a0a0a; --green: #00ff41; --red: #ff3131; }
-        body { background: var(--bg); color: white; font-family: 'Courier New', monospace; margin: 0; padding: 20px; text-align: center; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; padding: 20px; text-align: center; overflow-x: hidden; }
         
-        .header { border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; }
-        .logo { width: 80px; border-radius: 50%; border: 2px solid var(--gold); }
+        .header { border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; background: rgba(255, 204, 0, 0.05); }
+        .logo { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; box-shadow: 0 0 15px var(--gold); }
         
-        .scanner-grid { display: grid; gap: 15px; margin-bottom: 20px; }
-        .exchange-card { background: #111; border: 1px solid #333; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .ex-name { color: var(--gold); font-weight: bold; }
-        .ex-price { font-size: 1.2rem; }
+        .scanner-grid { display: grid; gap: 12px; margin-top: 20px; }
+        .exchange-card { background: #111; border: 1px solid #333; padding: 18px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .ex-name { color: var(--gold); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .ex-price { font-size: 1.2rem; font-family: monospace; font-weight: bold; }
 
         .opportunity-box { background: rgba(0, 255, 65, 0.1); border: 2px dashed var(--green); padding: 20px; border-radius: 15px; margin-top: 20px; display: none; }
-        .alert-active { display: block; animation: flash 1s infinite; }
-        @keyframes flash { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .alert-active { display: block; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        .btn-update { background: var(--gold); color: black; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        #log { font-size: 0.7rem; color: #666; margin-top: 20px; text-align: left; height: 80px; overflow-y: auto; }
+        .btn-update { background: var(--gold); color: black; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1rem; text-transform: uppercase; margin-top: 20px; }
+        #log { font-size: 0.75rem; color: #666; margin-top: 25px; text-align: left; height: 100px; overflow-y: auto; border-top: 1px solid #222; padding-top: 10px; font-family: monospace; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <img src="https://raw.githubusercontent.com/Tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo">
-        <h2>SCANNER REALE 2026</h2>
+        <img src="https://raw.githubusercontent.com/Tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo" alt="Birra Gatto">
+        <h2 style="margin-top: 10px; letter-spacing: 2px;">ARBITRAGE SCANNER</h2>
     </div>
 
     <div class="scanner-grid">
-        <div class="exchange-card">
-            <span class="ex-name">BINANCE</span>
-            <span id="price-binance" class="ex-price">---</span>
-        </div>
-        <div class="exchange-card">
-            <span class="ex-name">KRAKEN</span>
-            <span id="price-kraken" class="ex-price">---</span>
-        </div>
-        <div class="exchange-card">
-            <span class="ex-name">COINBASE</span>
-            <span id="price-coinbase" class="ex-price">---</span>
-        </div>
+        <div class="exchange-card"><span class="ex-name">Binance</span><span id="p-binance" class="ex-price">---</span></div>
+        <div class="exchange-card"><span class="ex-name">Kraken</span><span id="p-kraken" class="ex-price">---</span></div>
+        <div class="exchange-card"><span class="ex-name">Coinbase</span><span id="p-coinbase" class="ex-price">---</span></div>
     </div>
 
     <div id="alert-box" class="opportunity-box">
-        <h3 style="color: var(--green); margin: 0;">⚡ OCCASIONE RILEVATA!</h3>
-        <p id="alert-text" style="font-size: 0.9rem;">Differenza di prezzo rilevata tra gli exchange.</p>
+        <h3 style="color: var(--green); margin: 0;">⚡ SPREAD RILEVATO!</h3>
+        <p id="alert-text" style="font-size: 0.9rem; margin-top: 10px;"></p>
     </div>
 
     <button class="btn-update" onclick="checkArbitrage()">SCANSIONA MERCATI</button>
 
-    <div id="log">> Inizializzazione sensori...</div>
+    <div id="log">> Scanner inizializzato... pronto per dati reali.</div>
 
     <script>
         function addLog(msg) {
-            const logBox = document.getElementById('log');
-            logBox.innerHTML += `<br>> ${msg}`;
-            logBox.scrollTop = logBox.scrollHeight;
-        }
-
-        async function getPrices() {
-            try {
-                // Binance (API Diretta)
-                const resB = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
-                const dataB = await resB.json();
-                const pB = parseFloat(dataB.price);
-
-                // Kraken (API Diretta)
-                const resK = await fetch('https://api.kraken.com/0/public/Ticker?pair=XBTUSD');
-                const dataK = await resK.json();
-                const pK = parseFloat(dataK.result.XXBTZUSD.c[0]);
-
-                // Coinbase (API Diretta)
-                const resC = await fetch('https://api.coinbase.com/v2/prices/BTC-USD/spot');
-                const dataC = await resC.json();
-                const pC = parseFloat(dataC.data.amount);
-
-                return { binance: pB, kraken: pK, coinbase: pC };
-            } catch (e) {
-                addLog("Errore connessione API...");
-                return null;
-            }
+            const l = document.getElementById('log');
+            l.innerHTML += `<br>> ${msg}`;
+            l.scrollTop = l.scrollHeight;
         }
 
         async function checkArbitrage() {
-            addLog("Scansione in corso...");
-            const prices = await getPrices();
-            if (!prices) return;
+            addLog("Richiesta prezzi in corso...");
+            try {
+                const [rB, rK, rC] = await Promise.all([
+                    fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT'),
+                    fetch('https://api.kraken.com/0/public/Ticker?pair=XBTUSD'),
+                    fetch('https://api.coinbase.com/v2/prices/BTC-USD/spot')
+                ]);
+                
+                const dB = await rB.json();
+                const dK = await rK.json();
+                const dC = await rC.json();
 
-            document.getElementById('price-binance').innerText = "$" + prices.binance.toLocaleString();
-            document.getElementById('price-kraken').innerText = "$" + prices.kraken.toLocaleString();
-            document.getElementById('price-coinbase').innerText = "$" + prices.coinbase.toLocaleString();
+                const pB = parseFloat(dB.price);
+                const pK = parseFloat(dK.result.XXBTZUSD.c[0]);
+                const pC = parseFloat(dC.data.amount);
 
-            const pArray = [
-                { name: 'Binance', val: prices.binance },
-                { name: 'Kraken', val: prices.kraken },
-                { name: 'Coinbase', val: prices.coinbase }
-            ];
+                document.getElementById('p-binance').innerText = "$" + pB.toLocaleString();
+                document.getElementById('p-kraken').innerText = "$" + pK.toLocaleString();
+                document.getElementById('p-coinbase').innerText = "$" + pC.toLocaleString();
 
-            pArray.sort((a, b) => a.val - b.val);
-            const min = pArray[0];
-            const max = pArray[2];
-            const diff = max.val - min.val;
-            const perc = (diff / min.val) * 100;
+                const prices = [
+                    {n: 'Binance', v: pB},
+                    {n: 'Kraken', v: pK},
+                    {n: 'Coinbase', v: pC}
+                ].sort((a, b) => a.v - b.v);
 
-            if (perc > 0.4) {
-                document.getElementById('alert-box').classList.add('alert-active');
-                document.getElementById('alert-text').innerHTML = 
-                    `Compra su <b>${min.name}</b> e vendi su <b>${max.name}</b>.<br>Guadagno stimato: <b>${perc.toFixed(2)}%</b> ($${diff.toFixed(2)})`;
-                addLog(`!!! SPREAD RILEVATO: ${perc.toFixed(2)}%`, 'green');
-            } else {
-                document.getElementById('alert-box').classList.remove('alert-active');
-                addLog(`Mercato stabile (Spread: ${perc.toFixed(2)}%)`);
+                const min = prices[0];
+                const max = prices[2];
+                const spread = ((max.v - min.v) / min.v * 100).toFixed(2);
+
+                if (spread > 0.35) {
+                    document.getElementById('alert-box').classList.add('alert-active');
+                    document.getElementById('alert-text').innerHTML = 
+                        `Possibile guadagno del <b>${spread}%</b>.<br>Compra su <b>${min.n}</b> e vendi su <b>${max.n}</b>.`;
+                    addLog(`!!! OPPORTUNITÀ: ${spread}%`, 'green');
+                } else {
+                    document.getElementById('alert-box').classList.remove('alert-active');
+                    addLog(`Spread attuale: ${spread}% (Sotto soglia)`);
+                }
+            } catch (e) {
+                addLog("Errore: Impossibile recuperare i prezzi.");
             }
         }
 
-        setInterval(checkArbitrage, 30000); // Controlla ogni 30 secondi
+        setInterval(checkArbitrage, 20000);
         checkArbitrage();
     </script>
 </body>
