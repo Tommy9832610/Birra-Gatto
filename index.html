@@ -3,178 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - QUANTUM ELITE</title>
+    <title>BIRRA AI - SUPREME v11</title>
     <style>
         :root { --gold: #ffcc00; --bg: #000; --card: #0d0d0d; --green: #00ff41; --red: #ff3131; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
         
-        /* Reset per stabilità S25 Ultra */
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        /* Navbar con Menu a Tendina */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #1a1a1a; background: #000; position: sticky; top: 0; z-index: 1000; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--gold); letter-spacing: 2px; font-size: 0.9rem; }
+        .logo-small { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--gold); }
+        
+        .dropdown { position: relative; display: inline-block; }
+        .dropbtn { background: none; border: 1px solid #333; color: var(--gold); padding: 8px 15px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; }
+        .dropdown-content { display: none; position: absolute; right: 0; background-color: #111; min-width: 160px; box-shadow: 0px 8px 16px rgba(0,0,0,0.5); border: 1px solid #222; border-radius: 10px; z-index: 1; }
+        .dropdown-content a { color: white; padding: 12px 16px; text-decoration: none; display: block; font-size: 0.8rem; border-bottom: 1px solid #222; }
+        .dropdown-content a:hover { background-color: #1a1a1a; color: var(--gold); }
+        .show { display: block; }
 
-        /* Header e Logo */
-        .header { padding: 20px; text-align: center; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: center; gap: 15px; background: #000; }
-        .logo-box { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--gold); overflow: hidden; box-shadow: 0 0 20px rgba(255,204,0,0.2); }
-        .logo-img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* Selettore Crypto */
-        .coin-selector { display: flex; justify-content: space-around; padding: 15px; background: #050505; border-bottom: 1px solid #111; }
-        .coin-btn { background: #111; border: 1px solid #333; color: #888; padding: 10px 18px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.8rem; }
+        /* Coin Selector */
+        .coin-wrap { display: flex; justify-content: space-around; padding: 15px; background: #050505; }
+        .coin-btn { background: #111; border: 1px solid #222; color: #666; padding: 8px 15px; border-radius: 10px; font-size: 0.75rem; font-weight: bold; }
         .coin-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(255,204,0,0.1); }
 
-        /* Prezzo Tabellare (No sfarfallio) */
-        .price-section { padding: 25px 20px; text-align: center; }
-        #main-price { font-size: 3.2rem; font-weight: 900; color: white; margin: 0; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
-        #price-perc { font-weight: bold; margin-top: 5px; font-size: 1.1rem; }
-        
-        /* Grafico */
-        .chart-box { height: 320px; margin: 10px; border-radius: 20px; overflow: hidden; border: 1px solid #1a1a1a; background: #000; }
+        /* Main Display */
+        .display { padding: 25px 20px; text-align: center; }
+        #price { font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
+        #change { font-weight: bold; margin-top: 5px; font-size: 1.2rem; }
 
-        /* Dashboard Stats */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px; }
-        .stat-card { background: var(--card); padding: 15px; border-radius: 18px; border: 1px solid #1a1a1a; }
-        .label { font-size: 0.6rem; color: #555; text-transform: uppercase; letter-spacing: 1px; }
-        .val { font-size: 1.1rem; font-weight: bold; margin-top: 5px; color: var(--gold); }
+        .chart-box { height: 300px; margin: 10px; border-radius: 20px; overflow: hidden; border: 1px solid #1a1a1a; }
 
-        /* Tasto Oro - Fix Finale */
-        .btn-trade { 
-            display: block; 
-            background: linear-gradient(45deg, var(--gold), #ffaa00); 
-            color: black; 
-            text-decoration: none; 
-            text-align: center; 
-            padding: 22px; 
-            margin: 25px 15px; 
-            border-radius: 20px; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            border: none; 
-            width: calc(100% - 30px); 
-            cursor: pointer; 
-            box-shadow: 0 10px 30px rgba(255, 204, 0, 0.3); 
-            animation: pulseElite 2s infinite;
-            font-size: 1.1rem;
-        }
+        /* Nuova Funzione: Portfolio Calculator */
+        .tool-box { background: var(--card); margin: 15px; padding: 20px; border-radius: 20px; border: 1px solid #1a1a1a; }
+        .tool-label { font-size: 0.65rem; color: #555; text-transform: uppercase; margin-bottom: 10px; }
+        .tool-input-row { display: flex; gap: 10px; align-items: center; }
+        .t-input { background: #000; border: 1px solid #333; color: var(--gold); padding: 12px; border-radius: 10px; width: 60%; font-weight: bold; }
+        .t-result { width: 40%; font-size: 1.1rem; font-weight: 900; text-align: right; }
 
-        @keyframes pulseElite {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
+        /* Tasto Azione Finale */
+        .btn-supreme { display: block; width: calc(100% - 40px); margin: 25px 20px; padding: 22px; background: linear-gradient(45deg, var(--gold), #ffaa00); color: black; border: none; border-radius: 20px; font-weight: 900; text-transform: uppercase; font-size: 1.1rem; box-shadow: 0 10px 30px rgba(255,204,0,0.2); animation: pulse 2s infinite; cursor: pointer; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="logo-box">
-            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img" alt="Birra AI" onerror="this.src='https://via.placeholder.com/70/ffcc00/000000?text=GAITO'">
+    <div class="navbar">
+        <div class="nav-logo">
+            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-small" onerror="this.src='https://via.placeholder.com/35/ffcc00/000000?text=G'">
+            <span>QUANTUM SUPREME</span>
         </div>
-        <div style="font-weight: 900; letter-spacing: 3px; color: var(--gold); font-size: 1rem;">QUANTUM ELITE</div>
+        <div class="dropdown">
+            <button onclick="toggleMenu()" class="dropbtn">MENU ☰</button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#" onclick="alert('Versione 11.0.4 - 2026')">Info Sistema</a>
+                <a href="#" onclick="window.location.reload()">Aggiorna Dati</a>
+                <a href="https://www.binance.com/it/markets">Mercati Live</a>
+                <a href="#" style="color:var(--red)" onclick="toggleMenu()">Chiudi</a>
+            </div>
+        </div>
     </div>
 
-    <div class="coin-selector">
-        <div class="coin-btn active" onclick="switchCoin('BTCUSDT', this)">BITCOIN</div>
-        <div class="coin-btn" onclick="switchCoin('ETHUSDT', this)">ETHEREUM</div>
-        <div class="coin-btn" onclick="switchCoin('SOLUSDT', this)">SOLANA</div>
+    <div class="coin-wrap">
+        <div class="coin-btn active" onclick="switchAsset('BTCUSDT', this)">BITCOIN</div>
+        <div class="coin-btn" onclick="switchAsset('ETHUSDT', this)">ETHEREUM</div>
+        <div class="coin-btn" onclick="switchAsset('SOLUSDT', this)">SOLANA</div>
     </div>
 
-    <div class="price-section">
-        <div id="main-price">$ --.---</div>
-        <div id="price-perc">0.00%</div>
+    <div class="display">
+        <div id="price">$ --.---</div>
+        <div id="change">0.00%</div>
     </div>
 
     <div class="chart-box">
-        <div id="tradingview_widget" style="height: 100%;"></div>
+        <div id="tv_chart" style="height: 100%;"></div>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="label">AI Signal</div>
-            <div id="ai-sig" class="val">ANALYZING...</div>
-        </div>
-        <div class="stat-card">
-            <div class="label">Target $100k</div>
-            <div id="target-roi" class="val">--%</div>
+    <div class="tool-box">
+        <div class="tool-label">Calcolatore Portafoglio (Inserisci quantità)</div>
+        <div class="tool-input-row">
+            <input type="number" id="amount" class="t-input" value="0.5" oninput="calcValue()">
+            <div id="total-val" class="t-result">$ 0.00</div>
         </div>
     </div>
 
-    <button class="btn-trade" onclick="launchBinance()">⚡ OPERA CON BIRRA AI</button>
+    <button class="btn-supreme" onclick="openEliteMarket()">⚡ ESEGUI ORDINE ELITE</button>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
-        let currentSymbol = 'BTCUSDT';
+        let currentCoin = 'BTCUSDT';
+        let currentPrice = 0;
 
-        // Caricamento Grafico TradingView
-        function loadChart(symbol) {
-            new TradingView.widget({
-                "autosize": true,
-                "symbol": "BINANCE:" + symbol,
-                "interval": "60",
-                "timezone": "Etc/UTC",
-                "theme": "dark",
-                "style": "1",
-                "locale": "it",
-                "enable_publishing": false,
-                "hide_top_toolbar": true,
-                "save_image": false,
-                "container_id": "tradingview_widget"
-            });
+        function toggleMenu() {
+            document.getElementById("myDropdown").classList.toggle("show");
         }
 
-        function switchCoin(symbol, btn) {
-            currentSymbol = symbol;
-            document.querySelectorAll('.coin-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            loadChart(symbol);
-            updateData();
-        }
-
-        async function updateData() {
-            try {
-                const r = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${currentSymbol}`);
-                const d = await r.json();
-                const price = parseFloat(d.lastPrice);
-                const perc = parseFloat(d.priceChangePercent);
-
-                document.getElementById('main-price').innerText = "$" + price.toLocaleString(undefined, {minimumFractionDigits: 2});
-                const pEl = document.getElementById('price-perc');
-                pEl.innerText = (perc >= 0 ? '+' : '') + perc.toFixed(2) + "%";
-                pEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
-
-                const sig = document.getElementById('ai-sig');
-                if(perc > 1) { sig.innerText = "STRONG BUY"; sig.style.color = "#00ff41"; }
-                else if(perc < -1) { sig.innerText = "SELL ALERT"; sig.style.color = "#ff3131"; }
-                else { sig.innerText = "HOLD"; sig.style.color = "#ffcc00"; }
-
-                // ROI Target 100k (per BTC)
-                if(currentSymbol === 'BTCUSDT') {
-                    const roi = ((100000 - price) / price * 100).toFixed(1);
-                    document.getElementById('target-roi').innerText = "+" + roi + "%";
-                } else {
-                    document.getElementById('target-roi').innerText = "N/A";
+        // Chiudi menu se clicchi fuori
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
                 }
-            } catch (e) { console.log("API Error"); }
-        }
-
-        // --- IL FIX PER IL TASTO ---
-        function launchBinance() {
-            // Sostituisci questo URL con il tuo link referral personale
-            const binanceUrl = "https://www.binance.com/it/register?ref=TUO_CODICE";
-            
-            // Prova diverse tecniche per forzare l'apertura fuori dalla WebView dell'app
-            try {
-                let win = window.open(binanceUrl, '_blank');
-                if (!win || win.closed || typeof win.closed == 'undefined') {
-                    window.location.assign(binanceUrl);
-                }
-            } catch (e) {
-                window.location.href = binanceUrl;
             }
         }
 
-        // Avvio iniziale
-        loadChart(currentSymbol);
-        updateData();
-        setInterval(updateData, 10000); // Aggiorna ogni 10 secondi
+        function loadTV(symbol) {
+            new TradingView.widget({
+                "autosize": true, "symbol": "BINANCE:" + symbol, "interval": "60", "timezone": "Etc/UTC",
+                "theme": "dark", "style": "1", "locale": "it", "enable_publishing": false,
+                "hide_top_toolbar": true, "container_id": "tv_chart"
+            });
+        }
+
+        function switchAsset(symbol, btn) {
+            currentCoin = symbol;
+            document.querySelectorAll('.coin-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            loadTV(symbol);
+            updatePrice();
+        }
+
+        async function updatePrice() {
+            try {
+                const r = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${currentCoin}`);
+                const d = await r.json();
+                currentPrice = parseFloat(d.lastPrice);
+                const perc = parseFloat(d.priceChangePercent);
+
+                document.getElementById('price').innerText = "$" + currentPrice.toLocaleString();
+                const cEl = document.getElementById('change');
+                cEl.innerText = (perc >= 0 ? '+' : '') + perc.toFixed(2) + "%";
+                cEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
+                calcValue();
+            } catch (e) { console.log("API error"); }
+        }
+
+        function calcValue() {
+            const qty = document.getElementById('amount').value;
+            const total = qty * currentPrice;
+            document.getElementById('total-val').innerText = "$" + total.toLocaleString(undefined, {maximumFractionDigits: 2});
+        }
+
+        function openEliteMarket() {
+            const url = "https://www.binance.com/it/register?ref=TUO_CODICE";
+            try {
+                let w = window.open(url, '_blank');
+                if(!w || w.closed) { window.location.href = url; }
+            } catch(e) { window.location.assign(url); }
+        }
+
+        loadTV(currentCoin);
+        updatePrice();
+        setInterval(updatePrice, 10000);
     </script>
 </body>
 </html>
