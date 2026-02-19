@@ -3,127 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - QUANTUM FLUX</title>
+    <title>BIRRA AI - QUANTUM PRO</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root { --gold: #ffcc00; --bg: #000; --card: #0a0a0a; --green: #00ff41; --red: #ff3131; }
-        
-        /* Reset e Stabilità */
         body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; height: 100vh; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
 
-        /* News Ticker Ultra-Fluido */
-        .ticker-container { height: 35px; background: #111; border-bottom: 1px solid var(--gold); overflow: hidden; display: flex; align-items: center; }
-        .ticker-text { white-space: nowrap; will-change: transform; animation: scroll 40s linear infinite; color: var(--gold); font-size: 0.75rem; font-weight: bold; transform: translate3d(0,0,0); }
+        /* Ticker News Fluido */
+        .ticker-wrap { height: 35px; background: #111; border-bottom: 1px solid var(--gold); overflow: hidden; display: flex; align-items: center; }
+        .ticker-move { white-space: nowrap; will-change: transform; animation: scroll 50s linear infinite; color: var(--gold); font-size: 0.7rem; font-weight: bold; transform: translate3d(0,0,0); }
         @keyframes scroll { from { transform: translate3d(0,0,0); } to { transform: translate3d(-100%,0,0); } }
 
-        /* Header Fisso (Zero Salti) */
-        .header { height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 1px solid #111; }
-        .logo-orbit { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--gold); position: relative; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(255,204,0,0.1); }
-        .logo-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
+        /* Header Compatto */
+        .header { padding: 20px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .logo-box { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); overflow: hidden; box-shadow: 0 0 15px rgba(255,204,0,0.2); }
+        .logo-img { width: 100%; height: 100%; object-fit: cover; }
+        .app-title { font-size: 0.9rem; font-weight: 900; letter-spacing: 2px; color: var(--gold); }
 
-        /* Prezzo con font tabellare (i numeri non ballano) */
-        .price-zone { padding: 20px; text-align: center; }
-        #btc-price { font-size: 3.2rem; font-weight: 900; font-variant-numeric: tabular-nums; margin: 0; transform: translate3d(0,0,0); }
-        
-        /* Novità: Market Pressure Bar */
-        .pressure-wrap { padding: 0 25px; margin-top: 10px; }
-        .pressure-label { display: flex; justify-content: space-between; font-size: 0.6rem; color: #555; text-transform: uppercase; margin-bottom: 5px; }
-        .pressure-bar { height: 4px; background: #111; border-radius: 2px; overflow: hidden; display: flex; }
-        #buy-fill { width: 50%; background: var(--green); transition: width 0.5s ease; }
-        #sell-fill { width: 50%; background: var(--red); transition: width 0.5s ease; }
+        /* Sezione Prezzo e Grafico */
+        .main-section { padding: 0 20px; text-align: center; }
+        #btc-price { font-size: 3rem; font-weight: 900; font-variant-numeric: tabular-nums; margin: 0; letter-spacing: -1px; line-height: 1; }
+        .chart-container { height: 80px; margin: 15px 0; position: relative; }
 
-        /* Griglia Stats */
-        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 20px; }
-        .card { background: var(--card); border: 1px solid #1a1a1a; padding: 15px; border-radius: 18px; }
-        .label { font-size: 0.6rem; color: #444; text-transform: uppercase; letter-spacing: 1px; }
-        .val { font-size: 1rem; font-weight: bold; margin-top: 5px; }
+        /* ROI Calculator (Nuova Funzione!) */
+        .roi-box { background: var(--card); margin: 10px 20px; padding: 15px; border-radius: 15px; border: 1px solid #222; }
+        .roi-input { background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 10px; width: 100%; border-radius: 10px; font-size: 1.2rem; font-weight: bold; text-align: center; margin-top: 5px; }
+        .roi-result { text-align: center; font-size: 0.8rem; color: #888; margin-top: 10px; }
+        #roi-percent { color: var(--green); font-weight: bold; font-size: 1rem; }
 
-        .btn-action { position: absolute; bottom: 20px; left: 20px; right: 20px; background: var(--gold); color: black; border: none; padding: 20px; border-radius: 18px; font-weight: 900; font-size: 1rem; text-transform: uppercase; text-align: center; text-decoration: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        /* Pulsante Azione */
+        .btn-elite { position: absolute; bottom: 25px; left: 20px; right: 20px; background: linear-gradient(45deg, var(--gold), #ffaa00); color: black; border: none; padding: 20px; border-radius: 18px; font-weight: 900; font-size: 1rem; text-transform: uppercase; text-decoration: none; text-align: center; display: block; box-shadow: 0 5px 25px rgba(255, 204, 0, 0.3); }
     </style>
 </head>
 <body>
 
-    <div class="ticker-container">
-        <div class="ticker-text" id="news">CARICAMENTO INTELLIGENCE IN CORSO... +++ RILEVAMENTO BALENE ATTIVO +++ NEWS LIVE DA BINANCE +++</div>
+    <div class="ticker-wrap">
+        <div class="ticker-move" id="news">CONNESSIONE AI MERCATI QUANTISTICI... +++ ANALISI AI IN CORSO +++ CARICAMENTO NEWS LIVE...</div>
     </div>
 
     <div class="header">
-        <div class="logo-orbit">
-            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img" alt="Birra AI" onerror="this.src='https://via.placeholder.com/80/ffcc00/000000?text=AI'">
+        <div class="logo-box">
+            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img" alt="Logo" onerror="this.src='https://via.placeholder.com/60/ffcc00/000000?text=AI'">
         </div>
-        <div style="color: var(--gold); font-size: 0.7rem; margin-top: 15px; letter-spacing: 3px; font-weight: bold;">ALPHA TRADER v6.0</div>
+        <div class="app-title">QUANTUM PRO v8</div>
     </div>
 
-    <div class="price-zone">
+    <div class="main-section">
         <div id="btc-price">$ --.---</div>
-        <div id="change" style="font-weight: bold; margin-top: 5px;">0.00%</div>
-    </div>
-
-    <div class="pressure-wrap">
-        <div class="pressure-label"><span>Buyers</span><span>Sellers</span></div>
-        <div class="pressure-bar">
-            <div id="buy-fill"></div>
-            <div id="sell-fill"></div>
+        <div id="perc" style="font-weight: bold; font-size: 1rem; margin-top: 5px;">0.00% (24h)</div>
+        <div class="chart-container">
+            <canvas id="sparkline"></canvas>
         </div>
     </div>
 
-    <div class="stats">
-        <div class="card">
-            <div class="label">Signal</div>
-            <div id="signal" class="val">SCANNING</div>
-        </div>
-        <div class="card">
-            <div class="label">Volatility</div>
-            <div id="vol" class="val">STABLE</div>
-        </div>
+    <div class="roi-box">
+        <div style="font-size: 0.7rem; color: #666; text-transform: uppercase;">Proiezione Target ($)</div>
+        <input type="number" id="target-input" class="roi-input" value="100000" oninput="calcROI()">
+        <div class="roi-result">Potenziale guadagno: <span id="roi-percent">--%</span></div>
     </div>
 
-    <a href="https://www.binance.com" class="btn-action">Esegui Ordine Ora</a>
+    <a href="https://www.binance.com" class="btn-elite">⚡ Opera sul Mercato Reale</a>
 
     <script>
-        let lastPrice = 0;
+        let currentPrice = 0;
+        let priceHistory = [];
+        let myChart;
 
-        async function updateData() {
+        // Inizializzazione Grafico Vuoto
+        function initChart() {
+            const ctx = document.getElementById('sparkline').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: { labels: [], datasets: [{ data: [], borderColor: '#ffcc00', borderWidth: 2, tension: 0.4, pointRadius: 0, fill: true, backgroundColor: 'rgba(255, 204, 0, 0.1)' }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { x: {display: false}, y: {display: false} } }
+            });
+        }
+
+        async function sync() {
             try {
-                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
-                const data = await res.json();
-                const price = data.bitcoin.usd;
-                const change = data.bitcoin.usd_24h_change;
+                // Usiamo un'API che ci dà anche un po' di storico per il grafico
+                const r = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1&interval=hourly');
+                const data = await r.json();
+                const prices = data.prices;
+                
+                // Ultimo prezzo
+                currentPrice = prices[prices.length-1][1];
+                const startPrice = prices[0][1];
+                const change24h = ((currentPrice - startPrice) / startPrice) * 100;
 
-                // Aggiornamento prezzo senza sfarfallio
-                const el = document.getElementById('btc-price');
-                el.innerText = "$" + price.toLocaleString();
-                el.style.color = price >= lastPrice ? 'white' : '#ff3131';
-                lastPrice = price;
+                // Update UI
+                const btcEl = document.getElementById('btc-price');
+                btcEl.innerText = "$" + currentPrice.toLocaleString(undefined, {maximumFractionDigits: 0});
+                btcEl.style.color = currentPrice >= startPrice ? '#fff' : '#ff3131';
+                
+                const pEl = document.getElementById('perc');
+                pEl.innerText = (change24h >= 0 ? '+' : '') + change24h.toFixed(2) + "% (24h)";
+                pEl.style.color = change24h >= 0 ? '#00ff41' : '#ff3131';
 
-                const changeEl = document.getElementById('change');
-                changeEl.innerText = (change >= 0 ? '+' : '') + change.toFixed(2) + "%";
-                changeEl.style.color = change >= 0 ? var(--green) : var(--red);
+                // Update Grafico (Prendiamo gli ultimi 20 punti per la sparkline)
+                const recentPrices = prices.slice(-20).map(p => p[1]);
+                myChart.data.labels = new Array(recentPrices.length).fill("");
+                myChart.data.datasets[0].data = recentPrices;
+                myChart.data.datasets[0].borderColor = change24h >= 0 ? '#ffcc00' : '#ff3131';
+                myChart.data.datasets[0].backgroundColor = change24h >= 0 ? 'rgba(255, 204, 0, 0.1)' : 'rgba(255, 49, 49, 0.1)';
+                myChart.update('none'); // Aggiornamento silenzioso senza animazione pesante
 
-                // Simulazione Market Pressure
-                const buyPower = 50 + (change * 2);
-                document.getElementById('buy-fill').style.width = Math.min(Math.max(buyPower, 10), 90) + "%";
+                calcROI(); // Ricalcola ROI con il nuovo prezzo
 
-                const sig = document.getElementById('signal');
-                if(change > 1) { sig.innerText = "STRONG BUY"; sig.style.color = var(--green); }
-                else if(change < -1) { sig.innerText = "SELL ALERT"; sig.style.color = var(--red); }
-                else { sig.innerText = "NEUTRAL"; sig.style.color = var(--gold); }
+            } catch(e) { console.log("Sync error"); }
+        }
 
-            } catch (e) { }
+        function calcROI() {
+            if(currentPrice === 0) return;
+            const target = document.getElementById('target-input').value;
+            const gain = ((target - currentPrice) / currentPrice) * 100;
+            const roiEl = document.getElementById('roi-percent');
+            roiEl.innerText = (gain > 0 ? '+' : '') + gain.toFixed(2) + "%";
+            roiEl.style.color = gain > 0 ? '#00ff41' : '#ff3131';
         }
 
         async function getNews() {
             try {
                 const res = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=IT');
-                const d = await res.json();
-                const titles = d.Data.slice(0, 5).map(n => n.title.toUpperCase()).join(' +++ ');
-                document.getElementById('news').innerText = titles + " +++ ";
-            } catch (e) {}
+                const data = await res.json();
+                document.getElementById('news').innerText = data.Data.slice(0, 5).map(n => n.title.toUpperCase()).join(' +++ ') + " +++ ";
+            } catch(e) {}
         }
 
-        setInterval(updateData, 10000);
-        updateData();
+        initChart();
+        sync();
         getNews();
+        setInterval(sync, 30000); // Aggiorna ogni 30s per non stressare il grafico
+        setInterval(getNews, 300000);
     </script>
 </body>
 </html>
