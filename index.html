@@ -3,32 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - ARBITRAGE SCANNER</title>
+    <title>BIRRA AI - SCANNER</title>
     <style>
-        :root { --gold: #ffcc00; --bg: #0a0a0a; --green: #00ff41; --red: #ff3131; }
-        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; padding: 20px; text-align: center; overflow-x: hidden; }
-        
-        .header { border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; background: rgba(255, 204, 0, 0.05); }
-        .logo { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; box-shadow: 0 0 15px var(--gold); }
-        
-        .scanner-grid { display: grid; gap: 12px; margin-top: 20px; }
+        :root { --gold: #ffcc00; --bg: #0a0a0a; --green: #00ff41; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; padding: 20px; text-align: center; }
+        .header { border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; }
+        .logo { width: 85px; height: 85px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; box-shadow: 0 0 15px var(--gold); }
+        .scanner-grid { display: grid; gap: 12px; margin-bottom: 20px; }
         .exchange-card { background: #111; border: 1px solid #333; padding: 18px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; }
         .ex-name { color: var(--gold); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        .ex-price { font-size: 1.2rem; font-family: monospace; font-weight: bold; }
-
+        .ex-price { font-size: 1.1rem; font-family: monospace; }
         .opportunity-box { background: rgba(0, 255, 65, 0.1); border: 2px dashed var(--green); padding: 20px; border-radius: 15px; margin-top: 20px; display: none; }
-        .alert-active { display: block; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-
-        .btn-update { background: var(--gold); color: black; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1rem; text-transform: uppercase; margin-top: 20px; }
-        #log { font-size: 0.75rem; color: #666; margin-top: 25px; text-align: left; height: 100px; overflow-y: auto; border-top: 1px solid #222; padding-top: 10px; font-family: monospace; }
+        .alert-active { display: block; }
+        .btn-update { background: var(--gold); color: black; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1rem; text-transform: uppercase; }
+        #log { font-size: 0.75rem; color: #666; margin-top: 20px; text-align: left; height: 100px; overflow-y: auto; border-top: 1px solid #222; padding-top: 10px; }
     </style>
 </head>
 <body>
-
     <div class="header">
         <img src="https://raw.githubusercontent.com/Tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo" alt="Birra Gatto">
-        <h2 style="margin-top: 10px; letter-spacing: 2px;">ARBITRAGE SCANNER</h2>
+        <h2 style="letter-spacing: 2px; margin-top: 10px;">SCANNER REALE 2026</h2>
     </div>
 
     <div class="scanner-grid">
@@ -39,12 +33,11 @@
 
     <div id="alert-box" class="opportunity-box">
         <h3 style="color: var(--green); margin: 0;">⚡ SPREAD RILEVATO!</h3>
-        <p id="alert-text" style="font-size: 0.9rem; margin-top: 10px;"></p>
+        <p id="alert-text"></p>
     </div>
 
     <button class="btn-update" onclick="checkArbitrage()">SCANSIONA MERCATI</button>
-
-    <div id="log">> Scanner inizializzato... pronto per dati reali.</div>
+    <div id="log">> Scanner pronto...</div>
 
     <script>
         function addLog(msg) {
@@ -54,7 +47,7 @@
         }
 
         async function checkArbitrage() {
-            addLog("Richiesta prezzi in corso...");
+            addLog("Scansione in corso...");
             try {
                 const [rB, rK, rC] = await Promise.all([
                     fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT'),
@@ -74,30 +67,18 @@
                 document.getElementById('p-kraken').innerText = "$" + pK.toLocaleString();
                 document.getElementById('p-coinbase').innerText = "$" + pC.toLocaleString();
 
-                const prices = [
-                    {n: 'Binance', v: pB},
-                    {n: 'Kraken', v: pK},
-                    {n: 'Coinbase', v: pC}
-                ].sort((a, b) => a.v - b.v);
+                const prices = [{n:'Binance', v:pB}, {n:'Kraken', v:pK}, {n:'Coinbase', v:pC}].sort((a,b)=>a.v-b.v);
+                const spread = ((prices[2].v - prices[0].v) / prices[0].v * 100).toFixed(2);
 
-                const min = prices[0];
-                const max = prices[2];
-                const spread = ((max.v - min.v) / min.v * 100).toFixed(2);
-
-                if (spread > 0.35) {
+                if(spread > 0.35) {
                     document.getElementById('alert-box').classList.add('alert-active');
-                    document.getElementById('alert-text').innerHTML = 
-                        `Possibile guadagno del <b>${spread}%</b>.<br>Compra su <b>${min.n}</b> e vendi su <b>${max.n}</b>.`;
-                    addLog(`!!! OPPORTUNITÀ: ${spread}%`, 'green');
+                    document.getElementById('alert-text').innerHTML = `Spread del <b>${spread}%</b>.<br>Compra su ${prices[0].n}, vendi su ${prices[2].n}.`;
                 } else {
                     document.getElementById('alert-box').classList.remove('alert-active');
-                    addLog(`Spread attuale: ${spread}% (Sotto soglia)`);
                 }
-            } catch (e) {
-                addLog("Errore: Impossibile recuperare i prezzi.");
-            }
+                addLog(`Spread attuale: ${spread}%`);
+            } catch(e) { addLog("Errore connessione..."); }
         }
-
         setInterval(checkArbitrage, 20000);
         checkArbitrage();
     </script>
