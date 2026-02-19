@@ -3,104 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - ULTIMATE</title>
+    <title>BIRRA AI - ELITE TERMINAL</title>
     <style>
-        :root { --gold: #ffcc00; --bg: #000; --card: #0d0d0d; --green: #00ff41; }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-y: auto; height: 100vh; }
-        .header { padding: 20px; text-align: center; border-bottom: 1px solid #1a1a1a; }
-        .logo-circle { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--gold); margin: 0 auto; overflow: hidden; background: #111; }
-        .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+        :root { --gold: #ffcc00; --bg: #000; --card: #0d0d0d; --green: #00ff41; --red: #ff3131; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         
-        .price-hero { padding: 30px 20px; text-align: center; }
-        #main-price { font-size: 3.5rem; font-weight: 900; color: white; margin: 0; letter-spacing: -2px; }
+        .header { padding: 20px; text-align: center; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .logo-box { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--gold); overflow: hidden; box-shadow: 0 0 20px rgba(255,204,0,0.2); }
+        .logo-img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Selettore Multi-Coin Professionale */
+        .coin-selector { display: flex; justify-content: space-around; padding: 15px; background: #050505; border-bottom: 1px solid #111; }
+        .coin-btn { background: #111; border: 1px solid #333; color: #888; padding: 10px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.8rem; }
+        .coin-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(255,204,0,0.1); }
+
+        .price-section { padding: 25px 20px; text-align: center; }
+        #main-price { font-size: 3.2rem; font-weight: 900; color: white; margin: 0; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
         
-        /* Widget Grafico Reale */
-        .chart-box { height: 300px; margin: 10px; border-radius: 15px; overflow: hidden; border: 1px solid #222; }
+        .chart-box { height: 320px; margin: 10px; border-radius: 20px; overflow: hidden; border: 1px solid #1a1a1a; position: relative; }
 
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
-        .stat-card { background: var(--card); padding: 15px; border-radius: 15px; border: 1px solid #1a1a1a; }
-        .s-label { font-size: 0.6rem; color: #555; text-transform: uppercase; }
-        .s-val { font-size: 1.1rem; font-weight: bold; margin-top: 5px; color: var(--gold); }
+        /* Stats Dashboard */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px; }
+        .stat-card { background: var(--card); padding: 15px; border-radius: 18px; border: 1px solid #1a1a1a; }
+        .label { font-size: 0.6rem; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+        .val { font-size: 1.1rem; font-weight: bold; margin-top: 5px; }
 
-        .btn-trade { display: block; background: var(--gold); color: black; text-decoration: none; text-align: center; padding: 20px; margin: 20px; border-radius: 15px; font-weight: 900; text-transform: uppercase; }
+        /* Tasto "Opera" con animazione e apertura forzata */
+        .btn-trade { display: block; background: linear-gradient(45deg, var(--gold), #ffaa00); color: black; text-decoration: none; text-align: center; padding: 22px; margin: 25px 15px; border-radius: 20px; font-weight: 900; text-transform: uppercase; border: none; width: calc(100% - 30px); cursor: pointer; box-shadow: 0 10px 30px rgba(255, 204, 0, 0.2); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="logo-circle">
-            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" onerror="this.src='https://via.placeholder.com/70/ffcc00/000000?text=GAITO'">
+        <div class="logo-box">
+            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img" onerror="this.src='https://via.placeholder.com/70/ffcc00/000000?text=AI'">
         </div>
-        <div style="color:var(--gold); font-size:0.7rem; font-weight:bold; margin-top:10px; letter-spacing:3px;">ULTIMATE TERMINAL V9</div>
+        <div style="font-weight: 900; letter-spacing: 3px; color: var(--gold);">QUANTUM ELITE</div>
     </div>
 
-    <div class="price-hero">
+    <div class="coin-selector">
+        <div class="coin-btn active" onclick="switchCoin('BTCUSDT', this)">BTC</div>
+        <div class="coin-btn" onclick="switchCoin('ETHUSDT', this)">ETH</div>
+        <div class="coin-btn" onclick="switchCoin('SOLUSDT', this)">SOL</div>
+    </div>
+
+    <div class="price-section">
         <div id="main-price">$ --.---</div>
-        <div id="price-perc" style="font-size:1.1rem; font-weight:bold; margin-top:5px;">0.00%</div>
+        <div id="price-perc" style="font-weight: bold; margin-top: 5px;">0.00%</div>
     </div>
 
     <div class="chart-box">
-        <div id="tradingview_chart"></div>
+        <div id="tradingview_widget" style="height: 100%;"></div>
     </div>
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="s-label">IA Signal</div>
-            <div id="ai-sig" class="s-val">ANALYZING...</div>
+            <div class="label">AI Neural Signal</div>
+            <div id="ai-sig" class="val">ANALYZING...</div>
         </div>
         <div class="stat-card">
-            <div class="s-label">Target Profit</div>
-            <div id="target-roi" class="s-val">--%</div>
+            <div class="label">Volatilità</div>
+            <div id="vol-status" class="val">STABILE</div>
         </div>
     </div>
 
-    <a href="https://www.binance.com" class="btn-trade">Opera con Birra AI</a>
+    <button class="btn-trade" onclick="forceOpenBinance()">⚡ OPERA CON BIRRA AI</button>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
-        // Inizializzazione Grafico Reale
-        new TradingView.widget({
-            "autosize": true,
-            "symbol": "BINANCE:BTCUSDT",
-            "interval": "60",
-            "timezone": "Etc/UTC",
-            "theme": "dark",
-            "style": "3",
-            "locale": "it",
-            "toolbar_bg": "#f1f3f6",
-            "enable_publishing": false,
-            "hide_top_toolbar": true,
-            "save_image": false,
-            "container_id": "tradingview_chart"
-        });
+        let currentSymbol = 'BTCUSDT';
+
+        // Inizializzazione TradingView
+        function loadChart(symbol) {
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": "BINANCE:" + symbol,
+                "interval": "60",
+                "timezone": "Etc/UTC",
+                "theme": "dark",
+                "style": "1",
+                "locale": "it",
+                "enable_publishing": false,
+                "hide_top_toolbar": true,
+                "hide_legend": true,
+                "save_image": false,
+                "container_id": "tradingview_widget"
+            });
+        }
+
+        function switchCoin(symbol, btn) {
+            currentSymbol = symbol;
+            document.querySelectorAll('.coin-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            loadChart(symbol);
+            updateData();
+        }
 
         async function updateData() {
             try {
-                const r = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
+                const r = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${currentSymbol}`);
                 const d = await r.json();
                 const price = parseFloat(d.lastPrice);
                 const perc = parseFloat(d.priceChangePercent);
 
-                document.getElementById('main-price').innerText = "$" + price.toLocaleString(undefined, {maximumFractionDigits:0});
+                document.getElementById('main-price').innerText = "$" + price.toLocaleString();
                 const pEl = document.getElementById('price-perc');
                 pEl.innerText = (perc >= 0 ? '+' : '') + perc.toFixed(2) + "%";
                 pEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
 
                 const sig = document.getElementById('ai-sig');
-                if(perc > 1) { sig.innerText = "STRONG BUY"; sig.style.color = "#00ff41"; }
-                else if(perc < -1) { sig.innerText = "SELL ALERT"; sig.style.color = "#ff3131"; }
-                else { sig.innerText = "NEUTRAL"; sig.style.color = "#ffcc00"; }
-
-                // Calcolo ROI su target 100k
-                const target = 100000;
-                const roi = ((target - price) / price * 100).toFixed(1);
-                document.getElementById('target-roi').innerText = "+" + roi + "%";
-
-            } catch (e) { document.getElementById('main-price').innerText = "OFFLINE"; }
+                if(perc > 1.5) { sig.innerText = "STRONG BUY"; sig.style.color = "#00ff41"; }
+                else if(perc < -1.5) { sig.innerText = "SELL ALERT"; sig.style.color = "#ff3131"; }
+                else { sig.innerText = "HOLD"; sig.style.color = "#ffcc00"; }
+            } catch (e) { console.log("Error sync"); }
         }
 
-        setInterval(updateData, 10000);
+        function forceOpenBinance() {
+            // Sostituisci questo URL con il tuo link referral per guadagnare
+            const url = "https://www.binance.com/it/register?ref=TUO_CODICE";
+            window.open(url, '_blank', 'location=yes');
+        }
+
+        loadChart(currentSymbol);
         updateData();
+        setInterval(updateData, 10000);
     </script>
 </body>
 </html>
