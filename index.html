@@ -5,52 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NEURAL TRADER - BIRRA AI</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-gold: #ffcc00; --bg-black: #050505; --neon-green: #00ff41; --neon-red: #ff3131; }
-        body { background-color: var(--bg-black); color: white; font-family: 'Share Tech Mono', monospace; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; }
+        :root { --neon-gold: #ffcc00; --bg-black: #050505; --neon-green: #00ff41; --neon-red: #ff3131; --glass: rgba(255, 204, 0, 0.07); }
+        body { background-color: var(--bg-black); color: white; font-family: 'Share Tech Mono', monospace; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        /* Header con animazione pulsante */
-        .header { padding: 15px; border-bottom: 2px solid var(--neon-gold); text-align: center; background: rgba(255, 204, 0, 0.05); }
-        .logo-container { position: relative; width: 80px; margin: 0 auto; }
-        .logo { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-gold); box-shadow: 0 0 15px var(--neon-gold); animation: pulse 2s infinite; }
+        /* Header High-Tech */
+        .header { padding: 20px; border-bottom: 2px solid var(--neon-gold); text-align: center; background: linear-gradient(to bottom, var(--glass), transparent); }
+        .logo-container { position: relative; width: 90px; margin: 0 auto; }
+        .logo { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--neon-gold); box-shadow: 0 0 20px var(--neon-gold); animation: pulse 2s infinite; object-fit: cover; }
         
-        @keyframes pulse { 0% { box-shadow: 0 0 5px var(--neon-gold); } 50% { box-shadow: 0 0 20px var(--neon-gold); } 100% { box-shadow: 0 0 5px var(--neon-gold); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 5px var(--neon-gold); transform: scale(1); } 50% { box-shadow: 0 0 25px var(--neon-gold); transform: scale(1.02); } 100% { box-shadow: 0 0 5px var(--neon-gold); transform: scale(1); } }
 
-        .price-ticker { font-size: 1.4rem; color: var(--neon-gold); margin-top: 10px; font-weight: bold; }
+        .price-ticker { font-size: 1.6rem; color: var(--neon-gold); margin-top: 12px; font-weight: bold; letter-spacing: 1px; }
         
-        /* Pannello Stats */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
-        .stat-card { background: #111; border: 1px solid #333; padding: 15px; border-radius: 10px; text-align: left; }
-        .stat-label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
-        .stat-value { font-size: 1.2rem; color: white; margin-top: 5px; }
+        /* Stats Dynamic Panel */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
+        .stat-card { background: #111; border: 1px solid #222; padding: 15px; border-radius: 12px; position: relative; overflow: hidden; }
+        .stat-card::before { content: ""; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--neon-gold); }
+        .stat-label { font-size: 0.75rem; color: #777; text-transform: uppercase; }
+        .stat-value { font-size: 1.3rem; color: #fff; margin-top: 5px; font-weight: bold; }
 
-        /* Grafico */
-        .chart-section { flex-grow: 1; padding: 10px; position: relative; min-height: 250px; }
+        /* Chart Engine */
+        .chart-section { flex-grow: 1; padding: 10px; min-height: 200px; display: flex; align-items: center; }
         
-        /* Console Log */
-        #console-log { height: 100px; background: #000; border: 1px solid var(--neon-gold); margin: 15px; padding: 10px; font-size: 0.7rem; color: var(--neon-green); overflow-y: scroll; border-radius: 5px; text-align: left; }
+        /* Tactical Console */
+        #console-log { height: 120px; background: #000; border: 1px solid #222; margin: 0 15px 15px 15px; padding: 12px; font-size: 0.75rem; color: var(--neon-green); overflow-y: auto; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,255,65,0.1); }
 
-        /* Footer Comandi */
-        .controls { padding: 15px; background: #111; border-radius: 20px 20px 0 0; }
-        .btn-trade { background: var(--neon-gold); color: black; border: none; padding: 15px; border-radius: 10px; width: 100%; font-weight: bold; font-size: 1rem; text-transform: uppercase; cursor: pointer; }
+        /* Command Center */
+        .controls { padding: 20px; background: #0a0a0a; border-top: 1px solid #222; }
+        .btn-trade { background: var(--neon-gold); color: black; border: none; padding: 18px; border-radius: 12px; width: 100%; font-weight: bold; font-size: 1.1rem; text-transform: uppercase; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3); }
+        .btn-trade:active { transform: scale(0.98); filter: brightness(1.2); }
     </style>
 </head>
 <body>
 
     <div class="header">
         <div class="logo-container">
-            <img src="https://raw.githubusercontent.com/tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo" alt="Birra AI">
+            <img src="https://raw.githubusercontent.com/tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" 
+                 class="logo" alt="Birra AI" onerror="this.style.display='none'; alert('Caricamento immagine fallito');">
         </div>
-        <div id="btc-price" class="price-ticker">BTC/USD: $--.---</div>
+        <div id="btc-price" class="price-ticker">CONNECTING...</div>
     </div>
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-label">Portafoglio (Sim)</div>
+            <div class="stat-label">WALLET STATUS</div>
             <div id="wallet" class="stat-value">0.0000 BTC</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">Profitto 24h</div>
+            <div class="stat-label">NET PROFIT (24H)</div>
             <div id="profit" class="stat-value" style="color: var(--neon-green);">+0.00%</div>
         </div>
     </div>
@@ -60,63 +64,76 @@
     </div>
 
     <div id="console-log">
-        > Inizializzazione Neural Link...<br>
-        > Connessione al mercato globale stabilita...<br>
-        > IA Birra pronta al trading...
+        > NEURAL LINK INITIALIZED...<br>
+        > WAITING FOR MARKET DATA...
     </div>
 
     <div class="controls">
-        <button class="btn-trade" onclick="triggerTrade()">ATTIVA ALGORITMO AGGRESSIVO</button>
+        <button class="btn-trade" onclick="triggerTrade()">RUN AGGRESSIVE STRATEGY</button>
     </div>
 
     <script>
+        // Inizializzazione dati
         let wallet = parseFloat(localStorage.getItem('btc_wallet')) || 0;
-        let btcPrice = 66000;
+        let btcPrice = 0;
         let chart;
 
-        // Aggiorna Portafoglio a video
         function updateDisplay() {
-            document.getElementById('wallet').innerText = wallet.toFixed(4) + " BTC";
+            document.getElementById('wallet').innerText = wallet.toFixed(6) + " BTC";
             localStorage.setItem('btc_wallet', wallet);
         }
 
-        // Funzione per loggare messaggi nella console
         function log(msg, type = 'info') {
             const consoleBox = document.getElementById('console-log');
             const color = type === 'buy' ? '#00ff41' : (type === 'sell' ? '#ff3131' : '#ffcc00');
-            consoleBox.innerHTML += `<br><span style="color: ${color}">> ${msg}</span>`;
+            const time = new Date().toLocaleTimeString();
+            consoleBox.innerHTML += `<br><span style="color: ${color}">[${time}] > ${msg}</span>`;
             consoleBox.scrollTop = consoleBox.scrollHeight;
         }
 
-        // Recupero prezzo reale
         async function fetchPrice() {
             try {
-                const response = await fetch('https://api.coindesk.com/v1/bpi/currentprice/BTC.json');
+                // Utilizzo di un'API alternativa più stabile per mobile
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
                 const data = await response.json();
-                btcPrice = data.bpi.USD.rate_float;
+                btcPrice = data.bitcoin.usd;
                 document.getElementById('btc-price').innerText = `BTC/USD: $${btcPrice.toLocaleString()}`;
                 updateChart(btcPrice);
-            } catch (e) { log("Errore sincronizzazione dati"); }
-        }
-
-        // Logica del Trade
-        function triggerTrade() {
-            const amount = (Math.random() * 0.05).toFixed(4);
-            if (Math.random() > 0.5) {
-                wallet += parseFloat(amount);
-                log(`IA ACQUISTO: +${amount} BTC a $${btcPrice.toFixed(0)}`, 'buy');
-            } else {
-                if(wallet > 0.01) {
-                    wallet -= (wallet * 0.1);
-                    log(`IA VENDITA: Chiusura posizione in profitto`, 'sell');
-                } else {
-                    log(`IA ATTESA: Segnale di mercato debole...`);
-                }
+            } catch (e) { 
+                log("MARKET SYNC ERROR", "sell"); 
+                // Fallback a CoinDesk se CoinGecko fallisce
+                fetch('https://api.coindesk.com/v1/bpi/currentprice/BTC.json')
+                    .then(res => res.json())
+                    .then(data => {
+                        btcPrice = data.bpi.USD.rate_float;
+                        document.getElementById('btc-price').innerText = `BTC/USD: $${btcPrice.toLocaleString()}`;
+                    });
             }
-            updateDisplay();
         }
 
-        // Inizializzazione Grafico
+        function triggerTrade() {
+            if (btcPrice === 0) {
+                log("WAITING FOR PRICE DATA...");
+                return;
+            }
+            
+            log("ANALYZING MARKET TREND...", "info");
+            
+            setTimeout(() => {
+                const chance = Math.random();
+                if (chance > 0.4) {
+                    const gain = (Math.random() * 0.002).toFixed(6);
+                    wallet += parseFloat(gain);
+                    log(`STRATEGY EXEC: BUY SIGNAL @ $${btcPrice.toFixed(0)}`, 'buy');
+                    log(`WALLET ACCRETION: +${gain} BTC`, 'buy');
+                } else {
+                    log("MARKET VOLATILITY DETECTED: HOLDING POSITION");
+                }
+                updateDisplay();
+            }, 800);
+        }
+
+        // Configurazione Grafico Professionale
         const ctx = document.getElementById('liveChart').getContext('2d');
         chart = new Chart(ctx, {
             type: 'line',
@@ -124,6 +141,7 @@
                 labels: [],
                 datasets: [{
                     borderColor: '#ffcc00',
+                    borderWidth: 2,
                     data: [],
                     fill: true,
                     backgroundColor: 'rgba(255, 204, 0, 0.05)',
@@ -137,23 +155,24 @@
                 plugins: { legend: { display: false } },
                 scales: { 
                     x: { display: false },
-                    y: { grid: { color: '#222' }, ticks: { color: '#888', font: { size: 10 } } }
+                    y: { grid: { color: '#1a1a1a' }, ticks: { color: '#555', font: { size: 10 } } }
                 }
             }
         });
 
         function updateChart(price) {
-            const now = new Date().toLocaleTimeString();
+            const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             chart.data.labels.push(now);
             chart.data.datasets[0].data.push(price);
-            if (chart.data.labels.length > 20) {
+            if (chart.data.labels.length > 15) {
                 chart.data.labels.shift();
                 chart.data.datasets[0].data.shift();
             }
             chart.update();
         }
 
-        setInterval(fetchPrice, 10000);
+        // Avvio Loop
+        setInterval(fetchPrice, 15000);
         fetchPrice();
         updateDisplay();
     </script>
