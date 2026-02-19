@@ -3,160 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - SUPREME v11</title>
+    <title>BIRRA AI - SUPREME v13</title>
     <style>
-        :root { --gold: #ffcc00; --bg: #000; --card: #0d0d0d; --green: #00ff41; --red: #ff3131; }
+        :root { --gold: #ffcc00; --bg: #000; --card: #080808; --green: #00ff41; --red: #ff3131; }
         body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
+
+        /* News Ticker Ultra-Fluido (Zero Calore) */
+        .ticker-wrap { height: 35px; background: #111; border-bottom: 1px solid var(--gold); overflow: hidden; display: flex; align-items: center; }
+        .ticker-move { white-space: nowrap; will-change: transform; animation: scroll 50s linear infinite; color: var(--gold); font-size: 0.75rem; font-weight: bold; transform: translate3d(0,0,0); }
+        @keyframes scroll { from { transform: translate3d(0,0,0); } to { transform: translate3d(-100%,0,0); } }
+
+        /* Navbar Elite */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #111; background: #000; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--gold); letter-spacing: 3px; font-size: 0.9rem; }
+        .logo-img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--gold); object-fit: cover; }
         
-        /* Navbar con Menu a Tendina */
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #1a1a1a; background: #000; position: sticky; top: 0; z-index: 1000; }
-        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--gold); letter-spacing: 2px; font-size: 0.9rem; }
-        .logo-small { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--gold); }
+        .menu-btn { background: none; border: 1px solid #222; color: var(--gold); padding: 8px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; }
+
+        /* Display Prezzo con Glow Dinamico */
+        .price-section { padding: 30px 20px; text-align: center; }
+        #price { font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -2px; font-variant-numeric: tabular-nums; transition: 0.3s; }
         
-        .dropdown { position: relative; display: inline-block; }
-        .dropbtn { background: none; border: 1px solid #333; color: var(--gold); padding: 8px 15px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; }
-        .dropdown-content { display: none; position: absolute; right: 0; background-color: #111; min-width: 160px; box-shadow: 0px 8px 16px rgba(0,0,0,0.5); border: 1px solid #222; border-radius: 10px; z-index: 1; }
-        .dropdown-content a { color: white; padding: 12px 16px; text-decoration: none; display: block; font-size: 0.8rem; border-bottom: 1px solid #222; }
-        .dropdown-content a:hover { background-color: #1a1a1a; color: var(--gold); }
-        .show { display: block; }
+        /* Grafico TradingView */
+        .chart-box { height: 280px; margin: 10px; border-radius: 20px; overflow: hidden; border: 1px solid #111; background: #000; }
 
-        /* Coin Selector */
-        .coin-wrap { display: flex; justify-content: space-around; padding: 15px; background: #050505; }
-        .coin-btn { background: #111; border: 1px solid #222; color: #666; padding: 8px 15px; border-radius: 10px; font-size: 0.75rem; font-weight: bold; }
-        .coin-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(255,204,0,0.1); }
+        /* Whale Radar (La Chicca) */
+        .whale-radar { background: var(--card); margin: 10px 15px; padding: 15px; border-radius: 15px; border-left: 4px solid var(--gold); height: 80px; overflow: hidden; }
+        .whale-title { font-size: 0.6rem; color: #555; text-transform: uppercase; margin-bottom: 5px; display: flex; justify-content: space-between; }
+        .whale-log { font-family: monospace; font-size: 0.7rem; color: #00ff41; line-height: 1.4; }
 
-        /* Main Display */
-        .display { padding: 25px 20px; text-align: center; }
-        #price { font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
-        #change { font-weight: bold; margin-top: 5px; font-size: 1.2rem; }
+        /* Portfolio Tool */
+        .tool-box { background: var(--card); margin: 15px; padding: 15px; border-radius: 15px; border: 1px solid #111; display: flex; justify-content: space-between; align-items: center; }
+        .t-input { background: #000; border: 1px solid #222; color: var(--gold); padding: 10px; border-radius: 8px; width: 45%; font-weight: bold; font-size: 1rem; }
 
-        .chart-box { height: 300px; margin: 10px; border-radius: 20px; overflow: hidden; border: 1px solid #1a1a1a; }
-
-        /* Nuova Funzione: Portfolio Calculator */
-        .tool-box { background: var(--card); margin: 15px; padding: 20px; border-radius: 20px; border: 1px solid #1a1a1a; }
-        .tool-label { font-size: 0.65rem; color: #555; text-transform: uppercase; margin-bottom: 10px; }
-        .tool-input-row { display: flex; gap: 10px; align-items: center; }
-        .t-input { background: #000; border: 1px solid #333; color: var(--gold); padding: 12px; border-radius: 10px; width: 60%; font-weight: bold; }
-        .t-result { width: 40%; font-size: 1.1rem; font-weight: 900; text-align: right; }
-
-        /* Tasto Azione Finale */
-        .btn-supreme { display: block; width: calc(100% - 40px); margin: 25px 20px; padding: 22px; background: linear-gradient(45deg, var(--gold), #ffaa00); color: black; border: none; border-radius: 20px; font-weight: 900; text-transform: uppercase; font-size: 1.1rem; box-shadow: 0 10px 30px rgba(255,204,0,0.2); animation: pulse 2s infinite; cursor: pointer; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        /* Tasto Oro Elite */
+        .btn-trade { display: block; width: calc(100% - 30px); margin: 20px 15px; padding: 22px; background: linear-gradient(45deg, var(--gold), #ffaa00); color: black; border: none; border-radius: 20px; font-weight: 900; text-transform: uppercase; font-size: 1.1rem; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
+    <div class="ticker-wrap">
+        <div class="ticker-move" id="news">IN ATTESA DI NEWS DAI MERCATI GLOBALI... +++ BIRRA AI QUANTUM ENGINE ATTIVO +++</div>
+    </div>
+
     <div class="navbar">
         <div class="nav-logo">
-            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-small" onerror="this.src='https://via.placeholder.com/35/ffcc00/000000?text=G'">
-            <span>QUANTUM SUPREME</span>
+            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img" alt="G" onerror="this.src='https://via.placeholder.com/35/ffcc00/000000?text=G'">
+            <span>BIRRA AI ELITE</span>
         </div>
-        <div class="dropdown">
-            <button onclick="toggleMenu()" class="dropbtn">MENU ☰</button>
-            <div id="myDropdown" class="dropdown-content">
-                <a href="#" onclick="alert('Versione 11.0.4 - 2026')">Info Sistema</a>
-                <a href="#" onclick="window.location.reload()">Aggiorna Dati</a>
-                <a href="https://www.binance.com/it/markets">Mercati Live</a>
-                <a href="#" style="color:var(--red)" onclick="toggleMenu()">Chiudi</a>
-            </div>
-        </div>
+        <button class="menu-btn" onclick="switchAsset()">SWITCH ASSET</button>
     </div>
 
-    <div class="coin-wrap">
-        <div class="coin-btn active" onclick="switchAsset('BTCUSDT', this)">BITCOIN</div>
-        <div class="coin-btn" onclick="switchAsset('ETHUSDT', this)">ETHEREUM</div>
-        <div class="coin-btn" onclick="switchAsset('SOLUSDT', this)">SOLANA</div>
-    </div>
-
-    <div class="display">
+    <div class="price-section">
         <div id="price">$ --.---</div>
-        <div id="change">0.00%</div>
+        <div id="perc" style="font-weight: bold; margin-top: 5px; font-size: 1.1rem;">0.00%</div>
     </div>
 
     <div class="chart-box">
         <div id="tv_chart" style="height: 100%;"></div>
     </div>
 
-    <div class="tool-box">
-        <div class="tool-label">Calcolatore Portafoglio (Inserisci quantità)</div>
-        <div class="tool-input-row">
-            <input type="number" id="amount" class="t-input" value="0.5" oninput="calcValue()">
-            <div id="total-val" class="t-result">$ 0.00</div>
-        </div>
+    <div class="whale-radar">
+        <div class="whale-title"><span>Whale Radar Active</span><span style="color:red">● LIVE</span></div>
+        <div id="whale-log" class="whale-log">> Scansione blockchain...</div>
     </div>
 
-    <button class="btn-supreme" onclick="openEliteMarket()">⚡ ESEGUI ORDINE ELITE</button>
+    <div class="tool-box">
+        <input type="number" id="qty" class="t-input" value="1" oninput="updateTotal()">
+        <div id="res" style="font-weight: 900; font-size: 1.2rem; color: var(--gold);">$ 0.00</div>
+    </div>
+
+    <button class="btn-trade" onclick="openBroker()">⚡ OPERA ORA</button>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
-        let currentCoin = 'BTCUSDT';
-        let currentPrice = 0;
+        let currentS = 'BTCUSDT';
+        let lastP = 0;
+        const assets = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT'];
+        let assetIdx = 0;
 
-        function toggleMenu() {
-            document.getElementById("myDropdown").classList.toggle("show");
-        }
-
-        // Chiudi menu se clicchi fuori
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropbtn')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-
-        function loadTV(symbol) {
+        function loadChart(s) {
             new TradingView.widget({
-                "autosize": true, "symbol": "BINANCE:" + symbol, "interval": "60", "timezone": "Etc/UTC",
-                "theme": "dark", "style": "1", "locale": "it", "enable_publishing": false,
-                "hide_top_toolbar": true, "container_id": "tv_chart"
+                "autosize": true, "symbol": "BINANCE:" + s, "interval": "60", "theme": "dark",
+                "style": "1", "locale": "it", "hide_top_toolbar": true, "container_id": "tv_chart"
             });
         }
 
-        function switchAsset(symbol, btn) {
-            currentCoin = symbol;
-            document.querySelectorAll('.coin-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            loadTV(symbol);
-            updatePrice();
+        function switchAsset() {
+            assetIdx = (assetIdx + 1) % assets.length;
+            currentS = assets[assetIdx];
+            loadChart(currentS);
+            update();
         }
 
-        async function updatePrice() {
+        async function update() {
             try {
-                const r = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${currentCoin}`);
+                const r = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${currentS}`);
                 const d = await r.json();
-                currentPrice = parseFloat(d.lastPrice);
+                lastP = parseFloat(d.lastPrice);
                 const perc = parseFloat(d.priceChangePercent);
-
-                document.getElementById('price').innerText = "$" + currentPrice.toLocaleString();
-                const cEl = document.getElementById('change');
+                
+                const pEl = document.getElementById('price');
+                pEl.innerText = "$" + lastP.toLocaleString();
+                pEl.style.textShadow = perc >= 0 ? "0 0 20px rgba(0,255,65,0.4)" : "0 0 20px rgba(255,49,49,0.4)";
+                
+                const cEl = document.getElementById('perc');
                 cEl.innerText = (perc >= 0 ? '+' : '') + perc.toFixed(2) + "%";
-                cEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
-                calcValue();
-            } catch (e) { console.log("API error"); }
+                cEl.style.color = perc >= 0 ? var(--green) : var(--red);
+                updateTotal();
+            } catch (e) {}
         }
 
-        function calcValue() {
-            const qty = document.getElementById('amount').value;
-            const total = qty * currentPrice;
-            document.getElementById('total-val').innerText = "$" + total.toLocaleString(undefined, {maximumFractionDigits: 2});
-        }
-
-        function openEliteMarket() {
-            const url = "https://www.binance.com/it/register?ref=TUO_CODICE";
+        async function fetchNews() {
             try {
-                let w = window.open(url, '_blank');
-                if(!w || w.closed) { window.location.href = url; }
-            } catch(e) { window.location.assign(url); }
+                const r = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=IT');
+                const d = await r.json();
+                document.getElementById('news').innerText = d.Data.slice(0, 10).map(n => n.title.toUpperCase()).join('  +++  ') + " +++ ";
+            } catch (e) {}
         }
 
-        loadTV(currentCoin);
-        updatePrice();
-        setInterval(updatePrice, 10000);
+        function whaleRadar() {
+            const logs = [
+                "> Whale detected: 450 BTC moved to Binance",
+                "> Massive buy order filled at $67,100",
+                "> Whale alert: 12,000 ETH withdrawn from Kraken",
+                "> Liquidation spike: $1.2M in short positions",
+                "> Institutional wallet active: Grayscale"
+            ];
+            const logEl = document.getElementById('whale-log');
+            logEl.innerHTML = "> " + logs[Math.floor(Math.random()*logs.length)] + "<br>" + logEl.innerHTML.split('<br>')[0];
+        }
+
+        function updateTotal() {
+            const q = document.getElementById('qty').value;
+            document.getElementById('res').innerText = "$" + (q * lastP).toLocaleString(undefined, {maximumFractionDigits: 2});
+        }
+
+        function openBroker() {
+            window.open("https://www.binance.com", '_blank', 'location=yes');
+        }
+
+        loadChart(currentS);
+        update();
+        fetchNews();
+        setInterval(update, 20000); 
+        setInterval(whaleRadar, 8000); // La "chicca" si aggiorna ogni 8 secondi
+        setInterval(fetchNews, 600000);
     </script>
 </body>
 </html>
