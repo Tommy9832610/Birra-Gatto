@@ -3,123 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - PRO TERMINAL</title>
+    <title>BIRRA AI - QUANTUM INTEL</title>
     <style>
-        :root { --gold: #ffcc00; --bg: #000000; --card-bg: #0a0a0a; --green: #00ff41; --red: #ff3131; }
-        body { background: var(--bg); color: white; font-family: 'Inter', -apple-system, sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+        :root { --gold: #ffcc00; --bg: #000000; --card: #0d0d0d; --green: #00ff41; --red: #ff3131; --blue: #00d4ff; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
         
-        /* Header Professionale */
-        .app-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #1a1a1a; background: linear-gradient(180deg, rgba(255,204,0,0.05) 0%, transparent 100%); }
-        .logo-main { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(255,204,0,0.2); object-fit: cover; transition: 0.5s; }
-        .logo-main:active { transform: rotate(360deg); }
+        .header { padding: 25px; text-align: center; border-bottom: 1px solid #1a1a1a; }
+        .logo { width: 85px; height: 85px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 20px rgba(255,204,0,0.3); object-fit: cover; }
 
-        /* Monitor Prezzo Real-Time */
-        .price-monitor { padding: 25px; text-align: center; }
-        .ticker-label { font-size: 0.8rem; color: #666; letter-spacing: 3px; text-transform: uppercase; }
-        #btc-price { font-size: 3rem; font-weight: 800; margin: 10px 0; font-variant-numeric: tabular-nums; }
-        
+        /* News Ticker */
+        .news-ticker { background: #111; padding: 10px; font-size: 0.75rem; border-bottom: 1px solid var(--gold); white-space: nowrap; overflow: hidden; }
+        .news-scroll { display: inline-block; animation: scroll 20s linear infinite; color: var(--gold); }
+        @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
         /* Dashboard Grid */
-        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px; }
-        .pro-card { background: var(--card-bg); border: 1px solid #1a1a1a; padding: 20px; border-radius: 20px; transition: 0.3s; }
-        .pro-card:active { border-color: var(--gold); }
-        .label { font-size: 0.7rem; color: #555; font-weight: bold; text-transform: uppercase; }
-        .val { font-size: 1.2rem; margin-top: 8px; font-weight: 600; }
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
+        .card { background: var(--card); border: 1px solid #1a1a1a; padding: 15px; border-radius: 18px; }
+        .label { font-size: 0.65rem; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+        .val { font-size: 1.1rem; font-weight: bold; margin-top: 5px; }
 
-        /* Signal Engine */
-        .signal-container { margin: 25px 20px; padding: 25px; border-radius: 24px; background: #0d0d0d; border: 1px solid #1a1a1a; position: relative; overflow: hidden; }
-        .signal-status { font-size: 1.4rem; font-weight: 900; letter-spacing: 1px; }
-        .glow-dot { height: 8px; width: 8px; background: var(--green); border-radius: 50%; display: inline-block; margin-right: 10px; box-shadow: 0 0 10px var(--green); }
+        /* Sentiment Gauge */
+        .sentiment-container { margin: 0 15px; padding: 20px; background: #080808; border-radius: 20px; border: 1px solid #222; text-align: center; }
+        .gauge-bar { height: 10px; width: 100%; background: #222; border-radius: 5px; margin: 15px 0; overflow: hidden; }
+        #gauge-fill { height: 100%; width: 50%; background: linear-gradient(90deg, var(--red), var(--gold), var(--green)); transition: 1s; }
 
-        /* Footer e Disclaimer */
-        .footer-info { padding: 30px 20px; font-size: 0.65rem; color: #333; text-align: center; line-height: 1.5; }
-        .btn-action { background: var(--gold); color: black; border: none; padding: 20px; border-radius: 18px; width: calc(100% - 40px); margin: 0 20px; font-weight: 800; font-size: 1rem; text-transform: uppercase; cursor: pointer; }
+        /* Whale Alert Log */
+        .whale-log { margin: 15px; height: 100px; background: #000; border: 1px solid #1a1a1a; border-radius: 12px; padding: 10px; font-family: monospace; font-size: 0.7rem; overflow-y: hidden; }
+        .whale-entry { color: var(--blue); margin-bottom: 5px; }
+
+        /* Action Button */
+        .btn-gold { background: var(--gold); color: #000; border: none; padding: 18px; border-radius: 15px; width: calc(100% - 30px); margin: 15px; font-weight: 800; text-transform: uppercase; cursor: pointer; font-size: 1rem; }
     </style>
 </head>
 <body>
 
-    <div class="app-header">
-        <img src="https://raw.githubusercontent.com/Tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-main" alt="Birra AI">
-        <div style="margin-top:15px; font-size: 0.7rem; color: var(--gold); letter-spacing: 4px;">SYSTEM OPERATIONAL</div>
+    <div class="news-ticker">
+        <div class="news-scroll" id="news-text">CARICAMENTO NEWS... ++ BITCOIN ETF FLUXES INCREASE ++ FED RATES STABLE ++ ELON MUSK TWEETS ABOUT DOGE ++</div>
     </div>
 
-    <div class="price-monitor">
-        <div class="ticker-label">Bitcoin / USDT (Binance Live)</div>
-        <div id="btc-price">------</div>
-        <div id="price-change" style="font-size: 1rem; font-weight: bold;">--%</div>
+    <div class="header">
+        <img src="https://raw.githubusercontent.com/Tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo">
+        <div style="color: var(--gold); font-size: 0.8rem; margin-top: 10px; letter-spacing: 2px; font-weight: bold;">BIRRA AI QUANTUM INTEL</div>
     </div>
 
-    <div class="dash-grid">
-        <div class="pro-card">
-            <div class="label">Volatility</div>
-            <div id="market-vol" class="val">LOW</div>
+    <div class="main-grid">
+        <div class="card">
+            <div class="label">Bitcoin Price</div>
+            <div id="btc-price" class="val">---</div>
         </div>
-        <div class="pro-card">
-            <div class="label">AI Sentiment</div>
-            <div id="sentiment" class="val" style="color: var(--gold);">NEUTRAL</div>
+        <div class="card">
+            <div class="label">24h Volatility</div>
+            <div id="vol-val" class="val" style="color: var(--green);">LOW</div>
         </div>
     </div>
 
-    <div class="signal-container" id="signal-box">
-        <div class="label" style="margin-bottom: 10px;">Quantum Signal Analysis</div>
-        <div class="signal-status"><span class="glow-dot" id="dot"></span><span id="ai-verdict">SCANNING...</span></div>
+    <div class="sentiment-container">
+        <div class="label">Market Sentiment (Fear & Greed)</div>
+        <div id="gauge-text" style="font-size: 1.5rem; font-weight: 900; margin-top: 5px;">NEUTRAL</div>
+        <div class="gauge-bar"><div id="gauge-fill"></div></div>
     </div>
 
-    <button class="btn-action" onclick="window.open('https://www.binance.com', '_blank')">Accedi al Mercato Reale</button>
-
-    <div class="footer-info">
-        BIRRA AI PRO v4.2 © 2026<br>
-        Dati finanziari forniti da protocolli WebSocket.<br>
-        Le criptovalute sono asset ad alto rischio. Fai trading con prudenza.
+    <div class="whale-log" id="whale-alert">
+        <div class="whale-entry">> Inizializzazione Whale Radar...</div>
     </div>
+
+    <div style="padding: 0 15px;">
+        <div class="card" style="text-align: center;">
+            <div class="label">Il tuo obiettivo Profitto ($)</div>
+            <input type="number" id="target" value="100000" style="background:none; border:none; color:var(--gold); font-size: 1.5rem; font-weight: bold; text-align: center; width: 100%;">
+            <div id="target-result" style="font-size: 0.7rem; color: #555; margin-top: 5px;">BTC deve crescere del 45%</div>
+        </div>
+    </div>
+
+    <button class="btn-gold" onclick="window.open('https://www.binance.com')">Opera sui Mercati</button>
 
     <script>
-        let lastPrice = 0;
-        let btcPriceElement = document.getElementById('btc-price');
-        let changeElement = document.getElementById('price-change');
+        async function updateMarket() {
+            try {
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+                const data = await res.json();
+                const price = data.bitcoin.usd;
+                const change = data.bitcoin.usd_24h_change;
 
-        // Connessione WebSocket Reale a Binance
-        const ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');
+                document.getElementById('btc-price').innerText = "$" + price.toLocaleString();
+                
+                // Fear & Greed Simulation logic
+                let fearGreed = 50 + (change * 2);
+                if(fearGreed > 100) fearGreed = 95;
+                if(fearGreed < 0) fearGreed = 5;
+                
+                const fill = document.getElementById('gauge-fill');
+                const text = document.getElementById('gauge-text');
+                fill.style.width = fearGreed + "%";
+                
+                if(fearGreed > 60) { text.innerText = "GREED"; text.style.color = "#00ff41"; }
+                else if(fearGreed < 40) { text.innerText = "FEAR"; text.style.color = "#ff3131"; }
+                else { text.innerText = "NEUTRAL"; text.style.color = "#ffcc00"; }
 
-        ws.onmessage = (event) => {
-            let stockObject = JSON.parse(event.data);
-            let price = parseFloat(stockObject.c).toFixed(2);
-            let change = parseFloat(stockObject.P).toFixed(2);
-
-            // Colore del prezzo in base al movimento
-            btcPriceElement.style.color = price > lastPrice ? '#00ff41' : '#ff3131';
-            btcPriceElement.innerText = '$' + parseFloat(price).toLocaleString();
-            
-            changeElement.innerText = (change >= 0 ? '+' : '') + change + '%';
-            changeElement.style.color = change >= 0 ? '#00ff41' : '#ff3131';
-
-            lastPrice = price;
-
-            // Logica AI Segnale Reale
-            updateAI(change, stockObject.v);
-        };
-
-        function updateAI(change, volume) {
-            const verdict = document.getElementById('ai-verdict');
-            const dot = document.getElementById('dot');
-            const sentiment = document.getElementById('sentiment');
-            
-            if (change > 0.5) {
-                verdict.innerText = "STRONGBUY";
-                verdict.style.color = "#00ff41";
-                dot.style.background = "#00ff41";
-                sentiment.innerText = "BULLISH";
-            } else if (change < -0.5) {
-                verdict.innerText = "AVOID MARKET";
-                verdict.style.color = "#ff3131";
-                dot.style.background = "#ff3131";
-                sentiment.innerText = "BEARISH";
-            } else {
-                verdict.innerText = "WAITING / SIDELINES";
-                verdict.style.color = "#ffcc00";
-                dot.style.background = "#ffcc00";
-                sentiment.innerText = "NEUTRAL";
-            }
+                // Whale Alert Simulation
+                if(Math.random() > 0.7) {
+                    const whaleLog = document.getElementById('whale-alert');
+                    const amount = (Math.random() * 500 + 100).toFixed(0);
+                    whaleLog.innerHTML = `<div class="whale-entry">> WHALE ALERT: ${amount} BTC trasferiti da Wallet Ignoto a Binance</div>` + whaleLog.innerHTML;
+                }
+            } catch (e) { console.log("Error"); }
         }
+
+        setInterval(updateMarket, 10000);
+        updateMarket();
     </script>
 </body>
 </html>
