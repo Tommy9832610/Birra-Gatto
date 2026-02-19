@@ -6,34 +6,26 @@
     <title>NEURAL TRADER - BIRRA AI</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --neon-gold: #ffcc00; --bg-black: #050505; --neon-green: #00ff41; --neon-red: #ff3131; }
+        :root { --neon-gold: #ffcc00; --bg-black: #050505; --neon-green: #00ff41; }
         body { background-color: var(--bg-black); color: white; font-family: sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        
         .header { padding: 20px; border-bottom: 2px solid var(--neon-gold); text-align: center; background: rgba(255, 204, 0, 0.05); }
         .logo { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--neon-gold); box-shadow: 0 0 15px var(--neon-gold); object-fit: cover; margin-bottom: 10px; }
         .price-ticker { font-size: 1.5rem; color: var(--neon-gold); font-weight: bold; }
-        
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
         .stat-card { background: #111; border: 1px solid #333; padding: 15px; border-radius: 10px; }
         .stat-label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
         .stat-value { font-size: 1.2rem; color: white; margin-top: 5px; font-weight: bold; }
-
         .chart-section { flex-grow: 1; padding: 10px; position: relative; min-height: 200px; }
-        
-        #console-log { height: 100px; background: #000; border: 1px solid #222; margin: 0 15px 15px; padding: 10px; font-size: 0.75rem; color: var(--neon-green); overflow-y: auto; border-radius: 5px; text-align: left; }
-
+        #console-log { height: 120px; background: #000; border: 1px solid #222; margin: 0 15px 15px; padding: 10px; font-size: 0.75rem; color: var(--neon-green); overflow-y: auto; border-radius: 5px; text-align: left; }
         .controls { padding: 15px; background: #0a0a0a; border-top: 1px solid #333; }
         .btn-trade { background: var(--neon-gold); color: black; border: none; padding: 18px; border-radius: 12px; width: 100%; font-weight: bold; font-size: 1rem; text-transform: uppercase; cursor: pointer; }
     </style>
 </head>
 <body>
-
     <div class="header">
-        <img src="https://raw.githubusercontent.com/Tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" 
-             class="logo" alt="Logo" onerror="console.log('Errore caricamento logo');">
-        <div id="btc-price" class="price-ticker">CARICAMENTO PREZZO...</div>
+        <img src="https://raw.githubusercontent.com/Tommy9832610/Birra-Gatto/main/7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo" alt="Logo Birra AI">
+        <div id="btc-price" class="price-ticker">BTC/USD: CONNECTING...</div>
     </div>
-
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-label">BILANCIO AI</div>
@@ -44,19 +36,9 @@
             <div id="profit" class="stat-value" style="color: var(--neon-green);">+0.00%</div>
         </div>
     </div>
-
-    <div class="chart-section">
-        <canvas id="liveChart"></canvas>
-    </div>
-
-    <div id="console-log">
-        > SISTEMA NEURALE ATTIVO...<br>
-        > CONNESSIONE AI MERCATI ESTERNI...
-    </div>
-
-    <div class="controls">
-        <button class="btn-trade" onclick="triggerTrade()">⚡ AVVIA TRADING AGGRESSIVO</button>
-    </div>
+    <div class="chart-section"><canvas id="liveChart"></canvas></div>
+    <div id="console-log">> SISTEMA NEURALE ATTIVO...<br>> ATTESA DATI MERCATO...</div>
+    <div class="controls"><button class="btn-trade" onclick="triggerTrade()">⚡ AVVIA TRADING AGGRESSIVO</button></div>
 
     <script>
         let wallet = parseFloat(localStorage.getItem('btc_wallet')) || 0;
@@ -81,14 +63,14 @@
                 btcPrice = data.bitcoin.usd;
                 document.getElementById('btc-price').innerText = `BTC/USD: $${btcPrice.toLocaleString()}`;
                 updateChart(btcPrice);
-            } catch (e) { log("ERRORE DATI MERCATO", "#ff3131"); }
+            } catch (e) { log("ERRORE DATI", "#ff3131"); }
         }
 
         function triggerTrade() {
             if (btcPrice === 0) return;
             const gain = (Math.random() * 0.0001).toFixed(8);
             wallet += parseFloat(gain);
-            log(`ESECUZIONE: ACQUISTO +${gain} BTC`, '#00ff41');
+            log(`ESECUZIONE: +${gain} BTC`, '#00ff41');
             updateDisplay();
         }
 
@@ -102,7 +84,7 @@
         function updateChart(price) {
             chart.data.labels.push("");
             chart.data.datasets[0].data.push(price);
-            if (chart.data.labels.length > 20) { chart.data.labels.shift(); chart.data.datasets[0].data.shift(); }
+            if (chart.data.labels.length > 15) { chart.data.labels.shift(); chart.data.datasets[0].data.shift(); }
             chart.update();
         }
 
