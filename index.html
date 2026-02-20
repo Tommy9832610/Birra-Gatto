@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - PRO</title>
+    <title>BIRRA AI - TERMINAL</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
@@ -11,7 +11,7 @@
     <style>
         :root { --gold: #ffcc00; --bg: #000; --card: #0a0a0a; --green: #00ff41; --red: #ff3131; }
         
-        /* STILE SPLASH SCREEN */
+        /* SPLASH SCREEN */
         #splash-screen {
             position: fixed;
             top: 0; left: 0;
@@ -25,35 +25,35 @@
             transition: opacity 0.8s ease, visibility 0.8s;
         }
         .splash-logo {
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            border: 2px solid var(--gold);
             margin-bottom: 20px;
             animation: pulse-gold 2s infinite;
+            object-fit: cover;
         }
         .splash-title {
             color: var(--gold);
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 900;
             letter-spacing: 5px;
             text-transform: uppercase;
         }
         @keyframes pulse-gold {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.4); }
-            70% { transform: scale(1.05); box-shadow: 0 0 30px 10px rgba(255, 204, 0, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 204, 0, 0); }
+            0% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(255,204,0,0.4)); }
+            70% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(255,204,0,0.6)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(255,204,0,0.4)); }
         }
 
-        /* RESTO DELLO STILE APP */
+        /* STILE APP */
         body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
         .ticker-wrap { height: 30px; background: #111; border-bottom: 1px solid var(--gold); overflow: hidden; display: flex; align-items: center; }
         .ticker-move { white-space: nowrap; animation: scroll 60s linear infinite; color: var(--gold); font-size: 0.7rem; font-weight: bold; }
         @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #1a1a1a; background: #000; position: sticky; top: 0; z-index: 1000; }
-        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--gold); letter-spacing: 2px; font-size: 0.8rem; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--gold); font-size: 0.8rem; }
         .logo-img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--gold); object-fit: cover; }
-        .coin-select { background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 5px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; }
+        .coin-select { background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 5px; border-radius: 8px; font-size: 0.7rem; }
         .price-zone { padding: 25px 20px; text-align: center; }
         #main-price { font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -2px; }
         #main-perc { font-weight: bold; font-size: 1.2rem; margin-top: 5px; }
@@ -66,17 +66,17 @@
 <body>
 
     <div id="splash-screen">
-        <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="splash-logo" alt="Logo">
+        <img src="logo.png" class="splash-logo" alt="Logo">
         <div class="splash-title">Birra AI</div>
     </div>
 
     <div class="ticker-wrap">
-        <div class="ticker-move">BIRRA AI - REAL-TIME INTELLIGENCE +++ SCANNING BLOCKCHAIN +++</div>
+        <div class="ticker-move">BIRRA AI - REAL-TIME DATA +++ SCANNING BINANCE LIQUIDITY +++</div>
     </div>
 
     <div class="navbar">
         <div class="logo-area">
-            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img">
+            <img src="logo.png" class="logo-img">
             <span>BIRRA AI</span>
         </div>
         <select class="coin-select" onchange="changeAsset(this.value)">
@@ -96,19 +96,22 @@
     </div>
 
     <div class="whale-box">
-        <div id="whale-msg">> Scansione ordini...</div>
+        <div id="whale-msg">> In attesa di ordini...</div>
     </div>
 
     <button class="btn-gold" onclick="triggerHyperBypass()">⚡ OPERA ORA</button>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
-        // RIMOZIONE SPLASH SCREEN DOPO 2.5 SECONDI
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const ss = document.getElementById('splash-screen');
                 ss.style.opacity = '0';
-                ss.style.visibility = 'hidden';
+                setTimeout(() => ss.style.visibility = 'hidden', 800);
             }, 2500);
         });
 
@@ -129,8 +132,9 @@
                 lastPrice = parseFloat(d.lastPrice);
                 document.getElementById('main-price').innerText = "$" + lastPrice.toLocaleString();
                 const perc = parseFloat(d.priceChangePercent);
-                document.getElementById('main-perc').innerText = (perc >= 0 ? '+' : '') + perc + "%";
-                document.getElementById('main-perc').style.color = perc >= 0 ? '#00ff41' : '#ff3131';
+                const pEl = document.getElementById('main-perc');
+                pEl.innerText = (perc >= 0 ? '+' : '') + perc + "%";
+                pEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
             } catch (e) {}
         }
 
@@ -140,11 +144,11 @@
                 const trades = await r.json();
                 const bigTrade = trades.reverse().find(t => (parseFloat(t.qty) * lastPrice) > 15000);
                 if (bigTrade) {
-                    const val = (parseFloat(bigTrade.qty) * lastPrice).toLocaleString();
+                    const val = (parseFloat(bigTrade.qty) * lastPrice).toLocaleString(undefined, {maximumFractionDigits: 0});
                     const type = bigTrade.isBuyerMaker ? "VENDITA" : "ACQUISTO";
                     const msg = document.getElementById('whale-msg');
                     msg.style.color = bigTrade.isBuyerMaker ? "var(--red)" : "var(--green)";
-                    msg.innerHTML = `> [ALERT] ${type}: $${val} su ${currentAsset.replace('USDT','')}`;
+                    msg.innerHTML = `> [ALERT] ${type}: rilevati $${val} su ${currentAsset.replace('USDT','')}`;
                 }
             } catch (e) {}
         }
