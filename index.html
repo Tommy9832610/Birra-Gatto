@@ -3,137 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birra-Gatto OS v6.0</title>
+    <title>Birra-Gatto Hub Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #050505; color: #00ff41; font-family: 'Courier New', monospace; margin: 0; padding: 15px; display: flex; justify-content: center; }
-        .os-shell { width: 100%; max-width: 600px; background: #000; border: 2px solid #333; border-radius: 15px; padding: 20px; box-shadow: 0 0 40px rgba(0, 255, 65, 0.1); }
-        
-        .header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid #222; padding-bottom: 20px; }
-        .main-logo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #f3ba2f; margin-bottom: 10px; }
-
-        /* MACRO TASTI (I CONTENITORI) */
-        .master-btn { 
-            width: 100%; padding: 25px; margin-bottom: 20px; border-radius: 12px; cursor: pointer;
-            transition: 0.4s; text-align: center; font-weight: bold; font-size: 18px; border: 2px solid transparent;
+        :root {
+            --gold: #f3ba2f;
+            --blue: #4669ff;
+            --bg: #0d0d0d;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
         }
-        
-        /* Sezione Cripto (Gialla) */
-        .master-crypto { background: rgba(243, 186, 47, 0.1); border-color: #f3ba2f; color: #f3ba2f; }
-        .master-crypto:hover { background: rgba(243, 186, 47, 0.2); }
-        
-        /* Sezione VPN (Blu) */
-        .master-vpn { background: rgba(70, 105, 255, 0.1); border-color: #4669ff; color: #4669ff; }
-        .master-vpn:hover { background: rgba(70, 105, 255, 0.2); }
 
-        /* CONTENUTI NASCOSTI (I TOOLS) */
-        .tool-content { display: none; padding: 20px; background: #0a0a0a; border: 1px solid #333; border-radius: 10px; margin-top: -15px; margin-bottom: 20px; animation: slideDown 0.4s ease-out; }
-        
-        /* TASTI DI USCITA (BINANCE / NORD) */
-        .final-btn { display: block; padding: 15px; margin-top: 20px; text-decoration: none; text-align: center; font-weight: bold; border-radius: 8px; text-transform: uppercase; }
-        .btn-binance { background: #f3ba2f; color: #000; }
-        .btn-nord { background: #4669ff; color: #fff; }
+        body {
+            background-color: var(--bg);
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .active { display: block !important; }
-        .price-mini { font-size: 14px; color: #fff; margin-top: 5px; }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: linear-gradient(145deg, #161616, #0a0a0a);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .main-logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            padding: 3px;
+            background: var(--bg);
+            box-shadow: 0 0 20px rgba(243, 186, 47, 0.2);
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 10px 0;
+            letter-spacing: -0.5px;
+            color: #fff;
+        }
+
+        .status-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* MODULI MASTER */
+        .master-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .master-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .card-trigger {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .card-title {
+            flex-grow: 1;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        /* CONTENUTI ESPANDIBILI */
+        .content-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .panel-inner {
+            padding: 0 20px 20px 20px;
+        }
+
+        /* TOOLS INTERNI */
+        .tool-data {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        /* BOTTONI AFFILIAZIONE */
+        .action-btn {
+            display: block;
+            text-decoration: none;
+            padding: 14px;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            transition: all 0.2s;
+        }
+
+        .btn-gold { 
+            background: linear-gradient(to bottom, #f3ba2f, #d4a017); 
+            color: #000; 
+        }
+        .btn-blue { 
+            background: linear-gradient(to bottom, #4669ff, #2a48d1); 
+            color: #fff; 
+        }
+        .action-btn:active { transform: scale(0.97); }
+
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            color: #333;
+            margin-top: 40px;
+        }
+
+        /* ANIMAZIONI */
+        .active .content-panel { max-height: 600px; }
+        .exposed { color: #ff4444; font-weight: bold; }
+        .protected { color: #00ff41; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="os-shell">
+<div class="container">
     <div class="header">
-        <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/80'">
-        <div style="font-size: 22px; letter-spacing: 3px;">BIRRA-GATTO HUB</div>
-        <div style="font-size: 10px; color: #444; margin-top: 5px;">STABLE RELEASE | REF_ID: 1218709503</div>
-    </div>
-
-    <div class="master-btn master-crypto" onclick="toggle('crypto-tool')">
-        > ESEGUI_MODULO_CRIPTO
-        <div class="price-mini" id="btc-live">BTC: Loading...</div>
-    </div>
-    <div id="crypto-tool" class="tool-content">
-        <div style="font-size: 11px; color: #f3ba2f; margin-bottom: 15px;">ANALISI MERCATO IN CORSO...</div>
-        
-        <div style="height: 300px; border: 1px solid #333; margin-bottom: 15px;">
-            <div id="tv_chart" style="height: 100%;"></div>
-            <script src="https://s3.tradingview.com/tv.js"></script>
+        <div class="logo-wrapper">
+            <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/90'">
         </div>
-
-        <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="final-btn btn-binance">VAI SU BINANCE</a>
+        <h1>Birra-Gatto Hub</h1>
+        <div class="status-badge">STABLE RELEASE | REF_ID: 1218709503</div>
     </div>
 
-    <div class="master-btn master-vpn" onclick="toggle('vpn-tool')">
-        > ESEGUI_SCUDO_SHIELD
-        <div class="price-mini" id="ip-status">Verifica anonimato...</div>
-    </div>
-    <div id="vpn-tool" class="tool-content">
-        <div style="font-size: 11px; color: #4669ff; margin-bottom: 15px;">SCANSIONE RETE PUBBLICA...</div>
-        
-        <div id="user-data" style="font-size: 12px; line-height: 1.6; color: #fff;">
-            Rilevamento dati in corso...
+    <div class="master-card" id="card-crypto">
+        <div class="card-trigger" onclick="toggle('card-crypto')">
+            <div class="card-icon" style="background: rgba(243, 186, 47, 0.1); color: var(--gold);">₿</div>
+            <div class="card-title">Trading Terminal</div>
+            <div id="btc-price-mini" style="font-size: 12px; opacity: 0.6;">---</div>
         </div>
-        
-        <div id="sec-alert" style="color: #ff4444; font-weight: bold; font-size: 12px; margin-top: 15px;">
-            SISTEMA ESPOSTO: PROTEZIONE NECESSARIA
+        <div class="content-panel">
+            <div class="panel-inner">
+                <div id="tv_chart" style="height: 250px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);"></div>
+                <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="action-btn btn-gold">Apri Binance</a>
+            </div>
         </div>
-
-        <a href="https://nordvpn.com/it/" target="_blank" class="final-btn btn-nord">ATTIVA NORDVPN</a>
     </div>
 
-    <div style="text-align: center; font-size: 9px; color: #222; margin-top: 20px;">
-        © 2026 TOMMY9832610 - CRYPTO-SHIELD SYSTEM
+    <div class="master-card" id="card-vpn">
+        <div class="card-trigger" onclick="toggle('card-vpn')">
+            <div class="card-icon" style="background: rgba(70, 105, 255, 0.1); color: var(--blue);">🛡️</div>
+            <div class="card-title">Gatto-Shield VPN</div>
+            <div id="ip-mini" style="font-size: 12px; opacity: 0.6;">Check...</div>
+        </div>
+        <div class="content-panel">
+            <div class="panel-inner">
+                <div class="tool-data">
+                    <div id="user-info">Analisi rete in corso...</div>
+                    <div id="sec-status" class="exposed" style="margin-top:10px;">[!] SISTEMA ESPOSTO</div>
+                </div>
+                <a href="https://nordvpn.com/it/" target="_blank" class="action-btn btn-blue">Attiva Protezione</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        BUILT WITH ZERO CODING BACKGROUND<br>
+        © 2026 TOMMY9832610 SYSTEM
     </div>
 </div>
 
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script>
-    // Funzione per aprire/chiudere i moduli
     function toggle(id) {
-        const tool = document.getElementById(id);
-        const isActive = tool.classList.contains('active');
-        document.querySelectorAll('.tool-content').forEach(el => el.classList.remove('active'));
-        if (!isActive) {
-            tool.classList.add('active');
-            if(id === 'crypto-tool') loadChart();
+        const el = document.getElementById(id);
+        const wasActive = el.classList.contains('active');
+        document.querySelectorAll('.master-card').forEach(c => c.classList.remove('active'));
+        if(!wasActive) {
+            el.classList.add('active');
+            if(id === 'card-crypto') loadChart();
         }
     }
 
-    // Caricamento Grafico
     function loadChart() {
         new TradingView.widget({
             "autosize": true, "symbol": "BINANCE:BTCUSDT", "interval": "60", "theme": "dark",
-            "style": "1", "locale": "it", "container_id": "tv_chart", "allow_symbol_change": true
+            "style": "1", "locale": "it", "container_id": "tv_chart", "enable_publishing": false
         });
     }
 
-    // Prezzo BTC Live sul tasto giallo
-    async function getBTC() {
+    async function fetchData() {
         try {
-            const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
-            const d = await r.json();
-            document.getElementById('btc-live').innerText = "BTC: $" + parseFloat(d.price).toLocaleString();
-        } catch(e) {}
-    }
+            // BTC Price
+            const btcRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
+            const btcData = await btcRes.json();
+            document.getElementById('btc-price-mini').innerText = "$" + parseFloat(btcData.price).toLocaleString();
 
-    // Scanner IP sul tasto blu
-    async function scan() {
-        try {
-            const r = await fetch('https://ipapi.co/json/');
-            const d = await r.json();
-            document.getElementById('ip-status').innerText = "IP: " + d.ip;
-            document.getElementById('user-data').innerHTML = `
-                LOCALITÀ: <span style="color:#4669ff">${d.city}</span><br>
-                PROVIDER: <span style="color:#4669ff">${d.org}</span>
+            // IP Data
+            const ipRes = await fetch('https://ipapi.co/json/');
+            const ipData = await ipRes.json();
+            document.getElementById('ip-mini').innerText = ipData.ip;
+            document.getElementById('user-info').innerHTML = `
+                LOCALITÀ: ${ipData.city}<br>
+                PROVIDER: ${ipData.org}
             `;
-            if(d.org.toLowerCase().includes('vpn')) {
-                document.getElementById('sec-alert').innerText = "SCUDO ATTIVO - VPN RILEVATA";
-                document.getElementById('sec-alert').style.color = "#00ff41";
+            if(ipData.org.toLowerCase().includes('vpn')) {
+                const status = document.getElementById('sec-status');
+                status.innerText = "[✓] SISTEMA PROTETTO";
+                status.className = "protected";
             }
         } catch(e) {}
     }
 
-    setInterval(getBTC, 5000);
-    getBTC();
-    scan();
+    fetchData();
+    setInterval(fetchData, 10000);
 </script>
 
 </body>
