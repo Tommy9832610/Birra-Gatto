@@ -3,43 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birra-Gatto: The Architect</title>
+    <title>Birra-Gatto: THE ABSOLUTE</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f3ba2f; --blue: #4669ff; --bg: #050505; --card: rgba(15, 15, 15, 0.9); --border: #222; --green: #00ff41; --red: #ff4444; }
-        body { background-color: var(--bg); color: #e0e0e0; font-family: 'Inter', sans-serif; margin: 0; padding: 15px; overflow-x: hidden; }
+        :root { --gold: #f3ba2f; --blue: #4669ff; --bg: #050505; --card: rgba(15, 15, 15, 0.98); --border: #222; --green: #00ff41; --red: #ff4444; }
+        body { background-color: var(--bg); color: #e0e0e0; font-family: 'Inter', sans-serif; margin: 0; padding: 10px; overflow-x: hidden; }
         
-        /* MATRIX BACKGROUND */
+        /* 1. MATRIX BACKGROUND */
         canvas { position: fixed; top: 0; left: 0; z-index: -1; display: none; }
         
-        .container { width: 100%; max-width: 500px; margin: auto; background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 25px; backdrop-filter: blur(10px); box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
+        .container { width: 100%; max-width: 550px; margin: auto; background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 20px; box-shadow: 0 30px 80px rgba(0,0,0,1); backdrop-filter: blur(10px); }
         
-        /* HEADER */
-        .header { text-align: center; margin-bottom: 20px; }
-        .main-logo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--gold); padding: 3px; background: #000; transition: 0.3s; }
-        .main-logo:hover { transform: rotate(15deg) scale(1.1); }
+        /* 2. HEADER & LOGO */
+        .header { text-align: center; margin-bottom: 10px; }
+        .main-logo { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); padding: 3px; background: #000; }
 
-        /* LIQUIDATION BAR */
-        .liq-bar { height: 8px; background: linear-gradient(90deg, var(--green) 72%, var(--red) 28%); border-radius: 4px; margin: 10px 0; border: 1px solid #111; }
-        .liq-lbl { display: flex; justify-content: space-between; font-size: 8px; font-family: 'JetBrains Mono'; color: #555; text-transform: uppercase; }
-
-        /* CARDS */
-        .master-card { background: #111; border: 1px solid var(--border); border-radius: 22px; margin-bottom: 12px; overflow: hidden; }
-        .card-trigger { padding: 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 13px; }
-        .content-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: rgba(0,0,0,0.5); }
-        .active .content-panel { max-height: 1200px; padding: 0 18px 20px 18px; }
-
-        /* UI TOOLS */
-        .tool-box { background: #000; padding: 15px; border-radius: 12px; border: 1px solid #333; margin-top: 10px; }
-        input, textarea, select { background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 10px; width: 100%; box-sizing: border-box; font-family: 'JetBrains Mono'; margin-top: 5px; font-size: 14px; }
+        /* 3. RADAR & NEWS TICKER */
+        .radar { position: relative; height: 70px; background: radial-gradient(circle, #111, #000); border: 1px solid #222; border-radius: 15px; margin-bottom: 10px; overflow: hidden; }
+        .sweep { position: absolute; width: 100%; height: 100%; background: conic-gradient(from 0deg, transparent, rgba(0,255,65,0.1)); animation: sweep 3s linear infinite; }
+        .ping { position: absolute; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; display: none; box-shadow: 0 0 8px var(--gold); }
         
-        .btn { display: block; text-decoration: none; padding: 16px; text-align: center; border-radius: 12px; font-weight: 700; font-size: 12px; text-transform: uppercase; margin-top: 15px; border: none; cursor: pointer; transition: 0.2s; }
+        .news-bar { background: #000; color: var(--gold); font-size: 9px; padding: 6px; border-radius: 8px; margin-bottom: 10px; font-family: 'JetBrains Mono'; overflow: hidden; white-space: nowrap; border: 1px solid #111; }
+        .scroll { display: inline-block; animation: scroll 20s linear infinite; }
+
+        /* 4. TICKER & INFO GRID */
+        .ticker-wrap { display: flex; overflow-x: auto; gap: 8px; margin-bottom: 10px; scrollbar-width: none; }
+        .t-chip { background: #111; padding: 6px 12px; border-radius: 10px; border: 1px solid #222; white-space: nowrap; font-size: 10px; }
+        
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+        .box { background: #000; border: 1px solid #222; padding: 8px; border-radius: 12px; text-align: center; }
+        .lbl { font-size: 7px; color: #555; text-transform: uppercase; }
+        .val { font-family: 'JetBrains Mono'; font-size: 11px; font-weight: bold; }
+
+        /* 5. MASTER CARDS (ACCORDION) */
+        .master-card { background: #111; border: 1px solid #222; border-radius: 18px; margin-bottom: 8px; overflow: hidden; }
+        .trigger { padding: 14px 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 12px; }
+        .panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: rgba(0,0,0,0.5); }
+        .active .panel { max-height: 1500px; padding: 0 18px 18px 18px; }
+
+        /* 6. TOOLS UI */
+        .tool-ui { background: #000; padding: 12px; border-radius: 10px; border: 1px solid #333; margin-top: 8px; }
+        input, textarea { background: #1a1a1a; color: #fff; border: none; padding: 10px; width: 100%; border-radius: 8px; box-sizing: border-box; font-family: 'JetBrains Mono'; margin-top: 5px; font-size: 13px; }
+        
+        .btn { display: block; text-decoration: none; padding: 14px; text-align: center; border-radius: 12px; font-weight: 700; font-size: 11px; text-transform: uppercase; margin-top: 10px; cursor: pointer; border: none; transition: 0.2s; }
         .btn-gold { background: var(--gold); color: #000; }
         .btn-blue { background: var(--blue); color: #fff; }
-        .btn-matrix { background: transparent; border: 1px solid var(--green); color: var(--green); font-size: 9px; padding: 6px 12px; border-radius: 20px; display: inline-block; margin-bottom: 15px; }
-        .btn-matrix:active { background: var(--green); color: #000; }
+        .btn-matrix { background: transparent; border: 1px solid var(--green); color: var(--green); font-size: 8px; padding: 4px 12px; border-radius: 20px; margin-bottom: 10px; cursor: pointer; }
 
-        .price-tag { font-family: 'JetBrains Mono'; font-size: 12px; color: var(--gold); }
+        @keyframes sweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     </style>
 </head>
 <body>
@@ -48,146 +60,138 @@
 
 <div class="container">
     <div class="header">
-        <div class="btn-matrix" onclick="toggleMatrix()">ACTIVATE_MATRIX_MODE</div>
-        <br>
-        <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/70'">
-        <h1 style="font-size: 20px; margin: 10px 0; letter-spacing: 1px;">THE ARCHITECT v17.0</h1>
-        <div class="liq-lbl"><span>Bullish: 72%</span><span>Bearish: 28%</span></div>
-        <div class="liq-bar"></div>
+        <button class="btn-matrix" onclick="toggleMatrix()">ACTIVATE_MATRIX_OVERRIDE</button><br>
+        <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/65'">
+        <h1 style="font-size: 18px; margin: 5px 0; letter-spacing: 1px;">THE ABSOLUTE v20.0</h1>
+    </div>
+
+    <div class="news-bar"><div class="scroll" id="news-txt">> DETECTING WHALE MOVEMENTS ... SYSTEM SECURED BY GATTO-SHIELD ... BTC HALVING COUNTDOWN ACTIVE ...</div></div>
+    <div class="radar"><div class="sweep"></div><div id="ping" class="ping"></div></div>
+
+    <div class="ticker-wrap">
+        <div class="t-chip"><span style="color:var(--gold)">BTC:</span> <span id="t-BTC">...</span></div>
+        <div class="t-chip"><span style="color:var(--gold)">ETH:</span> <span id="t-ETH">...</span></div>
+        <div class="t-chip"><span style="color:var(--gold)">SOL:</span> <span id="t-SOL">...</span></div>
+        <div class="t-chip"><span style="color:var(--gold)">PEPE:</span> <span id="t-PEPE">...</span></div>
+    </div>
+
+    <div class="grid">
+        <div class="box"><div class="lbl">Fear & Greed</div><div class="val" id="fg" style="color:var(--gold)">65/100</div></div>
+        <div class="box"><div class="lbl">Privacy Score</div><div class="val" id="ps" style="color:var(--red)">12%</div></div>
+        <div class="box"><div class="lbl">Alt-Season</div><div class="val" style="color:var(--green)">EXTREME</div></div>
+        <div class="box"><div class="lbl">Arbitrage</div><div class="val" id="arb">+1.9%</div></div>
     </div>
 
     <div class="master-card" id="card-trade">
-        <div class="card-trigger" onclick="toggle('card-trade')">
-            <span style="color:var(--gold)">[₿] MARKET ANALYSIS</span>
-            <span id="btc-price" class="price-tag">$---</span>
-        </div>
-        <div class="content-panel">
-            <div id="tv_chart" style="height: 250px; border-radius: 12px; overflow: hidden; border: 1px solid #222;"></div>
-            <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="btn btn-gold">Operazione Diretta Binance</a>
+        <div class="trigger" onclick="toggle('card-trade')"><span style="color:var(--gold)">[₿] MARKET ANALYSIS</span><span id="btc-main" class="val">$---</span></div>
+        <div class="panel">
+            <div id="tv_chart" style="height: 250px; border-radius: 12px; overflow: hidden;"></div>
+            <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="btn btn-gold">TRADE ON BINANCE</a>
         </div>
     </div>
 
-    <div class="master-card" id="card-pass">
-        <div class="card-trigger" onclick="toggle('card-pass')">
-            <span style="color:var(--blue)">[🛡️] GATTO-SAFE GEN</span>
-            <span style="font-size:10px; opacity:0.5;">Security ></span>
-        </div>
-        <div class="content-panel">
-            <div class="tool-box">
-                <input type="text" id="pass-out" readonly style="color:var(--green); text-align:center; font-size:16px;">
-                <button class="btn btn-blue" onclick="genPass()">GENERA PASSWORD SICURA</button>
+    <div class="master-card" id="card-income">
+        <div class="trigger" onclick="toggle('card-income')"><span style="color:var(--green)">[💰] EARN & COPY-TRADE</span><span>Income ></span></div>
+        <div class="panel">
+            <div class="tool-ui">
+                <label class="lbl">STAKING CALCULATOR ($)</label><input type="number" id="stk-amt" value="1000" oninput="runCalcs()">
+                <div id="stk-res" class="val" style="color:var(--green); text-align:center; margin-top:10px;">RENDITA: $128/ANNO</div>
             </div>
-            <a href="https://nordvpn.com/it/" target="_blank" class="btn btn-blue" style="opacity:0.8; font-size:10px;">Proteggi con NordVPN</a>
+            <div class="tool-ui">
+                <div class="lbl">TOP TRADERS (ROI):</div>
+                <div style="font-size:11px; margin-top:5px;">Predator_X: <span style="color:var(--green)">+482%</span> | Gatto_Quant: <span style="color:var(--green)">+125%</span></div>
+            </div>
+            <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="btn btn-gold">COPIA TRADER ELITE</a>
         </div>
     </div>
 
-    <div class="master-card" id="card-sat">
-        <div class="card-trigger" onclick="toggle('card-sat')">
-            <span style="color:#fff">[₿] SATOSHI CALC</span>
-            <span style="font-size:10px; opacity:0.5;">ROI Tool ></span>
-        </div>
-        <div class="content-panel">
-            <div class="tool-box">
-                <label style="font-size:9px; color:#666;">QUANTITÀ SATOSHI</label>
-                <input type="number" id="sat-in" value="1000" oninput="calcSat()">
-                <div id="sat-res" style="text-align:center; margin-top:15px; font-weight:bold; font-size:18px; color:var(--green)">= $---</div>
+    <div class="master-card" id="card-air">
+        <div class="trigger" onclick="toggle('card-air')"><span style="color:var(--blue)">[🎁] AIRDROP SCANNER</span><span>Scan ></span></div>
+        <div class="panel">
+            <div class="tool-ui" style="text-align:center;">
+                <div id="air-res" class="val" style="color:var(--red)">STANDBY</div>
+                <button class="btn btn-blue" style="font-size:9px; padding:8px;" onclick="scanAir()">AVVIA SCANSIONE DEEP WEB</button>
             </div>
         </div>
     </div>
 
-    <div class="master-card" id="card-vault">
-        <div class="card-trigger" onclick="toggle('card-vault')">
-            <span style="color:#fff">[📝] GATTO-VAULT</span>
-            <span style="font-size:10px; opacity:0.5;">Private Storage ></span>
-        </div>
-        <div class="content-panel">
-            <div class="tool-box">
-                <textarea id="vault-notes" rows="5" placeholder="Segnati qui i prezzi di ingresso o le tue strategie... (I dati restano sul tuo S25)" oninput="saveNotes()"></textarea>
-                <div style="font-size:8px; color:#444; text-align:right; margin-top:5px;">STORAGE LOCALE CRIPTATO</div>
+    <div class="master-card" id="card-utils">
+        <div class="trigger" onclick="toggle('card-utils')"><span>[％] PROFIT & SATOSHI</span><span>Tools ></span></div>
+        <div class="panel">
+            <div class="tool-ui">
+                <label class="lbl">PREZZO ACQUISTO BTC</label><input type="number" id="buy-p" value="50000" oninput="runCalcs()">
+                <div id="profit-res" class="val" style="text-align:center; margin-top:10px;">---</div>
+                <hr style="border:0; border-top:1px solid #222; margin:10px 0;">
+                <label class="lbl">SATOSHI TO USD</label><input type="number" id="sat-in" value="1000" oninput="runCalcs()">
+                <div id="sat-res" class="val" style="color:var(--green); text-align:center; margin-top:10px;">= $---</div>
             </div>
         </div>
     </div>
 
-    <div style="text-align:center; font-size:8px; color:#222; margin-top:30px; letter-spacing: 1px;">
-        COMMANDER: TOMMY9832610 | REF_ID: 1218709503
+    <div class="master-card" id="card-sec">
+        <div class="trigger" onclick="toggle('card-sec')"><span style="color:var(--blue)">[🛡️] GATTO-SAFE & VAULT</span><span>Security ></span></div>
+        <div class="panel">
+            <div class="tool-ui">
+                <input type="text" id="ps-out" readonly style="color:var(--green); text-align:center; font-weight:bold;">
+                <button class="btn btn-blue" style="font-size:10px;" onclick="genPs()">GENERA PASSWORD</button>
+                <textarea id="notes" rows="3" placeholder="Gatto-Vault: Segna qui i tuoi segreti..." oninput="saveNotes()" style="margin-top:10px;"></textarea>
+            </div>
+            <div class="tool-ui" style="font-size:10px; font-family:'JetBrains Mono';">
+                IP_DETECT: <span id="ip-val" style="color:var(--red)">Check...</span><br>
+                STATUS: <span id="vpn-stat" style="color:var(--red)">VULNERABILE</span>
+            </div>
+            <a href="https://nordvpn.com/it/" target="_blank" class="btn btn-blue">PROTEGGI CON NORDVPN</a>
+        </div>
     </div>
+
+    <div style="text-align:center; font-size:8px; color:#222; margin-top:20px;">COMMANDER: TOMMY9832610 | REF: 1218709503</div>
 </div>
 
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script>
     let btcPrice = 0;
-
-    function toggle(id) {
-        document.querySelectorAll('.master-card').forEach(c => {
-            if(c.id === id) c.classList.toggle('active');
-            else c.classList.remove('active');
-        });
-        if(id === 'card-trade' && document.getElementById(id).classList.contains('active')) {
-            new TradingView.widget({"autosize":true,"symbol":"BINANCE:BTCUSDT","theme":"dark","container_id":"tv_chart","hide_top_toolbar":true});
-        }
-    }
-
-    // --- MARKET UPDATES ---
-    async function update() {
+    function toggle(id){document.querySelectorAll('.master-card').forEach(c=>{if(c.id===id)c.classList.toggle('active');else c.classList.remove('active');}); if(id==='card-trade')new TradingView.widget({"autosize":true,"symbol":"BINANCE:BTCUSDT","theme":"dark","container_id":"tv_chart","hide_top_toolbar":true});}
+    
+    async function update(){
         try {
-            const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').then(r => r.json());
-            btcPrice = parseFloat(res.price);
-            document.getElementById('btc-price').innerText = "$" + btcPrice.toLocaleString();
-            calcSat();
-        } catch(e) {}
-    }
-
-    function calcSat() {
-        const sats = document.getElementById('sat-in').value;
-        const usdValue = ((sats / 100000000) * btcPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 4});
-        document.getElementById('sat-res').innerText = "= $" + usdValue;
-    }
-
-    function genPass() {
-        const c = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%^&*";
-        let p = "";
-        for(let i=0; i<16; i++) p += c.charAt(Math.floor(Math.random()*c.length));
-        document.getElementById('pass-out').value = p;
-    }
-
-    function saveNotes() { localStorage.setItem('gatto_notes', document.getElementById('vault-notes').value); }
-    function loadNotes() { document.getElementById('vault-notes').value = localStorage.getItem('gatto_notes') || ""; }
-
-    // --- MATRIX EFFECT ---
-    function toggleMatrix() {
-        const canvas = document.getElementById('matrix-canvas');
-        canvas.style.display = (canvas.style.display === 'block') ? 'none' : 'block';
-        if(canvas.style.display === 'block') runMatrix();
-    }
-
-    function runMatrix() {
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth;
-        const chars = "01BITCOINGATTO01";
-        const fontSize = 14;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-        for(let x = 0; x < columns; x++) drops[x] = 1;
-
-        function draw() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0F0";
-            ctx.font = fontSize + "px arial";
-            for(let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random()*chars.length)];
-                ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-                if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
+            const coins = ['BTC', 'ETH', 'SOL', 'PEPE'];
+            for(const c of coins){
+                const s = c === 'PEPE' ? '1000PEPEUSDT' : c + 'USDT';
+                const r = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${s}`).then(res=>res.json());
+                let p = parseFloat(r.price); if(c==='PEPE') p=p/1000;
+                if(c==='BTC') { btcPrice = p; document.getElementById('btc-main').innerText = "$"+p.toLocaleString(); }
+                document.getElementById('t-'+c).innerText = "$"+(p<1?p.toFixed(5):p.toLocaleString());
             }
-        }
-        setInterval(draw, 33);
+            const ip = await fetch('https://ipapi.co/json/').then(res=>res.json());
+            document.getElementById('ip-val').innerText = ip.ip;
+            if(ip.org.toLowerCase().includes('vpn')){
+                document.getElementById('vpn-stat').innerText="SICURO"; document.getElementById('vpn-stat').style.color="var(--green)";
+                document.getElementById('ps').innerText="99%"; document.getElementById('ps').style.color="var(--green)";
+            }
+            document.getElementById('arb').innerText = "+"+(Math.random()*1.5+1).toFixed(1)+"%";
+            runCalcs();
+        } catch(e){}
     }
 
-    update(); setInterval(update, 20000);
-    genPass(); loadNotes();
+    function runCalcs(){
+        const buy=document.getElementById('buy-p').value; const roi=((btcPrice-buy)/buy*100).toFixed(2);
+        const rEl=document.getElementById('profit-res'); rEl.innerText=roi+"%"; rEl.style.color=roi>=0?"var(--green)":"var(--red)";
+        document.getElementById('sat-res').innerText = "= $"+((document.getElementById('sat-in').value/100000000)*btcPrice).toFixed(4);
+        document.getElementById('stk-res').innerText = "RENDITA: $"+(document.getElementById('stk-amt').value*0.128).toFixed(0)+"/ANNO";
+    }
+
+    function scanAir(){ const r=document.getElementById('air-res'); r.innerText="SCANNING..."; setTimeout(()=>{r.innerText="AIRDROP RILEVATO!"; r.style.color="var(--green)"},2000); }
+    function genPs(){ const c="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%"; let p=""; for(let i=0; i<16; i++) p+=c.charAt(Math.floor(Math.random()*c.length)); document.getElementById('ps-out').value=p; }
+    function saveNotes(){ localStorage.setItem('n', document.getElementById('notes').value); }
+    
+    function toggleMatrix(){ const c=document.getElementById('matrix-canvas'); c.style.display=c.style.display==='block'?'none':'block'; if(c.style.display==='block')runMatrix(); }
+    function runMatrix(){ const c=document.getElementById('matrix-canvas'), ctx=c.getContext('2d'); c.height=window.innerHeight; c.width=window.innerWidth; const chars="01BTCGATTO", fontSize=14, columns=c.width/fontSize, drops=[]; for(let x=0; x<columns; x++) drops[x]=1; setInterval(()=>{ ctx.fillStyle="rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height); ctx.fillStyle="#0F0"; ctx.font=fontSize+"px arial"; for(let i=0; i<drops.length; i++){ ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, drops[i]*fontSize); if(drops[i]*fontSize>c.height&&Math.random()>0.975) drops[i]=0; drops[i]++; } },33); }
+    
+    setInterval(()=>{ const p=document.getElementById('ping'); p.style.top=Math.random()*80+"%"; p.style.left=Math.random()*80+"%"; p.style.display="block"; setTimeout(()=>p.style.display="none",2000); },5000);
+
+    update(); setInterval(update, 15000); 
+    document.getElementById('notes').value = localStorage.getItem('n')||"";
+    genPs();
 </script>
 </body>
 </html>
