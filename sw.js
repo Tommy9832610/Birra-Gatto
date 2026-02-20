@@ -1,3 +1,3 @@
 self.addEventListener('fetch', function(event) {
-  // Gestione offline opzionale
+  // Lasciare vuoto per ora
 });
