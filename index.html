@@ -2,145 +2,132 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - PREDATOR v20</title>
-    <link rel="manifest" href="manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birra-Gatto Toolset</title>
     <style>
-        :root { --gold: #ffcc00; --bg: #000; --green: #00ff41; --red: #ff3131; }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
-
-        /* Navbar & Logo */
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid #1a1a1a; }
-        .logo-container { position: relative; width: 45px; height: 45px; }
-        .logo-img { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--gold); transition: 0.5s; object-fit: cover; }
-        .market-up { filter: drop-shadow(0 0 10px var(--green)); border-color: var(--green); transform: scale(1.1); }
-        .market-down { filter: drop-shadow(0 0 10px var(--red)); border-color: var(--red); animation: shake 0.5s infinite; }
-        @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } 100% { transform: translate(1px, 1px); } }
-
-        .coin-select { background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 8px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; outline: none; }
-
-        /* Price Section */
-        .price-zone { padding: 10px 0; text-align: center; flex-shrink: 0; }
-        #main-price { font-size: 2.8rem; font-weight: 900; letter-spacing: -2px; margin: 0; }
-        #main-perc { font-weight: bold; font-size: 1.1rem; }
-
-        /* Chart & Terminal */
-        .chart-container { flex-grow: 1; margin: 5px 10px; border-radius: 15px; overflow: hidden; border: 1px solid #1a1a1a; min-height: 250px; }
-        .terminal-area { background: #050505; height: 120px; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.75rem; border-top: 2px solid var(--gold); overflow-y: auto; color: #aaa; margin-bottom: 90px; }
-        .whale-log { color: var(--gold); font-weight: bold; margin-bottom: 4px; border-left: 2px solid var(--gold); padding-left: 5px; }
-
-        /* IL TASTO ORO FISSO CON IL TUO LINK */
-        .btn-gold-fixed {
-            position: fixed; bottom: 20px; left: 15px; right: 15px; padding: 22px;
-            background: linear-gradient(45deg, var(--gold), #ffaa00); color: black;
-            text-decoration: none; text-align: center; border-radius: 20px; 
-            font-weight: 900; text-transform: uppercase; font-size: 1.1rem; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 9999;
-            transition: transform 0.1s;
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212; /* Sfondo scuro professionale */
+            color: #ffffff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
-        .btn-gold-fixed:active { transform: scale(0.95); }
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            border: 1px solid #333;
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #f3ba2f;
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+        h1 { font-size: 24px; margin: 10px 0; color: #fff; }
+        .tagline { font-style: italic; color: #aaa; font-size: 14px; margin-bottom: 30px; }
+        
+        /* Stile Card */
+        .card {
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+            text-align: left;
+        }
+        .card:active { transform: scale(0.98); }
+
+        /* Card Binance */
+        .binance-card {
+            background: rgba(243, 186, 47, 0.1);
+            border: 1px solid #f3ba2f;
+        }
+        .binance-btn {
+            display: block;
+            background: #f3ba2f;
+            color: #000;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        /* Card VPN */
+        .vpn-card {
+            background: rgba(70, 105, 255, 0.1);
+            border: 1px solid #4669ff;
+        }
+        .vpn-btn {
+            display: block;
+            background: #4669ff;
+            color: #fff;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .label {
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .binance-label { background: #f3ba2f; color: #000; }
+        .vpn-label { background: #4669ff; color: #fff; }
+
+        .footer-info {
+            font-size: 11px;
+            color: #666;
+            margin-top: 30px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
 
-    <div class="navbar">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <div class="logo-container">
-                <img src="logo.png" id="cat-logo" class="logo-img">
-            </div>
-            <span style="color:var(--gold); font-weight:900; font-size:0.7rem;">PREDATOR v20</span>
-        </div>
-        <select class="coin-select" onchange="changeAsset(this.value)">
-            <option value="BTCUSDT">BITCOIN (BTC)</option>
-            <option value="ETHUSDT">ETHEREUM (ETH)</option>
-            <option value="BNBUSDT">BINANCE (BNB)</option>
-            <option value="SOLUSDT">SOLANA (SOL)</option>
-            <option value="XRPUSDT">RIPPLE (XRP)</option>
-        </select>
+<div class="container">
+    <img src="https://tommy9832610.github.io/Birra-Gatto/gatto.jpg" alt="Birra-Gatto" class="profile-img">
+    <h1>Birra-Gatto Hub</h1>
+    <p class="tagline">"Sette vite, zero commissioni, massima protezione."</p>
+
+    <div class="card binance-card">
+        <span class="label binance-label">Finance</span>
+        <h3 style="margin: 5px 0; color: #f3ba2f;">Trading Terminal</h3>
+        <p style="font-size: 13px; color: #ccc; margin: 5px 0;">Iscriviti su Binance e ottieni bonus sulle commissioni di trading.</p>
+        <a href="IL_TUO_LINK_BINANCE" class="binance-btn">APRI BINANCE</a>
     </div>
 
-    <div class="price-zone">
-        <div id="main-price">$ --.---</div>
-        <div id="main-perc">0.00%</div>
+    <div class="card vpn-card">
+        <span class="label vpn-label">Security</span>
+        <h3 style="margin: 5px 0; color: #4669ff;">Gatto-Shield VPN</h3>
+        <p style="font-size: 13px; color: #ccc; margin: 5px 0;">Naviga in "Stealth Mode" con la protezione di NordVPN.</p>
+        <a href="IL_TUO_LINK_NORDVPN" class="vpn-btn">ATTIVA PROTEZIONE</a>
     </div>
 
-    <div class="chart-container">
-        <div id="tradingview_widget" style="height: 100%;"></div>
+    <div class="footer-info">
+        <p><strong>Standard Referral Info:</strong><br>
+        Tramite il programma Standard Referral, una parte delle trading fees pagate a Binance viene condivisa con il creatore del link. Grazie per il supporto!</p>
+        <p style="opacity: 0.5;">Built with zero coding background - Tommy9832610</p>
     </div>
+</div>
 
-    <div class="terminal-area" id="log-box">
-        <div style="color:var(--green)">> Predator System Online...</div>
-        <div style="color:var(--green)">> Whale Detector collegato...</div>
-    </div>
-
-    <a href="https://accounts.binance.com/register?ref=1218709563" class="btn-gold-fixed" target="_blank">
-        ⚡ OPERA ORA SU BINANCE
-    </a>
-
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-    <script>
-        let currentAsset = 'BTCUSDT';
-        let lastPrice = 0;
-        const logBox = document.getElementById('log-box');
-        const catLogo = document.getElementById('cat-logo');
-
-        // Inizializza Grafico TradingView
-        function initTV(s) {
-            new TradingView.widget({
-                "autosize": true, "symbol": "BINANCE:" + s, "interval": "15", "theme": "dark",
-                "style": "1", "locale": "it", "hide_top_toolbar": true, "container_id": "tradingview_widget"
-            });
-        }
-
-        // Aggiorna Prezzo Real-time da API Binance
-        async function updatePrice() {
-            try {
-                const r = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${currentAsset}`);
-                const d = await r.json();
-                const price = parseFloat(d.lastPrice);
-                const perc = parseFloat(d.priceChangePercent);
-                document.getElementById('main-price').innerText = "$" + price.toLocaleString('it-IT', {minimumFractionDigits: 2});
-                const pEl = document.getElementById('main-perc');
-                pEl.innerText = (perc >= 0 ? '▲ ' : '▼ ') + perc + "%";
-                pEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
-                catLogo.className = "logo-img " + (perc >= 0 ? "market-up" : "market-down");
-                lastPrice = price;
-            } catch (e) { console.error("Errore Prezzo"); }
-        }
-
-        // Whale Detector - Rileva ordini sopra $50k
-        async function detectWhales() {
-            try {
-                const r = await fetch(`https://api.binance.com/api/v3/trades?symbol=${currentAsset}&limit=10`);
-                const trades = await r.json();
-                const whaleTrade = trades.reverse().find(t => (parseFloat(t.qty) * lastPrice) > 50000);
-                if (whaleTrade) {
-                    const value = Math.round(parseFloat(whaleTrade.qty) * lastPrice);
-                    const type = whaleTrade.isBuyerMaker ? "VENDITA" : "ACQUISTO";
-                    const time = new Date().toLocaleTimeString();
-                    const logEntry = document.createElement('div');
-                    logEntry.className = 'whale-log';
-                    logEntry.innerHTML = `> [${time}] WHALE ALERT: ${type} di $${value.toLocaleString()}`;
-                    logBox.prepend(logEntry);
-                    if (logBox.children.length > 20) logBox.lastChild.remove();
-                }
-            } catch (e) { console.error("Errore Whale"); }
-        }
-
-        function changeAsset(v) { 
-            currentAsset = v; 
-            initTV(v); 
-            updatePrice(); 
-            const changeLog = document.createElement('div');
-            changeLog.innerText = `> Switch asset: ${v}`;
-            logBox.prepend(changeLog);
-        }
-
-        // Avvio
-        initTV(currentAsset);
-        updatePrice();
-        setInterval(updatePrice, 5000);
-        setInterval(detectWhales, 3000);
-    </script>
 </body>
 </html>
