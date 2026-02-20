@@ -3,160 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birra-Gatto Terminal v2.0</title>
+    <title>Birra-Gatto Hub</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#121212">
+    <link rel="apple-touch-icon" href="logo.png">
     <style>
         body {
-            background-color: #0a0a0a;
-            color: #00ff41; /* Verde terminale classico */
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
-        }
-
-        .terminal-window {
-            width: 90%;
-            max-width: 500px;
-            background: #000;
-            border: 2px solid #333;
-            border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
-            position: relative;
         }
-
-        .terminal-header {
-            border-bottom: 1px solid #333;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #666;
-        }
-
-        .cat-container {
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             text-align: center;
-            margin-bottom: 20px;
+            border: 1px solid #333;
         }
-
-        .cat-img {
-            width: 100px;
-            height: 100px;
+        .profile-img {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            border: 2px solid #00ff41;
-            filter: grayscale(100%) brightness(1.2);
+            border: 4px solid #f3ba2f;
+            margin-bottom: 15px;
+            object-fit: cover;
+            background-color: #333;
         }
-
-        .typing-text {
-            font-size: 14px;
-            margin-bottom: 25px;
-            white-space: pre-wrap;
-            border-right: 2px solid #00ff41;
-            animation: caret 0.75s step-end infinite;
-        }
-
-        /* I MODULI (I TUOI TASTI) */
-        .module-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .btn {
+        h1 { font-size: 24px; margin: 10px 0; }
+        .tagline { font-style: italic; color: #aaa; font-size: 14px; margin-bottom: 30px; }
+        
+        .card {
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
             display: block;
-            padding: 15px;
-            text-align: center;
             text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s;
+            transition: transform 0.2s;
         }
+        .card:active { transform: scale(0.98); }
 
-        /* Tasto Giallo - Binance */
-        .btn-binance {
+        .binance-card {
+            background: rgba(243, 186, 47, 0.1);
+            border: 1px solid #f3ba2f;
+        }
+        .binance-btn {
+            display: block;
             background: #f3ba2f;
             color: #000;
-            border: 2px solid #f3ba2f;
-        }
-        .btn-binance:hover {
-            background: transparent;
-            color: #f3ba2f;
+            text-align: center;
+            padding: 12px;
+            font-weight: bold;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-decoration: none;
         }
 
-        /* Tasto Blu - VPN */
-        .btn-vpn {
+        .vpn-card {
+            background: rgba(70, 105, 255, 0.1);
+            border: 1px solid #4669ff;
+        }
+        .vpn-btn {
+            display: block;
             background: #4669ff;
             color: #fff;
-            border: 2px solid #4669ff;
-        }
-        .btn-vpn:hover {
-            background: transparent;
-            color: #4669ff;
-        }
-
-        .footer {
-            margin-top: 30px;
-            font-size: 10px;
-            color: #444;
             text-align: center;
+            padding: 12px;
+            font-weight: bold;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-decoration: none;
         }
 
-        @keyframes caret { 50% { border-color: transparent; } }
+        .label {
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .binance-label { background: #f3ba2f; color: #000; }
+        .vpn-label { background: #4669ff; color: #fff; }
+
+        .footer-info {
+            font-size: 11px;
+            color: #555;
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
 
-<div class="terminal-window">
-    <div class="terminal-header">
-        <span>STATUS: ONLINE</span>
-        <span>ID: 1218709503</span>
+<div class="container">
+    <img src="logo.png" alt="Birra-Gatto" class="profile-img">
+    
+    <h1>Birra-Gatto Hub</h1>
+    <p class="tagline">"Sette vite, zero commissioni, massima protezione."</p>
+
+    <div class="card binance-card">
+        <span class="label binance-label">Finance</span>
+        <h3 style="margin: 0; color: #f3ba2f;">Trading Terminal</h3>
+        <p style="font-size: 13px; color: #ccc; margin: 10px 0;">Usa il codice 1218709503 per ottenere i vantaggi.</p>
+        <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="binance-btn">APRI BINANCE</a>
     </div>
 
-    <div class="cat-container">
-        <img src="gatto.jpg" alt="Birra-Gatto" class="cat-img" onerror="this.style.display='none'">
-        <div style="font-size: 18px; margin-top: 10px;">BIRRA-GATTO HUB v2.0</div>
+    <div class="card vpn-card">
+        <span class="label vpn-label">Security</span>
+        <h3 style="margin: 0; color: #4669ff;">Gatto-Shield VPN</h3>
+        <p style="font-size: 13px; color: #ccc; margin: 10px 0;">Naviga in incognito e proteggi i tuoi dati.</p>
+        <a href="https://nordvpn.com/it/" target="_blank" class="vpn-btn">ATTIVA PROTEZIONE</a>
     </div>
 
-    <div class="typing-text" id="typewriter">Inizializzazione moduli sicurezza...
-Accesso autorizzato.
-Scegli l'operazione:</div>
-
-    <div class="module-container">
-        <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="btn btn-binance">
-            > ESEGUI_TRADING_BINANCE
-        </a>
-
-        <a href="https://nordvpn.com/it/" target="_blank" class="btn btn-vpn">
-            > ATTIVA_PROTEZIONE_VPN
-        </a>
-    </div>
-
-    <div class="footer">
-        © 2026 Tommy9832610 System - All Rights Reserved
+    <div class="footer-info">
+        <p>Referral ID: 1218709503 attivo.<br>Supporta il progetto Birra-Gatto.</p>
+        <p>Built with zero coding background - Tommy9832610</p>
     </div>
 </div>
 
 <script>
-    // Effetto scrittura semplice per non far "sfarfallare" la pagina
-    const text = document.getElementById('typewriter');
-    const content = text.innerHTML;
-    text.innerHTML = '';
-    let i = 0;
-
-    function typeWriter() {
-        if (i < content.length) {
-            text.innerHTML += content.charAt(i);
-            i++;
-            setTimeout(typeWriter, 30);
-        }
-    }
-    typeWriter();
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/Birra-Gatto/sw.js')
+      .then(() => console.log('Service Worker Registrato'));
+  }
 </script>
 
 </body>
