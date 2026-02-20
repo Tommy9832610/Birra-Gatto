@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - REAL v18</title>
+    <title>BIRRA AI - ANTI-BLOCCO v18.1</title>
     <style>
         :root { --gold: #ffcc00; --bg: #000; --card: #0a0a0a; --green: #00ff41; --red: #ff3131; }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
         /* Ticker News */
         .ticker-wrap { height: 30px; background: #111; border-bottom: 1px solid var(--gold); overflow: hidden; display: flex; align-items: center; }
@@ -17,30 +17,30 @@
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #1a1a1a; background: #000; position: sticky; top: 0; z-index: 1000; }
         .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--gold); letter-spacing: 2px; font-size: 0.8rem; }
         .logo-img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--gold); object-fit: cover; }
-        .coin-select { background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 5px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; }
+        .coin-select { background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 5px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; outline: none; }
 
-        /* Prezzo */
+        /* Price Zone */
         .price-zone { padding: 25px 20px; text-align: center; }
-        #main-price { font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -2px; }
+        #main-price { font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -2px; transition: 0.3s; }
         #main-perc { font-weight: bold; font-size: 1.2rem; margin-top: 5px; }
 
-        /* Grafico */
-        .chart-container { height: 280px; margin: 10px; border-radius: 20px; overflow: hidden; border: 1px solid #1a1a1a; }
+        /* Chart */
+        .chart-container { height: 280px; margin: 10px; border-radius: 20px; overflow: hidden; border: 1px solid #1a1a1a; background: #000; }
 
-        /* REAL BINANCE RADAR */
-        .whale-box { background: var(--card); margin: 10px 15px; padding: 15px; border-radius: 18px; border-left: 4px solid var(--gold); min-height: 80px; }
-        .whale-header { font-size: 0.6rem; color: #555; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between; }
-        #whale-msg { font-family: 'Courier New', monospace; font-size: 0.75rem; font-weight: bold; line-height: 1.4; }
+        /* BINANCE REAL RADAR */
+        .whale-box { background: var(--card); margin: 10px 15px; padding: 15px; border-radius: 18px; border-left: 4px solid var(--gold); min-height: 80px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .whale-header { font-size: 0.6rem; color: #555; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        #whale-msg { font-family: 'Courier New', monospace; font-size: 0.75rem; font-weight: bold; line-height: 1.4; transition: 0.5s; }
 
-        /* Tasto Oro */
-        .btn-gold { display: block; width: calc(100% - 30px); margin: 25px 15px; padding: 22px; background: linear-gradient(45deg, var(--gold), #ffaa00); color: black; border: none; border-radius: 20px; font-weight: 900; text-transform: uppercase; font-size: 1.1rem; cursor: pointer; animation: pulse 2s infinite; }
+        /* Tasto Oro - Bypass Forzato */
+        .btn-gold { display: block; width: calc(100% - 30px); margin: 25px 15px; padding: 22px; background: linear-gradient(45deg, var(--gold), #ffaa00); color: black; border: none; border-radius: 20px; font-weight: 900; text-transform: uppercase; font-size: 1.1rem; cursor: pointer; box-shadow: 0 10px 30px rgba(255,204,0,0.2); animation: pulse 2s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
     <div class="ticker-wrap">
-        <div class="ticker-move" id="news-text">BIRRA AI - BINANCE DIRECT FEED ACTIVE +++ NO API KEY REQUIRED +++ MONITORING TRADES... +++</div>
+        <div class="ticker-move" id="news-text">BIRRA AI - BINANCE DIRECT INTELLIGENCE v18.1 ACTIVE +++ NO API KEY REQUIRED +++ MONITORING LIVE TRADES... +++</div>
     </div>
 
     <div class="navbar">
@@ -48,7 +48,7 @@
             <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img" alt="G" onerror="this.src='https://via.placeholder.com/40/ffcc00/000000?text=G'">
             <span>BIRRA AI</span>
         </div>
-        <select class="sel coin-select" onchange="changeAsset(this.value)">
+        <select class="coin-select" onchange="changeAsset(this.value)">
             <option value="BTCUSDT">BITCOIN (BTC)</option>
             <option value="ETHUSDT">ETHEREUM (ETH)</option>
             <option value="SOLUSDT">SOLANA (SOL)</option>
@@ -66,10 +66,10 @@
 
     <div class="whale-box">
         <div class="whale-header">
-            <span>Real-Time Market Whale Radar</span>
-            <span style="color: var(--green);">● DIRECT DATA</span>
+            <span>Market Whale Radar</span>
+            <span style="color: var(--green);">● BINANCE LIVE</span>
         </div>
-        <div id="whale-msg">> In attesa di grandi ordini...</div>
+        <div id="whale-msg">> Scansione in corso...</div>
     </div>
 
     <button class="btn-gold" onclick="triggerHyperBypass()">⚡ OPERA ORA</button>
@@ -79,6 +79,7 @@
         let currentAsset = 'BTCUSDT';
         let lastPrice = 0;
 
+        // Inizializza TradingView
         function initTV(s) {
             new TradingView.widget({
                 "autosize": true, "symbol": "BINANCE:" + s, "interval": "60", "theme": "dark",
@@ -86,52 +87,89 @@
             });
         }
 
+        // Prezzo Reale Binance
         async function updatePrice() {
             try {
                 const r = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${currentAsset}`);
                 const d = await r.json();
                 lastPrice = parseFloat(d.lastPrice);
-                document.getElementById('main-price').innerText = "$" + lastPrice.toLocaleString();
-                const pEl = document.getElementById('main-perc');
-                pEl.innerText = (parseFloat(d.priceChangePercent) >= 0 ? '+' : '') + d.priceChangePercent + "%";
-                pEl.style.color = parseFloat(d.priceChangePercent) >= 0 ? '#00ff41' : '#ff3131';
-            } catch (e) {}
+                const perc = parseFloat(d.priceChangePercent);
+                
+                const pEl = document.getElementById('main-price');
+                pEl.innerText = "$" + lastPrice.toLocaleString();
+                pEl.style.textShadow = perc >= 0 ? "0 0 20px rgba(0,255,65,0.4)" : "0 0 20px rgba(255,49,49,0.4)";
+                
+                const percEl = document.getElementById('main-perc');
+                percEl.innerText = (perc >= 0 ? '+' : '') + perc.toFixed(2) + "%";
+                percEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
+            } catch (e) { console.log("Price Error"); }
         }
 
-        // --- IL NUOVO RADAR BINANCE (GRATIS E REALE) ---
+        // Radar Reale - Scansiona grandi ordini su Binance
         async function fetchBinanceWhales() {
             try {
-                const r = await fetch(`https://api.binance.com/api/v3/trades?symbol=${currentAsset}&limit=20`);
+                const r = await fetch(`https://api.binance.com/api/v3/trades?symbol=${currentAsset}&limit=30`);
                 const trades = await r.json();
                 
-                // Cerchiamo un ordine "pesante" (es. sopra i 15.000 USD per test, puoi alzare a 50.000)
+                // Cerca ordini > $15.000 (test) o > $50.000 (reale)
                 const bigTrade = trades.reverse().find(t => (parseFloat(t.qty) * lastPrice) > 15000);
                 
                 if (bigTrade) {
-                    const value = (parseFloat(bigTrade.qty) * lastPrice).toLocaleString(undefined, {maximumFractionDigits: 0});
-                    const type = bigTrade.isBuyerMaker ? "VENDITA MASSICCIA" : "ACQUISTO MASSICCIO";
+                    const val = (parseFloat(bigTrade.qty) * lastPrice).toLocaleString(undefined, {maximumFractionDigits: 0});
+                    const type = bigTrade.isBuyerMaker ? "VENDITA" : "ACQUISTO";
                     const color = bigTrade.isBuyerMaker ? "var(--red)" : "var(--green)";
                     
-                    document.getElementById('whale-msg').style.color = color;
-                    document.getElementById('whale-msg').innerHTML = `> [ALERT] ${type}: rilevati $${value} su ${currentAsset.replace('USDT','')}`;
+                    const msg = document.getElementById('whale-msg');
+                    msg.style.color = color;
+                    msg.innerHTML = `> [ALERT] ${type} MASSICCIO: rilevati $${val} su ${currentAsset.replace('USDT','')}`;
                 }
             } catch (e) { console.log("Radar Error"); }
         }
 
+        // News Ticker
+        async function fetchNews() {
+            try {
+                const r = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=IT');
+                const d = await r.json();
+                document.getElementById('news-text').innerText = d.Data.slice(0, 8).map(n => n.title.toUpperCase()).join('  +++  ') + " +++ ";
+            } catch (e) { console.log("News Error"); }
+        }
+
+        // --- SISTEMA DI USCITA FORZATA (ANTI-BLOCCO) ---
         function triggerHyperBypass() {
+            // METTI IL TUO LINK BINANCE QUI SOTTO
             const target = "https://www.binance.com"; 
-            if (!window.open(target, '_system')) {
-                window.location.href = "intent://" + target.replace("https://", "") + "#Intent;scheme=https;package=com.android.chrome;end";
+
+            // Metodo 1: Intent Android (Forza l'apertura in Chrome esterno)
+            const chromeIntent = "intent://" + target.replace("https://", "") + "#Intent;scheme=https;package=com.android.chrome;end";
+            
+            // Metodo 2: Click su elemento invisibile
+            const a = document.createElement('a');
+            a.href = target;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+
+            try {
+                window.location.href = chromeIntent;
+            } catch (e) {
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
             }
+            
+            // Fallback estremo dopo 500ms
+            setTimeout(() => { window.open(target, '_system'); }, 500);
         }
 
         function changeAsset(v) { currentAsset = v; initTV(v); updatePrice(); }
 
+        // Start
         initTV(currentAsset);
         updatePrice();
-        fetchBinanceWhales();
-        setInterval(updatePrice, 20000);
-        setInterval(fetchBinanceWhales, 8000); // Controlla ogni 8 secondi i grandi ordini
+        fetchNews();
+        setInterval(updatePrice, 15000);
+        setInterval(fetchBinanceWhales, 8000);
+        setInterval(fetchNews, 600000);
     </script>
 </body>
 </html>
