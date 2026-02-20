@@ -1,20 +1,21 @@
 {
-  "name": "BIRRA AI",
-  "short_name": "BirraAI",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#ffcc00",
+  "short_name": "Birra AI",
+  "name": "Birra AI - Quantum Terminal",
   "icons": [
     {
       "src": "logo.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "logo.png",
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "start_url": "/index.html",
+  "background_color": "#000000",
+  "display": "standalone",
+  "theme_color": "#ffcc00"
 }
