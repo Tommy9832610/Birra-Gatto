@@ -9,27 +9,20 @@
         :root { --gold: #ffcc00; --bg: #000; --green: #00ff41; --red: #ff3131; }
         body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
 
-        /* ANIMAZIONI GATTO DINAMICO */
         .logo-container { position: relative; width: 45px; height: 45px; }
         .logo-img { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--gold); transition: 0.5s; object-fit: cover; }
         .market-up { filter: drop-shadow(0 0 10px var(--green)); border-color: var(--green); transform: scale(1.1); }
         .market-down { filter: drop-shadow(0 0 10px var(--red)); border-color: var(--red); animation: shake 0.5s infinite; }
         @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } 100% { transform: translate(1px, 1px); } }
 
-        /* NAVBAR & PREZZO */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid #1a1a1a; }
         .coin-select { background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 8px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; }
         .price-zone { padding: 10px 0; text-align: center; flex-shrink: 0; }
-        #main-price { font-size: 3rem; font-weight: 900; letter-spacing: -2px; transition: 0.3s; }
+        #main-price { font-size: 3rem; font-weight: 900; letter-spacing: -2px; }
 
-        /* TERMINALE WHALE DETECTOR */
         .chart-container { flex-grow: 1; margin: 5px 10px; border-radius: 15px; overflow: hidden; border: 1px solid #1a1a1a; }
         .terminal-area { background: #050505; height: 100px; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.7rem; border-top: 2px solid var(--gold); overflow-y: auto; margin-bottom: 90px; }
-        .log-whale { color: var(--green); font-weight: bold; animation: flash 1s; }
-        .log-alert { color: var(--red); font-weight: bold; }
-        @keyframes flash { from { background: rgba(0,255,65,0.2); } to { background: transparent; } }
-
-        /* TASTO FISSO OPERA */
+        
         .btn-gold-fixed {
             position: fixed; bottom: 20px; left: 15px; right: 15px; padding: 22px;
             background: linear-gradient(45deg, var(--gold), #ffaa00); color: black;
@@ -67,13 +60,11 @@
     </div>
 
     <div class="terminal-area" id="log-box">
-        > Terminale Predator Online...<br>
-        > In attesa di segnali da Binance API...<br>
+        > Predator Terminal Online...<br>
+        > Whale Detector collegato a Binance API...<br>
     </div>
 
     <button class="btn-gold-fixed" onclick="triggerHyperBypass()">⚡ OPERA ORA SU BINANCE</button>
-
-    <audio id="whale-sound" src="https://www.soundjay.com/buttons/beep-01a.mp3" preload="auto"></audio>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
@@ -81,7 +72,6 @@
         let lastPrice = 0;
         const logBox = document.getElementById('log-box');
         const catLogo = document.getElementById('cat-logo');
-        const whaleSound = document.getElementById('whale-sound');
 
         function initTV(s) {
             new TradingView.widget({
@@ -96,50 +86,41 @@
                 const d = await r.json();
                 const price = parseFloat(d.lastPrice);
                 const perc = parseFloat(d.priceChangePercent);
-                
                 document.getElementById('main-price').innerText = "$" + price.toLocaleString();
                 const pEl = document.getElementById('main-perc');
                 pEl.innerText = (perc >= 0 ? '▲ ' : '▼ ') + perc + "%";
                 pEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
-
-                // Animazione Gatto in base al mercato
                 catLogo.className = "logo-img " + (perc >= 0 ? "market-up" : "market-down");
                 lastPrice = price;
             } catch (e) {}
         }
 
-        // WHALE DETECTOR REALE
         async function detectWhales() {
             try {
-                const r = await fetch(`https://api.binance.com/api/v3/trades?symbol=${currentAsset}&limit=15`);
+                const r = await fetch(`https://api.binance.com/api/v3/trades?symbol=${currentAsset}&limit=10`);
                 const trades = await r.json();
                 const whaleTrade = trades.reverse().find(t => (parseFloat(t.qty) * lastPrice) > 50000);
-
                 if (whaleTrade) {
                     const value = Math.round(parseFloat(whaleTrade.qty) * lastPrice);
                     const type = whaleTrade.isBuyerMaker ? "VENDITA" : "ACQUISTO";
-                    const colorClass = whaleTrade.isBuyerMaker ? "log-alert" : "log-whale";
-                    
-                    logBox.innerHTML = `<span class="${colorClass}">> [WHALE ALERT] ${type} di $${value.toLocaleString()}</span><br>` + logBox.innerHTML;
-                    whaleSound.play().catch(() => {}); // Suona se l'utente ha interagito
+                    logBox.innerHTML = `> [WHALE ALERT] ${type} di $${value.toLocaleString()}<br>` + logBox.innerHTML;
                 }
             } catch (e) {}
         }
 
         function triggerHyperBypass() {
-            whaleSound.play(); // Sblocca l'audio per i browser
             window.open("https://www.binance.com/it/trade/" + currentAsset.replace("USDT", "_USDT"), '_blank');
         }
 
         function changeAsset(v) { 
             currentAsset = v; initTV(v); updatePrice(); 
-            logBox.innerHTML = `> Switch asset: ${v}<br>` + logBox.innerHTML;
+            logBox.innerHTML = `> Asset: ${v}<br>` + logBox.innerHTML;
         }
 
         initTV(currentAsset);
         updatePrice();
-        setInterval(updatePrice, 5000);
-        setInterval(detectWhales, 4000); // Scansiona ogni 4 secondi
+        setInterval(updatePrice, 10000);
+        setInterval(detectWhales, 5000);
     </script>
 </body>
 </html>
