@@ -3,166 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - TERMINAL</title>
-    
+    <title>Birra AI - Terminal</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#000000">
-
     <style>
-        :root { --gold: #ffcc00; --bg: #000; --card: #0a0a0a; --green: #00ff41; --red: #ff3131; }
+        :root { --gold: #ffcc00; --bg: #000; --text: #0f0; }
+        body { background: var(--bg); color: white; font-family: 'Courier New', monospace; margin: 0; overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
         
-        /* SPLASH SCREEN */
-        #splash-screen {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            transition: opacity 0.8s ease, visibility 0.8s;
-        }
-        .splash-logo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            animation: pulse-gold 2s infinite;
-            object-fit: cover;
-        }
-        .splash-title {
-            color: var(--gold);
-            font-size: 1.8rem;
-            font-weight: 900;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-        }
-        @keyframes pulse-gold {
-            0% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(255,204,0,0.4)); }
-            70% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(255,204,0,0.6)); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(255,204,0,0.4)); }
-        }
+        /* Logo e Header */
+        .header { text-align: center; padding: 15px; flex-shrink: 0; }
+        .logo-container { position: relative; display: inline-block; }
+        .logo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--gold); transition: transform 0.3s; }
+        .eyes { position: absolute; top: 32px; left: 0; width: 100%; display: flex; justify-content: space-around; opacity: 0; transition: 0.5s; }
+        .eye { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; box-shadow: 0 0 12px var(--gold); }
+        .bullish .eyes { opacity: 1; }
+        .bullish .logo { transform: scale(1.05); border-color: #fff; }
 
-        /* STILE APP */
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
-        .ticker-wrap { height: 30px; background: #111; border-bottom: 1px solid var(--gold); overflow: hidden; display: flex; align-items: center; }
-        .ticker-move { white-space: nowrap; animation: scroll 60s linear infinite; color: var(--gold); font-size: 0.7rem; font-weight: bold; }
-        @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #1a1a1a; background: #000; position: sticky; top: 0; z-index: 1000; }
-        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--gold); font-size: 0.8rem; }
-        .logo-img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--gold); object-fit: cover; }
-        .coin-select { background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 5px; border-radius: 8px; font-size: 0.7rem; }
-        .price-zone { padding: 25px 20px; text-align: center; }
-        #main-price { font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -2px; }
-        #main-perc { font-weight: bold; font-size: 1.2rem; margin-top: 5px; }
-        .chart-container { height: 280px; margin: 10px; border-radius: 20px; overflow: hidden; border: 1px solid #1a1a1a; }
-        .whale-box { background: var(--card); margin: 10px 15px; padding: 15px; border-radius: 18px; border-left: 4px solid var(--gold); min-height: 80px; }
-        #whale-msg { font-family: 'Courier New', monospace; font-size: 0.75rem; font-weight: bold; line-height: 1.4; }
-        .btn-gold { display: block; width: calc(100% - 30px); margin: 25px 15px; padding: 22px; background: linear-gradient(45deg, var(--gold), #ffaa00); color: black; border: none; border-radius: 20px; font-weight: 900; text-transform: uppercase; font-size: 1.1rem; cursor: pointer; }
+        .price-box { text-align: center; font-size: 2.2rem; font-weight: bold; margin: 5px 0; color: white; }
+        .change { font-size: 1rem; color: #00ff00; margin-bottom: 10px; }
+
+        /* Area Grafico */
+        #chart-container { flex-grow: 1; width: 100%; background: #111; }
+
+        /* Terminale CLI */
+        .terminal { background: rgba(0, 0, 0, 0.9); padding: 10px; height: 100px; overflow-y: auto; font-size: 0.85rem; border-top: 1px solid #222; color: #aaa; }
+        .input-line { display: flex; background: #050505; padding: 12px; border-top: 1px solid #333; align-items: center; }
+        .input-line span { color: var(--gold); margin-right: 10px; font-weight: bold; }
+        input { background: none; border: none; color: var(--text); outline: none; width: 100%; font-family: inherit; font-size: 1rem; }
+
+        /* Bottone Azione */
+        .btn-trade { background: var(--gold); color: #000; width: 94%; margin: 10px 3%; padding: 16px; border: none; border-radius: 8px; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; cursor: pointer; flex-shrink: 0; }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <img src="logo.png" class="splash-logo" alt="Logo">
-        <div class="splash-title">Birra AI</div>
-    </div>
-
-    <div class="ticker-wrap">
-        <div class="ticker-move">BIRRA AI - REAL-TIME DATA +++ SCANNING BINANCE LIQUIDITY +++</div>
-    </div>
-
-    <div class="navbar">
-        <div class="logo-area">
-            <img src="logo.png" class="logo-img">
-            <span>BIRRA AI</span>
+    <div class="header">
+        <div class="logo-container" id="cat-logo">
+            <img src="logo.png" class="logo" alt="Birra AI">
+            <div class="eyes"><div class="eye"></div><div class="eye"></div></div>
         </div>
-        <select class="coin-select" onchange="changeAsset(this.value)">
-            <option value="BTCUSDT">BITCOIN (BTC)</option>
-            <option value="ETHUSDT">ETHEREUM (ETH)</option>
-            <option value="SOLUSDT">SOLANA (SOL)</option>
-        </select>
+        <div class="price-box" id="btc-price">$ --.---,--</div>
+        <div class="change" id="btc-change">+0.00%</div>
     </div>
 
-    <div class="price-zone">
-        <div id="main-price">$ --.---</div>
-        <div id="main-perc">0.00%</div>
+    <div id="chart-container">
+        </div>
+
+    <div class="terminal" id="output">
+        <div>> Birra AI Terminal v1.0 caricato...</div>
+        <div>> Sistema pronto. In attesa di ordini...</div>
     </div>
 
-    <div class="chart-container">
-        <div id="tradingview_widget" style="height: 100%;"></div>
+    <div class="input-line">
+        <span>$</span><input type="text" id="commandInput" placeholder="Inserisci comando...">
     </div>
 
-    <div class="whale-box">
-        <div id="whale-msg">> In attesa di ordini...</div>
-    </div>
+    <button class="btn-trade" onclick="execTrade()">⚡ OPERA ORA</button>
 
-    <button class="btn-gold" onclick="triggerHyperBypass()">⚡ OPERA ORA</button>
+    <audio id="beer-sound" src="https://www.myinstants.com/media/sounds/beer-opening.mp3"></audio>
 
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
+        // Simulazione Prezzo e Animazione Logo
+        async function fetchMarketData() {
+            try {
+                const res = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
+                const data = await res.json();
+                const price = parseFloat(data.lastPrice).toLocaleString('it-IT', { minimumFractionDigits: 2 });
+                const change = parseFloat(data.priceChangePercent).toFixed(2);
+                
+                document.getElementById('btc-price').innerText = `$ ${price}`;
+                document.getElementById('btc-change').innerText = `${change > 0 ? '+' : ''}${change}%`;
+                
+                // Attiva occhi laser se il trend è positivo
+                if (change > 0) {
+                    document.getElementById('cat-logo').classList.add('bullish');
+                } else {
+                    document.getElementById('cat-logo').classList.remove('bullish');
+                }
+            } catch (e) {
+                console.error("Errore aggiornamento dati");
+            }
         }
+        setInterval(fetchMarketData, 5000);
+        fetchMarketData();
 
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const ss = document.getElementById('splash-screen');
-                ss.style.opacity = '0';
-                setTimeout(() => ss.style.visibility = 'hidden', 800);
-            }, 2500);
+        // Logica Terminale CLI
+        const input = document.getElementById('commandInput');
+        const output = document.getElementById('output');
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = input.value.toLowerCase().trim();
+                const newLine = document.createElement('div');
+                
+                if (cmd === '/info') {
+                    newLine.innerText = "> Birra AI: Terminale di trading quantistico ad alta precisione.";
+                } else if (cmd.startsWith('/risk ')) {
+                    const val = cmd.split(' ')[1];
+                    newLine.innerText = `> Rischio impostato: ${val}. Parametri aggiornati.`;
+                } else if (cmd === '/clear') {
+                    output.innerHTML = '';
+                    input.value = '';
+                    return;
+                } else {
+                    newLine.innerText = `> Comando '${cmd}' eseguito correttamente.`;
+                }
+                
+                output.appendChild(newLine);
+                input.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
         });
 
-        let currentAsset = 'BTCUSDT';
-        let lastPrice = 0;
-
-        function initTV(s) {
-            new TradingView.widget({
-                "autosize": true, "symbol": "BINANCE:" + s, "interval": "60", "theme": "dark",
-                "style": "1", "locale": "it", "hide_top_toolbar": true, "container_id": "tradingview_widget"
-            });
+        // Esecuzione Operazione
+        function execTrade() {
+            const sound = document.getElementById('beer-sound');
+            sound.play();
+            
+            const log = document.createElement('div');
+            log.style.color = '#ffcc00';
+            log.innerText = "> [ORDINE]: Operazione avviata. Cheers! 🍻";
+            output.appendChild(log);
+            output.scrollTop = output.scrollHeight;
         }
-
-        async function updatePrice() {
-            try {
-                const r = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${currentAsset}`);
-                const d = await r.json();
-                lastPrice = parseFloat(d.lastPrice);
-                document.getElementById('main-price').innerText = "$" + lastPrice.toLocaleString();
-                const perc = parseFloat(d.priceChangePercent);
-                const pEl = document.getElementById('main-perc');
-                pEl.innerText = (perc >= 0 ? '+' : '') + perc + "%";
-                pEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
-            } catch (e) {}
-        }
-
-        async function fetchBinanceWhales() {
-            try {
-                const r = await fetch(`https://api.binance.com/api/v3/trades?symbol=${currentAsset}&limit=20`);
-                const trades = await r.json();
-                const bigTrade = trades.reverse().find(t => (parseFloat(t.qty) * lastPrice) > 15000);
-                if (bigTrade) {
-                    const val = (parseFloat(bigTrade.qty) * lastPrice).toLocaleString(undefined, {maximumFractionDigits: 0});
-                    const type = bigTrade.isBuyerMaker ? "VENDITA" : "ACQUISTO";
-                    const msg = document.getElementById('whale-msg');
-                    msg.style.color = bigTrade.isBuyerMaker ? "var(--red)" : "var(--green)";
-                    msg.innerHTML = `> [ALERT] ${type}: rilevati $${val} su ${currentAsset.replace('USDT','')}`;
-                }
-            } catch (e) {}
-        }
-
-        function triggerHyperBypass() {
-            window.open("https://www.binance.com", '_blank');
-        }
-
-        function changeAsset(v) { currentAsset = v; initTV(v); updatePrice(); }
-
-        initTV(currentAsset);
-        updatePrice();
-        setInterval(updatePrice, 15000);
-        setInterval(fetchBinanceWhales, 8000);
     </script>
 </body>
 </html>
