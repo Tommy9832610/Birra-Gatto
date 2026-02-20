@@ -1,46 +1,136 @@
-<div class="mod-box" style="border-color: #4669ff; background: rgba(70, 105, 255, 0.05);">
-    <div class="mod-title" style="color: #4669ff;">> REAL_TIME_NETWORK_AUDIT</div>
-    
-    <div id="real-data" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #fff; line-height: 1.5;">
-        [WEB_RTC]: <span id="rtc-ip" style="color: #ff4444;">Analisi...</span><br>
-        [HARDWARE]: <span id="hw-info">Analisi...</span><br>
-        [DNS_ZONE]: <span id="dns-zone">Analisi...</span>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birra-Gatto True Genius Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f3ba2f; --blue: #4669ff; --bg: #0d0d0d; --card-bg: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.1); }
+        body { background-color: var(--bg); color: #e0e0e0; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 500px; background: linear-gradient(145deg, #161616, #0a0a0a); border: 1px solid var(--border); border-radius: 24px; padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        
+        /* HEADER */
+        .header { text-align: center; margin-bottom: 30px; }
+        .main-logo { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--gold); padding: 3px; background: var(--bg); box-shadow: 0 0 20px rgba(243, 186, 47, 0.2); }
+        
+        /* MULTI-TICKER */
+        .price-strip { display: flex; overflow-x: auto; gap: 15px; margin-bottom: 25px; padding-bottom: 10px; scrollbar-width: none; }
+        .price-chip { background: var(--card-bg); padding: 8px 15px; border-radius: 12px; border: 1px solid var(--border); white-space: nowrap; font-size: 12px; }
+        .chip-name { color: var(--gold); font-weight: bold; margin-right: 5px; }
+
+        /* CARDS */
+        .master-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; margin-bottom: 15px; overflow: hidden; transition: 0.3s; }
+        .card-trigger { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .content-panel { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; background: rgba(0, 0, 0, 0.2); }
+        .active .content-panel { max-height: 800px; padding: 0 20px 20px 20px; }
+
+        /* SECURITY DATA (REAL) */
+        .real-audit { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #aaa; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; line-height: 1.6; }
+        .vulnerable { color: #ff4444; font-weight: bold; animation: pulse 2s infinite; }
+
+        .action-btn { display: block; text-decoration: none; padding: 14px; text-align: center; border-radius: 12px; font-weight: 700; font-size: 13px; text-transform: uppercase; margin-top: 15px; transition: 0.2s; }
+        .btn-gold { background: linear-gradient(to bottom, #f3ba2f, #d4a017); color: #000; }
+        .btn-blue { background: linear-gradient(to bottom, #4669ff, #2a48d1); color: #fff; }
+
+        @keyframes pulse { 50% { opacity: 0.5; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/80'">
+        <h1 style="font-size: 24px;">Birra-Gatto Hub Pro</h1>
+        <div style="font-size: 9px; color: #444;">ID: 1218709503 | STATUS: LIVE AUDIT</div>
     </div>
 
-    <div id="security-verdict" style="margin-top: 15px; padding: 5px; border: 1px solid #ff4444; color: #ff4444; font-size: 10px; text-align: center; font-weight: bold;">
-        SISTEMA VULNERABILE - CRIPTAZIONE RICHIESTA
+    <div class="price-strip" id="ticker">
+        <div class="price-chip"><span class="chip-name">BTC</span><span id="p-BTC">...</span></div>
+        <div class="price-chip"><span class="chip-name">ETH</span><span id="p-ETH">...</span></div>
+        <div class="price-chip"><span class="chip-name">SOL</span><span id="p-SOL">...</span></div>
+        <div class="price-chip"><span class="chip-name">PEPE</span><span id="p-PEPE">...</span></div>
+    </div>
+
+    <div class="master-card" id="card-crypto">
+        <div class="card-trigger" onclick="toggle('card-crypto')">
+            <div style="font-weight:bold; color:var(--gold);">[₿] Trading Terminal</div>
+            <div style="font-size:12px; opacity:0.5;">Candlestick Chart ></div>
+        </div>
+        <div class="content-panel">
+            <div id="tv_chart" style="height: 300px; border-radius: 12px; overflow: hidden;"></div>
+            <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="action-btn btn-gold">Apri Binance</a>
+        </div>
+    </div>
+
+    <div class="master-card" id="card-vpn">
+        <div class="card-trigger" onclick="toggle('card-vpn')">
+            <div style="font-weight:bold; color:var(--blue);">[🛡️] Gatto-Shield Scan</div>
+            <div style="font-size:12px; opacity:0.5;">Leak Test ></div>
+        </div>
+        <div class="content-panel">
+            <div class="real-audit">
+                [WEB_RTC_LEAK]: <span id="rtc" style="color:#ff4444;">Scansione...</span><br>
+                [HARDWARE]: <span id="hw">Scansione...</span><br>
+                [OS_BROWSER]: <span id="os">Scansione...</span><br>
+                [ISP_DETECT]: <span id="isp">Scansione...</span>
+            </div>
+            <div id="verdict" class="vulnerable" style="text-align:center; font-size:10px; margin-top:15px;">
+                SISTEMA VULNERABILE - CRIPTAZIONE RICHIESTA
+            </div>
+            <a href="https://nordvpn.com/it/" target="_blank" class="action-btn btn-blue">Proteggi Connessione</a>
+        </div>
+    </div>
+
+    <div style="text-align:center; font-size:9px; color:#222; margin-top:30px;">
+        © 2026 TOMMY9832610 - BUILT WITH ZERO CODING BACKGROUND
     </div>
 </div>
 
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script>
-    // 1. ESTRAZIONE HARDWARE REALE
-    function getHardware() {
-        const cores = navigator.hardwareConcurrency || "N/A";
-        const ram = navigator.deviceMemory || "N/A";
-        document.getElementById('hw-info').innerText = `${cores} Cores / ${ram}GB RAM`;
+    function toggle(id) {
+        document.querySelectorAll('.master-card').forEach(c => {
+            if(c.id === id) c.classList.toggle('active');
+            else c.classList.remove('active');
+        });
+        if(id === 'card-crypto') new TradingView.widget({"autosize":true,"symbol":"BINANCE:BTCUSDT","theme":"dark","container_id":"tv_chart"});
     }
 
-    // 2. WEBRTC LEAK TEST (Dati Reali dall'interfaccia di rete)
-    function getWebRTC() {
-        const rtc = new RTCPeerConnection({iceServers:[]});
-        rtc.createDataChannel('');
-        rtc.createOffer().then(offer => rtc.setLocalDescription(offer));
-        rtc.onicecandidate = (ice) => {
-            if (ice && ice.candidate && ice.candidate.candidate) {
-                const myIp = /([0-9]{1,3}(\.[0-9]{1,3}){3})/.exec(ice.candidate.candidate)[1];
-                document.getElementById('rtc-ip').innerText = myIp + " (LOCAL)";
-                rtc.onicecandidate = null;
+    async function updateAll() {
+        try {
+            // Crypto Prices
+            const coins = ['BTC', 'ETH', 'SOL', 'PEPE'];
+            for(const c of coins) {
+                const s = c === 'PEPE' ? '1000PEPEUSDT' : c + 'USDT';
+                const r = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${s}`);
+                const d = await r.json();
+                let p = parseFloat(d.price);
+                if(c === 'PEPE') p = p/1000;
+                document.getElementById(`p-${c}`).innerText = "$" + (p < 1 ? p.toFixed(5) : p.toLocaleString());
             }
-        };
-    }
 
-    // 3. DNS / TIMEZONE DATA
-    function getNetworkInfo() {
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        document.getElementById('dns-zone').innerText = tz;
-    }
+            // Real Security Data
+            const ipR = await fetch('https://ipapi.co/json/').then(r => r.json());
+            document.getElementById('isp').innerText = ipR.org;
+            document.getElementById('os').innerText = navigator.platform + " / " + navigator.languages[0];
+            document.getElementById('hw').innerText = (navigator.hardwareConcurrency || 4) + " Cores / " + (navigator.deviceMemory || 8) + "GB RAM";
 
-    getHardware();
-    getWebRTC();
-    getNetworkInfo();
+            // WebRTC Leak (Real)
+            const rtc = new RTCPeerConnection({iceServers:[]});
+            rtc.createDataChannel('');
+            rtc.createOffer().then(o => rtc.setLocalDescription(o));
+            rtc.onicecandidate = (i) => {
+                if(i && i.candidate) {
+                    const myIp = /([0-9]{1,3}(\.[0-9]{1,3}){3})/.exec(i.candidate.candidate)[1];
+                    document.getElementById('rtc').innerText = myIp + " (EXPOSED)";
+                    rtc.onicecandidate = null;
+                }
+            };
+        } catch(e) {}
+    }
+    updateAll();
+    setInterval(updateAll, 10000);
 </script>
+</body>
+</html>
