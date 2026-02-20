@@ -3,39 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birra-Gatto Multi-Crypto Terminal</title>
+    <title>Birra-Gatto Ultimate Terminal</title>
     <style>
         body { background-color: #050505; color: #00ff41; font-family: 'Courier New', monospace; margin: 0; padding: 10px; overflow-x: hidden; }
-        .terminal { max-width: 900px; margin: auto; background: #000; border: 2px solid #333; border-radius: 10px; padding: 15px; box-shadow: 0 0 30px rgba(0, 255, 65, 0.2); }
+        .terminal { max-width: 900px; margin: auto; background: #000; border: 2px solid #333; border-radius: 12px; padding: 20px; box-shadow: 0 0 40px rgba(0, 255, 65, 0.15); }
         
         /* HEADER */
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 15px; }
-        .sys-info { display: flex; align-items: center; gap: 10px; }
-        .sys-logo { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #f3ba2f; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 12px; margin-bottom: 20px; }
+        .sys-info { display: flex; align-items: center; gap: 12px; }
+        .sys-logo { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #f3ba2f; box-shadow: 0 0 10px rgba(243, 186, 47, 0.3); }
         
-        /* MULTI-PRICE BAR */
-        .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 15px; }
-        .price-item { background: #0a0a0a; border: 1px solid #222; padding: 8px; border-radius: 5px; text-align: center; font-size: 12px; }
-        .coin-name { color: #f3ba2f; font-weight: bold; display: block; margin-bottom: 4px; }
-        .coin-val { color: #fff; }
+        /* GRID PREZZI */
+        .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        .price-item { background: #0a0a0a; border: 1px solid #222; padding: 10px; border-radius: 6px; text-align: center; }
+        .coin-name { color: #f3ba2f; font-weight: bold; font-size: 11px; display: block; }
+        .coin-val { color: #fff; font-size: 14px; }
 
-        /* CONVERTITORE DINAMICO */
-        .converter-box { background: rgba(0, 255, 65, 0.05); border: 1px solid #00ff41; padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center; }
-        select, input { background: #000; border: 1px solid #00ff41; color: #00ff41; padding: 5px; font-family: 'Courier New', monospace; border-radius: 4px; }
+        /* MODULI (Converter & Security) */
+        .module-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .mod-box { background: #080808; border-radius: 8px; padding: 15px; border: 1px solid #333; }
+        .mod-title { font-size: 10px; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        
+        input, select { background: #000; border: 1px solid #444; color: #00ff41; padding: 5px; border-radius: 4px; font-family: 'Courier New', monospace; }
 
         /* GRAFICO */
-        .chart-container { height: 400px; border: 1px solid #333; margin-bottom: 15px; background: #111; }
+        .chart-box { height: 400px; border: 1px solid #222; border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
 
-        /* CONSOLE */
-        .console { background: #080808; border-left: 3px solid #00ff41; padding: 10px; height: 60px; font-size: 11px; overflow-y: hidden; margin-bottom: 20px; }
+        /* CONSOLE LOG */
+        .console { background: #000; border-left: 3px solid #00ff41; padding: 10px; height: 50px; font-size: 11px; color: #00ff41; overflow: hidden; margin-bottom: 20px; }
 
         /* TASTI */
         .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .btn { padding: 15px; text-align: center; text-decoration: none; font-weight: bold; border-radius: 5px; text-transform: uppercase; font-size: 12px; transition: 0.3s; }
-        .btn-gold { background: #f3ba2f; color: #000; }
-        .btn-blue { background: #4669ff; color: #fff; }
+        .btn { padding: 18px; text-align: center; text-decoration: none; font-weight: bold; border-radius: 8px; text-transform: uppercase; font-size: 13px; transition: 0.3s; }
+        .btn-gold { background: #f3ba2f; color: #000; border: 1px solid #f3ba2f; }
+        .btn-blue { background: #4669ff; color: #fff; border: 1px solid #4669ff; }
+        .btn:hover { filter: brightness(1.2); transform: scale(1.02); }
 
-        @media (max-width: 600px) { .actions { grid-template-columns: 1fr; } .chart-container { height: 300px; } }
+        @media (max-width: 700px) { .module-row, .actions { grid-template-columns: 1fr; } .chart-box { height: 300px; } }
     </style>
 </head>
 <body>
@@ -43,16 +47,18 @@
 <div class="terminal">
     <div class="header">
         <div class="sys-info">
-            <img src="logo.png" class="sys-logo" onerror="this.src='https://via.placeholder.com/50'">
+            <img src="logo.png" class="sys-logo" onerror="this.src='https://via.placeholder.com/60'">
             <div>
-                <div style="font-size: 16px;">BIRRA-GATTO OS v4.0</div>
-                <div style="font-size: 9px; color: #555;">REF_ID: 1218709503 | MULTI-CRYPTO ACTIVE</div>
+                <div style="font-size: 16px; letter-spacing: 2px;">BIRRA-GATTO ULTIMATE</div>
+                <div style="font-size: 9px; color: #666;">SYS_VER: 5.0 | ENCRYPTION: ACTIVE</div>
             </div>
         </div>
-        <div id="status" style="font-size: 10px; color: #00ff41;">SCANNING_MARKET...</div>
+        <div style="text-align: right; font-size: 10px; color: #00ff41;">
+            REF_ID: 1218709503<br>STATUS: PROTECTED
+        </div>
     </div>
 
-    <div class="price-grid" id="price-grid">
+    <div class="price-grid" id="ticker">
         <div class="price-item"><span class="coin-name">BTC</span><span class="coin-val" id="price-BTC">---</span></div>
         <div class="price-item"><span class="coin-name">ETH</span><span class="coin-val" id="price-ETH">---</span></div>
         <div class="price-item"><span class="coin-name">SOL</span><span class="coin-val" id="price-SOL">---</span></div>
@@ -61,80 +67,97 @@
         <div class="price-item"><span class="coin-name">PEPE</span><span class="coin-val" id="price-PEPE">---</span></div>
     </div>
 
-    <div class="converter-box">
-        <input type="number" id="conv-amount" value="1" oninput="calculate()">
-        <select id="conv-coin" onchange="calculate()">
-            <option value="BTC">BTC</option>
-            <option value="ETH">ETH</option>
-            <option value="SOL">SOL</option>
-            <option value="BNB">BNB</option>
-            <option value="DOGE">DOGE</option>
-            <option value="PEPE">PEPE</option>
-        </select>
-        <span> = </span>
-        <span id="conv-result" style="color:#fff; font-weight:bold;">---</span>
+    <div class="module-row">
+        <div class="mod-box" style="border-color: #f3ba2f;">
+            <div class="mod-title" style="color: #f3ba2f;">> CRYPTO_CONVERTER</div>
+            <input type="number" id="amt" value="1" oninput="calc()" style="width: 70px;">
+            <select id="coin" onchange="calc()">
+                <option value="BTC">BTC</option><option value="ETH">ETH</option>
+                <option value="SOL">SOL</option><option value="BNB">BNB</option>
+                <option value="DOGE">DOGE</option><option value="PEPE">PEPE</option>
+            </select>
+            <div id="res" style="margin-top: 10px; font-weight: bold; color: #fff;">---</div>
+        </div>
+
+        <div class="mod-box" style="border-color: #4669ff;">
+            <div class="mod-title" style="color: #4669ff;">> GATTO-SHIELD_SCANNER</div>
+            <div id="security-data" style="font-size: 11px; line-height: 1.4;">Analisi IP in corso...</div>
+            <div id="sec-alert" style="color: #ff4444; font-size: 10px; margin-top: 8px; font-weight: bold;">[!] CONNESSIONE ESPOSTA</div>
+        </div>
     </div>
 
-    <div class="chart-container">
-        <div id="tradingview_chart" style="height: 100%; width: 100%;"></div>
+    <div class="chart-box">
+        <div id="tv_chart" style="height: 100%; width: 100%;"></div>
         <script src="https://s3.tradingview.com/tv.js"></script>
         <script>
             new TradingView.widget({
-                "autosize": true, "symbol": "BINANCE:BTCUSDT", "interval": "60", "theme": "dark", 
-                "style": "1", "locale": "it", "enable_publishing": false, "hide_side_toolbar": false, 
-                "allow_symbol_change": true, "container_id": "tradingview_chart"
+                "autosize": true, "symbol": "BINANCE:BTCUSDT", "interval": "60", "theme": "dark",
+                "style": "1", "locale": "it", "container_id": "tv_chart", "allow_symbol_change": true
             });
         </script>
     </div>
 
-    <div class="console" id="log">> Inizializzazione flussi dati per BTC, ETH, SOL, BNB, DOGE, PEPE...</div>
+    <div class="console" id="log">> Inizializzazione protocolli Birra-Gatto...</div>
 
     <div class="actions">
         <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="btn btn-gold">⚡ TRADE ON BINANCE</a>
-        <a href="https://nordvpn.com/it/" target="_blank" class="btn btn-blue">🛡️ GATTO-SHIELD VPN</a>
+        <a href="https://nordvpn.com/it/" target="_blank" class="btn btn-blue">🛡️ ATTIVA GATTO-SHIELD</a>
     </div>
 </div>
 
 <script>
     const coins = ['BTC', 'ETH', 'SOL', 'BNB', 'DOGE', 'PEPE'];
-    let currentPrices = {};
+    let prices = {};
 
-    async function updatePrices() {
+    // Aggiornamento Prezzi
+    async function update() {
         try {
-            for (const coin of coins) {
-                const symbol = coin === 'PEPE' ? '1000PEPEUSDT' : coin + 'USDT';
-                const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`);
-                const data = await res.json();
-                let price = parseFloat(data.price);
-                
-                // Correzione per PEPE che ha troppi zeri
-                if(coin === 'PEPE') price = price / 1000;
-
-                currentPrices[coin] = price;
-                document.getElementById(`price-${coin}`).innerText = "$" + (price < 1 ? price.toFixed(6) : price.toLocaleString());
+            for (const c of coins) {
+                const s = c === 'PEPE' ? '1000PEPEUSDT' : c + 'USDT';
+                const r = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${s}`);
+                const d = await r.json();
+                let p = parseFloat(d.price);
+                if(c === 'PEPE') p = p / 1000;
+                prices[c] = p;
+                document.getElementById(`price-${c}`).innerText = "$" + (p < 1 ? p.toFixed(5) : p.toLocaleString());
             }
-            calculate();
-            document.getElementById('status').innerText = "LIVE_DATA_SYNC: OK";
-        } catch(e) { document.getElementById('status').innerText = "CONNECTION_ERROR"; }
+            calc();
+        } catch(e) {}
     }
 
-    function calculate() {
-        const amount = document.getElementById('conv-amount').value;
-        const coin = document.getElementById('conv-coin').value;
-        const price = currentPrices[coin] || 0;
-        const total = (amount * price).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
-        document.getElementById('conv-result').innerText = "$" + total;
+    function calc() {
+        const a = document.getElementById('amt').value;
+        const c = document.getElementById('coin').value;
+        const total = (a * (prices[c] || 0)).toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('res').innerText = "= $" + total;
     }
 
-    setInterval(updatePrices, 5000);
-    updatePrices();
+    // Security Scan
+    async function scan() {
+        try {
+            const r = await fetch('https://ipapi.co/json/');
+            const d = await r.json();
+            document.getElementById('security-data').innerHTML = `
+                IP: <span style="color:#4669ff">${d.ip}</span><br>
+                LOC: <span style="color:#4669ff">${d.city} (${d.country_code})</span><br>
+                ISP: <span style="color:#4669ff">${d.org}</span>
+            `;
+            if(d.org.toLowerCase().includes('vpn')) {
+                document.getElementById('sec-alert').innerText = "[✓] VPN ATTIVA - PROTETTO";
+                document.getElementById('sec-alert').style.color = "#00ff41";
+            }
+        } catch(e) {}
+    }
 
-    // Log terminale
-    const logDiv = document.getElementById('log');
+    // Log dinamico
     setInterval(() => {
-        const msgs = ["> Scansione Whale su Solana...", "> Rilevato picco di volume su PEPE", "> Aggiornamento stagionalità completato", "> Birra-Gatto Security Status: Safe"];
-        logDiv.innerHTML = msgs[Math.floor(Math.random() * msgs.length)];
-    }, 6000);
+        const m = ["> Whale movement detected...", "> Scanning memecoins volume...", "> Gatto-Shield update complete.", "> Checking Binance liquidity..."];
+        document.getElementById('log').innerText = m[Math.floor(Math.random()*m.length)];
+    }, 5000);
+
+    setInterval(update, 5000);
+    update();
+    scan();
 </script>
 
 </body>
