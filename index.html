@@ -3,220 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birra-Gatto Hub Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <title>Birra-Gatto Security Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --gold: #f3ba2f;
-            --blue: #4669ff;
-            --bg: #0d0d0d;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
-        }
+        :root { --gold: #f3ba2f; --blue: #4669ff; --red: #ff4444; --green: #00ff41; --bg: #050505; }
+        body { background-color: var(--bg); color: #e0e0e0; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 600px; background: #0f0f0f; border: 1px solid #222; border-radius: 20px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.8); }
+        
+        .header { text-align: center; margin-bottom: 30px; }
+        .main-logo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 10px; }
 
-        body {
-            background-color: var(--bg);
-            color: #e0e0e0;
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
+        .master-card { background: #161616; border-radius: 15px; border: 1px solid #333; margin-bottom: 15px; overflow: hidden; }
+        .card-trigger { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .content-panel { display: none; padding: 0 20px 20px 20px; }
+        .active .content-panel { display: block; }
 
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background: linear-gradient(145deg, #161616, #0a0a0a);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
+        /* SECURITY TOOLS */
+        .audit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+        .audit-item { background: #0a0a0a; padding: 10px; border-radius: 8px; border-left: 3px solid var(--blue); }
+        .score-bar { background: #222; height: 10px; border-radius: 5px; margin: 15px 0; overflow: hidden; }
+        #score-fill { background: var(--red); width: 15%; height: 100%; transition: 1s; }
+        
+        .pass-tester { margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px; }
+        input { background: #000; border: 1px solid #444; color: var(--green); padding: 8px; width: 100%; border-radius: 5px; box-sizing: border-box; }
 
-        /* HEADER */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .logo-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        .main-logo {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 2px solid var(--gold);
-            padding: 3px;
-            background: var(--bg);
-            box-shadow: 0 0 20px rgba(243, 186, 47, 0.2);
-        }
-
-        h1 {
-            font-size: 26px;
-            margin: 10px 0;
-            letter-spacing: -0.5px;
-            color: #fff;
-        }
-
-        .status-badge {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        /* MODULI MASTER */
-        .master-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .master-card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .card-trigger {
-            padding: 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-        }
-
-        .card-title {
-            flex-grow: 1;
-            font-weight: 700;
-            font-size: 15px;
-        }
-
-        /* CONTENUTI ESPANDIBILI */
-        .content-panel {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .panel-inner {
-            padding: 0 20px 20px 20px;
-        }
-
-        /* TOOLS INTERNI */
-        .tool-data {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            background: rgba(255,255,255,0.02);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 10px;
-        }
-
-        /* BOTTONI AFFILIAZIONE */
-        .action-btn {
-            display: block;
-            text-decoration: none;
-            padding: 14px;
-            text-align: center;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 15px;
-            transition: all 0.2s;
-        }
-
-        .btn-gold { 
-            background: linear-gradient(to bottom, #f3ba2f, #d4a017); 
-            color: #000; 
-        }
-        .btn-blue { 
-            background: linear-gradient(to bottom, #4669ff, #2a48d1); 
-            color: #fff; 
-        }
-        .action-btn:active { transform: scale(0.97); }
-
-        .footer {
-            text-align: center;
-            font-size: 10px;
-            color: #333;
-            margin-top: 40px;
-        }
-
-        /* ANIMAZIONI */
-        .active .content-panel { max-height: 600px; }
-        .exposed { color: #ff4444; font-weight: bold; }
-        .protected { color: #00ff41; font-weight: bold; }
+        .action-btn { display: block; text-decoration: none; padding: 15px; text-align: center; border-radius: 10px; font-weight: 700; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-blue { background: var(--blue); color: #fff; box-shadow: 0 5px 15px rgba(70, 105, 255, 0.3); }
+        .btn-gold { background: var(--gold); color: #000; }
+        
+        #tradingview_chart { height: 300px; border-radius: 10px; overflow: hidden; border: 1px solid #333; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <div class="logo-wrapper">
-            <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/90'">
-        </div>
-        <h1>Birra-Gatto Hub</h1>
-        <div class="status-badge">STABLE RELEASE | REF_ID: 1218709503</div>
+        <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/70'">
+        <h1 style="font-size: 22px; margin: 0;">Birra-Gatto OS v8.0</h1>
+        <div style="font-size: 10px; color: #555; margin-top: 5px;">SEC_AUDIT_ACTIVE | REF_ID: 1218709503</div>
     </div>
 
     <div class="master-card" id="card-crypto">
         <div class="card-trigger" onclick="toggle('card-crypto')">
-            <div class="card-icon" style="background: rgba(243, 186, 47, 0.1); color: var(--gold);">₿</div>
-            <div class="card-title">Trading Terminal</div>
-            <div id="btc-price-mini" style="font-size: 12px; opacity: 0.6;">---</div>
+            <span style="color: var(--gold); font-weight: bold;">[₿] CRYPTO TERMINAL</span>
+            <span id="btc-price" style="font-family: 'JetBrains Mono';">$---</span>
         </div>
         <div class="content-panel">
-            <div class="panel-inner">
-                <div id="tv_chart" style="height: 250px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);"></div>
-                <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="action-btn btn-gold">Apri Binance</a>
-            </div>
+            <div id="tradingview_chart"></div>
+            <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="btn-gold action-btn">Trade on Binance</a>
         </div>
     </div>
 
     <div class="master-card" id="card-vpn">
         <div class="card-trigger" onclick="toggle('card-vpn')">
-            <div class="card-icon" style="background: rgba(70, 105, 255, 0.1); color: var(--blue);">🛡️</div>
-            <div class="card-title">Gatto-Shield VPN</div>
-            <div id="ip-mini" style="font-size: 12px; opacity: 0.6;">Check...</div>
+            <span style="color: var(--blue); font-weight: bold;">[🛡️] GATTO-SHIELD AUDIT</span>
+            <span id="anon-score" style="color: var(--red);">ANON: 15%</span>
         </div>
         <div class="content-panel">
-            <div class="panel-inner">
-                <div class="tool-data">
-                    <div id="user-info">Analisi rete in corso...</div>
-                    <div id="sec-status" class="exposed" style="margin-top:10px;">[!] SISTEMA ESPOSTO</div>
-                </div>
-                <a href="https://nordvpn.com/it/" target="_blank" class="action-btn btn-blue">Attiva Protezione</a>
+            <div style="font-size: 11px; margin-bottom: 10px; color: #888;">NETWORK VULNERABILITY REPORT:</div>
+            
+            <div class="audit-grid">
+                <div class="audit-item">IP: <span id="ip">Loading...</span></div>
+                <div class="audit-item">ISP: <span id="isp">Loading...</span></div>
+                <div class="audit-item">OS: <span id="os">Detection...</span></div>
+                <div class="audit-item">BROWSER: <span id="browser">Detection...</span></div>
             </div>
+
+            <div class="score-bar"><div id="score-fill"></div></div>
+            <div id="status-msg" style="font-size: 12px; color: var(--red); font-weight: bold; text-align: center;">ATTENZIONE: DATI ESPOSTI</div>
+
+            <div class="pass-tester">
+                <div style="font-size: 10px; margin-bottom: 5px;">PASS_STRENGTH_TESTER:</div>
+                <input type="password" id="pass-input" placeholder="Digita una password..." oninput="testPass()">
+                <div id="pass-res" style="font-size: 10px; margin-top: 5px; color: #666;">Tempo di crack stimato: ---</div>
+            </div>
+
+            <a href="https://nordvpn.com/it/" target="_blank" class="btn-blue action-btn">Metti al sicuro la connessione</a>
         </div>
     </div>
 
-    <div class="footer">
-        BUILT WITH ZERO CODING BACKGROUND<br>
-        © 2026 TOMMY9832610 SYSTEM
+    <div style="text-align: center; font-size: 9px; color: #333; margin-top: 30px;">
+        © 2026 TOMMY9832610 | ENCRYPTED TERMINAL
     </div>
 </div>
 
@@ -224,47 +91,47 @@
 <script>
     function toggle(id) {
         const el = document.getElementById(id);
-        const wasActive = el.classList.contains('active');
+        const active = el.classList.contains('active');
         document.querySelectorAll('.master-card').forEach(c => c.classList.remove('active'));
-        if(!wasActive) {
+        if(!active) {
             el.classList.add('active');
-            if(id === 'card-crypto') loadChart();
+            if(id === 'card-crypto') new TradingView.widget({"autosize":true,"symbol":"BINANCE:BTCUSDT","interval":"60","theme":"dark","container_id":"tradingview_chart"});
         }
     }
 
-    function loadChart() {
-        new TradingView.widget({
-            "autosize": true, "symbol": "BINANCE:BTCUSDT", "interval": "60", "theme": "dark",
-            "style": "1", "locale": "it", "container_id": "tv_chart", "enable_publishing": false
-        });
-    }
-
-    async function fetchData() {
+    async function updateAudit() {
         try {
-            // BTC Price
-            const btcRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
-            const btcData = await btcRes.json();
-            document.getElementById('btc-price-mini').innerText = "$" + parseFloat(btcData.price).toLocaleString();
+            // Prezzo BTC
+            const btc = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').then(r => r.json());
+            document.getElementById('btc-price').innerText = "$" + parseFloat(btc.price).toLocaleString();
 
             // IP Data
-            const ipRes = await fetch('https://ipapi.co/json/');
-            const ipData = await ipRes.json();
-            document.getElementById('ip-mini').innerText = ipData.ip;
-            document.getElementById('user-info').innerHTML = `
-                LOCALITÀ: ${ipData.city}<br>
-                PROVIDER: ${ipData.org}
-            `;
-            if(ipData.org.toLowerCase().includes('vpn')) {
-                const status = document.getElementById('sec-status');
-                status.innerText = "[✓] SISTEMA PROTETTO";
-                status.className = "protected";
+            const ip = await fetch('https://ipapi.co/json/').then(r => r.json());
+            document.getElementById('ip').innerText = ip.ip;
+            document.getElementById('isp').innerText = ip.org;
+            document.getElementById('os').innerText = navigator.platform;
+            document.getElementById('browser').innerText = navigator.userAgent.split(' ')[0];
+
+            if(ip.org.toLowerCase().includes('vpn')) {
+                document.getElementById('score-fill').style.width = "95%";
+                document.getElementById('score-fill').style.background = "var(--green)";
+                document.getElementById('anon-score').innerText = "ANON: 95%";
+                document.getElementById('anon-score').style.color = "var(--green)";
+                document.getElementById('status-msg').innerText = "CONNESSIONE CRIPTATA";
+                document.getElementById('status-msg').style.color = "var(--green)";
             }
         } catch(e) {}
     }
 
-    fetchData();
-    setInterval(fetchData, 10000);
-</script>
+    function testPass() {
+        const p = document.getElementById('pass-input').value;
+        const res = document.getElementById('pass-res');
+        if(p.length < 5) res.innerText = "Crack istantaneo";
+        else if(p.length < 10) res.innerText = "Crack in 2 ore";
+        else { res.innerText = "Crack in 100+ anni"; res.style.color = "var(--green)"; }
+    }
 
+    updateAudit();
+</script>
 </body>
 </html>
