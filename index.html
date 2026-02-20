@@ -3,32 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birra-Gatto Hub Pro</title>
+    <title>Birra-Gatto Ultimate Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f3ba2f; --blue: #4669ff; --bg: #0d0d0d; --card-bg: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.1); }
-        body { background-color: var(--bg); color: #e0e0e0; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-        .container { width: 100%; max-width: 500px; background: linear-gradient(145deg, #161616, #0a0a0a); border: 1px solid var(--border); border-radius: 24px; padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        :root { --gold: #f3ba2f; --blue: #4669ff; --bg: #0a0a0a; --card-bg: #141414; --border: #222; }
+        body { background-color: var(--bg); color: #e0e0e0; font-family: 'Inter', sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; background: #000; border: 1px solid var(--border); border-radius: 24px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         
-        .header { text-align: center; margin-bottom: 30px; }
-        .main-logo { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--gold); padding: 3px; background: var(--bg); }
-        
-        .price-strip { display: flex; overflow-x: auto; gap: 10px; margin-bottom: 25px; scrollbar-width: none; }
-        .price-chip { background: var(--card-bg); padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border); white-space: nowrap; font-size: 11px; }
-        .chip-name { color: var(--gold); font-weight: bold; margin-right: 5px; }
+        .header { text-align: center; margin-bottom: 25px; }
+        .main-logo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--gold); padding: 3px; }
 
+        /* CARDS */
         .master-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; margin-bottom: 15px; overflow: hidden; }
-        .card-trigger { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .content-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: rgba(0, 0, 0, 0.2); }
-        .active .content-panel { max-height: 800px; padding: 0 20px 20px 20px; }
+        .card-trigger { padding: 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .content-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: rgba(0,0,0,0.3); }
+        .active .content-panel { max-height: 1000px; padding: 0 18px 20px 18px; }
 
-        .audit-box { font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #000; padding: 15px; border-radius: 12px; border-left: 3px solid var(--blue); }
-        .audit-line { margin-bottom: 5px; color: #888; }
-        .audit-val { color: #fff; }
-        .danger { color: #ff4444; }
-        .safe { color: #00ff41; }
+        /* VPN TOOLS STYLES */
+        .audit-box { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #aaa; margin-top: 10px; }
+        .audit-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #222; }
+        .status-tag { padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .exposed { background: rgba(255, 68, 68, 0.1); color: #ff4444; }
+        .safe { background: rgba(0, 255, 65, 0.1); color: #00ff41; }
 
-        .action-btn { display: block; text-decoration: none; padding: 14px; text-align: center; border-radius: 12px; font-weight: 700; font-size: 13px; text-transform: uppercase; margin-top: 15px; }
+        /* PING TESTER */
+        .ping-box { background: #000; padding: 12px; border-radius: 10px; border: 1px solid #333; margin-top: 15px; text-align: center; }
+        #ping-val { font-size: 20px; font-weight: bold; color: var(--gold); }
+
+        .btn { display: block; text-decoration: none; padding: 15px; text-align: center; border-radius: 12px; font-weight: 700; font-size: 13px; text-transform: uppercase; margin-top: 15px; }
         .btn-gold { background: var(--gold); color: #000; }
         .btn-blue { background: var(--blue); color: #fff; }
     </style>
@@ -37,41 +39,45 @@
 
 <div class="container">
     <div class="header">
-        <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/80'">
-        <h1 style="font-size: 24px; margin: 10px 0;">Birra-Gatto Hub Pro</h1>
-        <div style="font-size: 9px; color: #555;">ID: 1218709503 | STATUS: LIVE AUDIT</div>
+        <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/70'">
+        <h1 style="font-size: 22px; margin: 10px 0;">Birra-Gatto Hub v12.0</h1>
     </div>
 
-    <div class="price-strip" id="ticker">
-        <div class="price-chip"><span class="chip-name">BTC</span><span id="p-BTC">...</span></div>
-        <div class="price-chip"><span class="chip-name">ETH</span><span id="p-ETH">...</span></div>
-        <div class="price-chip"><span class="chip-name">SOL</span><span id="p-SOL">...</span></div>
-    </div>
-
-    <div class="master-card" id="card-crypto">
-        <div class="card-trigger" onclick="toggle('card-crypto')">
-            <div style="font-weight:bold; color:var(--gold);">[₿] Trading Terminal</div>
-            <div style="font-size:12px; opacity:0.5;">Chart ></div>
+    <div class="master-card" id="card-trade">
+        <div class="card-trigger" onclick="toggle('card-trade')">
+            <div style="font-weight:bold; color:var(--gold);">[₿] Terminale Trading</div>
+            <div id="btc-price" style="font-size:12px; font-family:'JetBrains Mono';">$---</div>
         </div>
         <div class="content-panel">
             <div id="tv_chart" style="height: 250px; border-radius: 12px; overflow: hidden;"></div>
-            <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="action-btn btn-gold">Apri Binance</a>
+            <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="btn btn-gold">Accedi a Binance</a>
         </div>
     </div>
 
     <div class="master-card" id="card-vpn">
         <div class="card-trigger" onclick="toggle('card-vpn')">
-            <div style="font-weight:bold; color:var(--blue);">[🛡️] Gatto-Shield Scan</div>
-            <div style="font-size:12px; opacity:0.5;">Audit ></div>
+            <div style="font-weight:bold; color:var(--blue);">[🛡️] Gatto-Shield Audit</div>
+            <div style="font-size:12px; opacity:0.5;">Security Scan ></div>
         </div>
         <div class="content-panel">
             <div class="audit-box">
-                <div class="audit-line">[IP_PUBLIC]: <span id="isp-val" class="audit-val">Analisi...</span></div>
-                <div class="audit-line">[RTC_LEAK]: <span id="rtc-val" class="danger">RILEVATO</span></div>
-                <div class="audit-line">[HARDWARE]: <span id="hw-val" class="audit-val">Analisi...</span></div>
-                <div class="audit-line">[PRIVACY]: <span id="sec-msg" class="danger">VULNERABILE</span></div>
+                <div class="audit-row"><span>IP_PUBLIC:</span> <span id="ip" class="exposed">Rilevamento...</span></div>
+                <div class="audit-row"><span>ISP_SERVER:</span> <span id="isp">Analisi...</span></div>
+                <div class="audit-row"><span>PRIVACY_MODE:</span> <span id="p-mode" class="exposed">VULNERABILE</span></div>
+                <div class="audit-row"><span>COOKIES_TRACK:</span> <span id="cookies" class="exposed">ATTIVI</span></div>
             </div>
-            <a href="https://nordvpn.com/it/" target="_blank" class="action-btn btn-blue">Proteggi Connessione</a>
+
+            <div class="ping-box">
+                <div style="font-size: 10px; color: #666; margin-bottom: 5px;">LATENZA SERVER TRADING (PING)</div>
+                <div id="ping-val">-- ms</div>
+                <button onclick="runPing()" style="background:transparent; border:1px solid #444; color:#888; font-size:9px; cursor:pointer; margin-top:5px; border-radius:4px;">RIFAI TEST</button>
+            </div>
+
+            <div id="verdict" style="text-align:center; color:#ff4444; font-size:10px; margin-top:15px; font-weight:bold;">
+                ⚠ LA TUA CONNESSIONE È ESPOSTA AGLI ISP
+            </div>
+
+            <a href="https://nordvpn.com/it/" target="_blank" class="btn btn-blue">Proteggi con NordVPN</a>
         </div>
     </div>
 </div>
@@ -79,48 +85,54 @@
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script>
     function toggle(id) {
-        const el = document.getElementById(id);
-        el.classList.toggle('active');
-        if(id === 'card-crypto' && el.classList.contains('active')) {
-            new TradingView.widget({"autosize":true,"symbol":"BINANCE:BTCUSDT","theme":"dark","container_id":"tv_chart"});
-        }
+        document.querySelectorAll('.master-card').forEach(c => {
+            if(c.id === id) c.classList.toggle('active');
+            else c.classList.remove('active');
+        });
+        if(id === 'card-trade') new TradingView.widget({"autosize":true,"symbol":"BINANCE:BTCUSDT","theme":"dark","container_id":"tv_chart","hide_side_toolbar":true});
     }
 
-    async function runScan() {
-        // 1. Prezzi Crypto (Sempre funzionanti)
+    async function runShield() {
         try {
-            const coins = ['BTC', 'ETH', 'SOL'];
-            for(const c of coins) {
-                const r = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${c}USDT`).then(res => res.json());
-                document.getElementById(`p-${c}`).innerText = "$" + parseFloat(r.price).toLocaleString();
-            }
-        } catch(e) {}
+            // Prezzo Reale BTC
+            const btc = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').then(r => r.json());
+            document.getElementById('btc-price').innerText = "$" + parseFloat(btc.price).toLocaleString();
 
-        // 2. Audit Sicurezza (Riparato per S25 Ultra)
-        try {
-            // IP e Provider
-            const ipData = await fetch('https://ipapi.co/json/').then(r => r.json());
-            document.getElementById('isp-val').innerText = ipData.ip + " (" + ipData.org + ")";
+            // Dati Rete Reali
+            const res = await fetch('https://ipapi.co/json/').then(r => r.json());
+            document.getElementById('ip').innerText = res.ip;
+            document.getElementById('isp').innerText = res.org;
             
-            // Hardware (Se bloccato dal telefono, usa valori standard)
-            const cores = navigator.hardwareConcurrency || "Protetti";
-            const ram = navigator.deviceMemory ? navigator.deviceMemory + "GB" : "Criptata";
-            document.getElementById('hw-val').innerText = cores + " Cores / " + ram + " RAM";
-
-            // Controllo VPN reale
-            if(ipData.org.toLowerCase().includes('vpn') || ipData.org.toLowerCase().includes('proxy')) {
-                document.getElementById('rtc-val').innerText = "PROTETTO";
-                document.getElementById('rtc-val').className = "safe";
-                document.getElementById('sec-msg').innerText = "SISTEMA SICURO";
-                document.getElementById('sec-msg').className = "safe";
+            // Verifica Cookies Reale
+            if (!navigator.cookieEnabled) {
+                document.getElementById('cookies').innerText = "BLOCCATI";
+                document.getElementById('cookies').className = "safe";
             }
-        } catch(e) {
-            document.getElementById('isp-val').innerText = "Dati protetti dal Browser";
-        }
+
+            // Verifica se sta usando VPN
+            if (res.org.toLowerCase().includes('vpn') || res.org.toLowerCase().includes('proxy')) {
+                document.getElementById('p-mode').innerText = "PROTETTO";
+                document.getElementById('p-mode').className = "safe";
+                document.getElementById('verdict').innerText = "✓ CONNESSIONE CRIPTATA";
+                document.getElementById('verdict').style.color = "#00ff41";
+            }
+
+            runPing();
+        } catch(e) {}
     }
 
-    runScan();
-    setInterval(runScan, 15000);
+    // TEST PING REALE
+    function runPing() {
+        const start = Date.now();
+        fetch('https://api.binance.com/api/v3/ping').then(() => {
+            const delta = Date.now() - start;
+            document.getElementById('ping-val').innerText = delta + " ms";
+            if (delta > 150) document.getElementById('ping-val').style.color = "#ff4444";
+            else document.getElementById('ping-val').style.color = "#00ff41";
+        });
+    }
+
+    runShield();
 </script>
 </body>
 </html>
