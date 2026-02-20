@@ -3,112 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - SUPER TERMINAL</title>
-    
+    <title>BIRRA AI - PREDATOR v20</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#000000">
-
     <style>
-        :root { --gold: #ffcc00; --bg: #000; --card: #0a0a0a; --green: #00ff41; --red: #ff3131; }
-        
-        /* SPLASH SCREEN */
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 10000;
-            transition: opacity 0.8s ease, visibility 0.8s;
-        }
-        .splash-logo { width: 140px; height: 140px; border-radius: 50%; animation: pulse-gold 2s infinite; object-fit: cover; }
-        @keyframes pulse-gold {
-            0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--gold)); }
-            70% { transform: scale(1.05); filter: drop-shadow(0 0 15px var(--gold)); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--gold)); }
-        }
-
-        /* UI APP */
+        :root { --gold: #ffcc00; --bg: #000; --green: #00ff41; --red: #ff3131; }
         body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
-        
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid #1a1a1a; background: #000; }
-        .logo-img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--gold); object-fit: cover; }
-        .coin-select { background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 5px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; }
 
-        .price-zone { padding: 15px 0; text-align: center; flex-shrink: 0; }
-        #main-price { font-size: 2.8rem; font-weight: 900; margin: 0; letter-spacing: -2px; }
-        #main-perc { font-weight: bold; font-size: 1rem; }
+        /* ANIMAZIONI GATTO DINAMICO */
+        .logo-container { position: relative; width: 45px; height: 45px; }
+        .logo-img { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--gold); transition: 0.5s; object-fit: cover; }
+        .market-up { filter: drop-shadow(0 0 10px var(--green)); border-color: var(--green); transform: scale(1.1); }
+        .market-down { filter: drop-shadow(0 0 10px var(--red)); border-color: var(--red); animation: shake 0.5s infinite; }
+        @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } 100% { transform: translate(1px, 1px); } }
 
-        .chart-container { flex-grow: 1; margin: 5px 10px; border-radius: 15px; overflow: hidden; border: 1px solid #1a1a1a; position: relative; }
+        /* NAVBAR & PREZZO */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid #1a1a1a; }
+        .coin-select { background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 8px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; }
+        .price-zone { padding: 10px 0; text-align: center; flex-shrink: 0; }
+        #main-price { font-size: 3rem; font-weight: 900; letter-spacing: -2px; transition: 0.3s; }
 
-        /* TASTO FISSO IN FONDO (MODIFICA CHIAVE) */
+        /* TERMINALE WHALE DETECTOR */
+        .chart-container { flex-grow: 1; margin: 5px 10px; border-radius: 15px; overflow: hidden; border: 1px solid #1a1a1a; }
+        .terminal-area { background: #050505; height: 100px; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.7rem; border-top: 2px solid var(--gold); overflow-y: auto; margin-bottom: 90px; }
+        .log-whale { color: var(--green); font-weight: bold; animation: flash 1s; }
+        .log-alert { color: var(--red); font-weight: bold; }
+        @keyframes flash { from { background: rgba(0,255,65,0.2); } to { background: transparent; } }
+
+        /* TASTO FISSO OPERA */
         .btn-gold-fixed {
-            position: fixed;
-            bottom: 20px;
-            left: 15px;
-            right: 15px;
-            padding: 20px;
-            background: linear-gradient(45deg, var(--gold), #ffaa00);
-            color: black;
-            border: none;
-            border-radius: 18px;
-            font-weight: 900;
-            text-transform: uppercase;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            z-index: 9999; /* Sopra a tutto */
-            cursor: pointer;
-            text-align: center;
+            position: fixed; bottom: 20px; left: 15px; right: 15px; padding: 22px;
+            background: linear-gradient(45deg, var(--gold), #ffaa00); color: black;
+            border: none; border-radius: 20px; font-weight: 900; text-transform: uppercase;
+            font-size: 1.1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 9999;
         }
-
-        .terminal-area { background: #050505; height: 120px; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.7rem; border-top: 1px solid #1a1a1a; overflow-y: auto; color: #aaa; margin-bottom: 80px; /* Spazio per il tasto */ }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <img src="logo.png" class="splash-logo" alt="Logo">
-        <h2 style="color:var(--gold); margin-top:15px; letter-spacing:3px;">BIRRA AI</h2>
-    </div>
-
     <div class="navbar">
         <div style="display:flex; align-items:center; gap:10px;">
-            <img src="logo.png" class="logo-img">
-            <span style="color:var(--gold); font-weight:900; font-size:0.8rem;">TERMINAL v19</span>
+            <div class="logo-container">
+                <img src="logo.png" id="cat-logo" class="logo-img">
+            </div>
+            <span style="color:var(--gold); font-weight:900; font-size:0.7rem;">PREDATOR v20</span>
         </div>
         <select class="coin-select" onchange="changeAsset(this.value)">
             <option value="BTCUSDT">BITCOIN (BTC)</option>
             <option value="ETHUSDT">ETHEREUM (ETH)</option>
+            <option value="BNBUSDT">BINANCE (BNB)</option>
             <option value="SOLUSDT">SOLANA (SOL)</option>
+            <option value="XRPUSDT">RIPPLE (XRP)</option>
+            <option value="ADAUSDT">CARDANO (ADA)</option>
         </select>
     </div>
 
     <div class="price-zone">
         <div id="main-price">$ --.---</div>
-        <div id="main-perc">0.00%</div>
+        <div id="main-perc" style="font-weight:bold;">0.00%</div>
     </div>
 
     <div class="chart-container">
         <div id="tradingview_widget" style="height: 100%;"></div>
     </div>
 
-    <div class="terminal-area" id="log">
-        > Birra AI Terminal Online...<br>
-        > In attesa di segnali Binance...<br>
+    <div class="terminal-area" id="log-box">
+        > Terminale Predator Online...<br>
+        > In attesa di segnali da Binance API...<br>
     </div>
 
     <button class="btn-gold-fixed" onclick="triggerHyperBypass()">⚡ OPERA ORA SU BINANCE</button>
 
+    <audio id="whale-sound" src="https://www.soundjay.com/buttons/beep-01a.mp3" preload="auto"></audio>
+
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
-        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
-
-        // Rimuovi splash
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(() => document.getElementById('splash-screen').style.visibility = 'hidden', 800);
-            }, 2500);
-        });
-
         let currentAsset = 'BTCUSDT';
+        let lastPrice = 0;
+        const logBox = document.getElementById('log-box');
+        const catLogo = document.getElementById('cat-logo');
+        const whaleSound = document.getElementById('whale-sound');
+
         function initTV(s) {
             new TradingView.widget({
                 "autosize": true, "symbol": "BINANCE:" + s, "interval": "15", "theme": "dark",
@@ -120,28 +94,52 @@
             try {
                 const r = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${currentAsset}`);
                 const d = await r.json();
-                document.getElementById('main-price').innerText = "$" + parseFloat(d.lastPrice).toLocaleString();
+                const price = parseFloat(d.lastPrice);
                 const perc = parseFloat(d.priceChangePercent);
+                
+                document.getElementById('main-price').innerText = "$" + price.toLocaleString();
                 const pEl = document.getElementById('main-perc');
-                pEl.innerText = (perc >= 0 ? '+' : '') + perc + "%";
+                pEl.innerText = (perc >= 0 ? '▲ ' : '▼ ') + perc + "%";
                 pEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
+
+                // Animazione Gatto in base al mercato
+                catLogo.className = "logo-img " + (perc >= 0 ? "market-up" : "market-down");
+                lastPrice = price;
+            } catch (e) {}
+        }
+
+        // WHALE DETECTOR REALE
+        async function detectWhales() {
+            try {
+                const r = await fetch(`https://api.binance.com/api/v3/trades?symbol=${currentAsset}&limit=15`);
+                const trades = await r.json();
+                const whaleTrade = trades.reverse().find(t => (parseFloat(t.qty) * lastPrice) > 50000);
+
+                if (whaleTrade) {
+                    const value = Math.round(parseFloat(whaleTrade.qty) * lastPrice);
+                    const type = whaleTrade.isBuyerMaker ? "VENDITA" : "ACQUISTO";
+                    const colorClass = whaleTrade.isBuyerMaker ? "log-alert" : "log-whale";
+                    
+                    logBox.innerHTML = `<span class="${colorClass}">> [WHALE ALERT] ${type} di $${value.toLocaleString()}</span><br>` + logBox.innerHTML;
+                    whaleSound.play().catch(() => {}); // Suona se l'utente ha interagito
+                }
             } catch (e) {}
         }
 
         function triggerHyperBypass() {
+            whaleSound.play(); // Sblocca l'audio per i browser
             window.open("https://www.binance.com/it/trade/" + currentAsset.replace("USDT", "_USDT"), '_blank');
         }
 
         function changeAsset(v) { 
-            currentAsset = v; 
-            initTV(v); 
-            updatePrice();
-            document.getElementById('log').innerHTML += `> Asset cambiato: ${v}<br>`;
+            currentAsset = v; initTV(v); updatePrice(); 
+            logBox.innerHTML = `> Switch asset: ${v}<br>` + logBox.innerHTML;
         }
 
         initTV(currentAsset);
         updatePrice();
-        setInterval(updatePrice, 10000);
+        setInterval(updatePrice, 5000);
+        setInterval(detectWhales, 4000); // Scansiona ogni 4 secondi
     </script>
 </body>
 </html>
