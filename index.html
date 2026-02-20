@@ -3,48 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIRRA AI - PWA v18.2</title>
+    <title>BIRRA AI - PRO</title>
     
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ffcc00">
-    <link rel="apple-touch-icon" href="7418a0a9-2f5b-4366-8d18-20224213038d.jpg">
+    <meta name="theme-color" content="#000000">
 
     <style>
         :root { --gold: #ffcc00; --bg: #000; --card: #0a0a0a; --green: #00ff41; --red: #ff3131; }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        
+        /* STILE SPLASH SCREEN */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .splash-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            margin-bottom: 20px;
+            animation: pulse-gold 2s infinite;
+        }
+        .splash-title {
+            color: var(--gold);
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+        @keyframes pulse-gold {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 30px 10px rgba(255, 204, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 204, 0, 0); }
+        }
 
+        /* RESTO DELLO STILE APP */
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
         .ticker-wrap { height: 30px; background: #111; border-bottom: 1px solid var(--gold); overflow: hidden; display: flex; align-items: center; }
         .ticker-move { white-space: nowrap; animation: scroll 60s linear infinite; color: var(--gold); font-size: 0.7rem; font-weight: bold; }
         @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
-
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #1a1a1a; background: #000; position: sticky; top: 0; z-index: 1000; }
         .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--gold); letter-spacing: 2px; font-size: 0.8rem; }
         .logo-img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--gold); object-fit: cover; }
         .coin-select { background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 5px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; }
-
         .price-zone { padding: 25px 20px; text-align: center; }
         #main-price { font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -2px; }
         #main-perc { font-weight: bold; font-size: 1.2rem; margin-top: 5px; }
-
         .chart-container { height: 280px; margin: 10px; border-radius: 20px; overflow: hidden; border: 1px solid #1a1a1a; }
-
         .whale-box { background: var(--card); margin: 10px 15px; padding: 15px; border-radius: 18px; border-left: 4px solid var(--gold); min-height: 80px; }
-        .whale-header { font-size: 0.6rem; color: #555; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between; }
         #whale-msg { font-family: 'Courier New', monospace; font-size: 0.75rem; font-weight: bold; line-height: 1.4; }
-
-        .btn-gold { display: block; width: calc(100% - 30px); margin: 25px 15px; padding: 22px; background: linear-gradient(45deg, var(--gold), #ffaa00); color: black; border: none; border-radius: 20px; font-weight: 900; text-transform: uppercase; font-size: 1.1rem; cursor: pointer; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        .btn-gold { display: block; width: calc(100% - 30px); margin: 25px 15px; padding: 22px; background: linear-gradient(45deg, var(--gold), #ffaa00); color: black; border: none; border-radius: 20px; font-weight: 900; text-transform: uppercase; font-size: 1.1rem; cursor: pointer; }
     </style>
 </head>
 <body>
 
+    <div id="splash-screen">
+        <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="splash-logo" alt="Logo">
+        <div class="splash-title">Birra AI</div>
+    </div>
+
     <div class="ticker-wrap">
-        <div class="ticker-move" id="news-text">BIRRA AI - PWA TERMINAL ACTIVE +++ SCANNING REAL-TIME DATA... +++</div>
+        <div class="ticker-move">BIRRA AI - REAL-TIME INTELLIGENCE +++ SCANNING BLOCKCHAIN +++</div>
     </div>
 
     <div class="navbar">
         <div class="logo-area">
-            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img" alt="G">
+            <img src="7418a0a9-2f5b-4366-8d18-20224213038d.jpg" class="logo-img">
             <span>BIRRA AI</span>
         </div>
         <select class="coin-select" onchange="changeAsset(this.value)">
@@ -64,21 +96,21 @@
     </div>
 
     <div class="whale-box">
-        <div class="whale-header">
-            <span>Market Whale Radar</span>
-            <span style="color: var(--green);">● LIVE FEED</span>
-        </div>
-        <div id="whale-msg">> Scansione ordini Binance...</div>
+        <div id="whale-msg">> Scansione ordini...</div>
     </div>
 
     <button class="btn-gold" onclick="triggerHyperBypass()">⚡ OPERA ORA</button>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
-        // Registrazione Service Worker per PWA
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
+        // RIMOZIONE SPLASH SCREEN DOPO 2.5 SECONDI
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const ss = document.getElementById('splash-screen');
+                ss.style.opacity = '0';
+                ss.style.visibility = 'hidden';
+            }, 2500);
+        });
 
         let currentAsset = 'BTCUSDT';
         let lastPrice = 0;
@@ -97,30 +129,28 @@
                 lastPrice = parseFloat(d.lastPrice);
                 document.getElementById('main-price').innerText = "$" + lastPrice.toLocaleString();
                 const perc = parseFloat(d.priceChangePercent);
-                const pEl = document.getElementById('main-perc');
-                pEl.innerText = (perc >= 0 ? '+' : '') + perc + "%";
-                pEl.style.color = perc >= 0 ? '#00ff41' : '#ff3131';
+                document.getElementById('main-perc').innerText = (perc >= 0 ? '+' : '') + perc + "%";
+                document.getElementById('main-perc').style.color = perc >= 0 ? '#00ff41' : '#ff3131';
             } catch (e) {}
         }
 
         async function fetchBinanceWhales() {
             try {
-                const r = await fetch(`https://api.binance.com/api/v3/trades?symbol=${currentAsset}&limit=30`);
+                const r = await fetch(`https://api.binance.com/api/v3/trades?symbol=${currentAsset}&limit=20`);
                 const trades = await r.json();
                 const bigTrade = trades.reverse().find(t => (parseFloat(t.qty) * lastPrice) > 15000);
                 if (bigTrade) {
-                    const val = (parseFloat(bigTrade.qty) * lastPrice).toLocaleString(undefined, {maximumFractionDigits: 0});
+                    const val = (parseFloat(bigTrade.qty) * lastPrice).toLocaleString();
                     const type = bigTrade.isBuyerMaker ? "VENDITA" : "ACQUISTO";
-                    const color = bigTrade.isBuyerMaker ? "var(--red)" : "var(--green)";
-                    document.getElementById('whale-msg').style.color = color;
-                    document.getElementById('whale-msg').innerHTML = `> [ALERT] ${type}: rilevati $${val} su ${currentAsset.replace('USDT','')}`;
+                    const msg = document.getElementById('whale-msg');
+                    msg.style.color = bigTrade.isBuyerMaker ? "var(--red)" : "var(--green)";
+                    msg.innerHTML = `> [ALERT] ${type}: $${val} su ${currentAsset.replace('USDT','')}`;
                 }
             } catch (e) {}
         }
 
         function triggerHyperBypass() {
-            const target = "https://www.binance.com"; 
-            window.open(target, '_blank');
+            window.open("https://www.binance.com", '_blank');
         }
 
         function changeAsset(v) { currentAsset = v; initTV(v); updatePrice(); }
