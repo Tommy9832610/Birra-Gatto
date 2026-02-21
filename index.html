@@ -3,51 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birra-Gatto: THE SENTINEL</title>
+    <title>Birra-Gatto: THE SOVEREIGN</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f3ba2f; --blue: #007bff; --bg: #030303; --card: rgba(15, 15, 15, 0.95); --border: #1a1a1a; --green: #00ff41; --red: #ff4444; }
+        :root { --gold: #f3ba2f; --blue: #007bff; --bg: #050505; --card: rgba(18, 18, 18, 0.98); --border: #222; --green: #00ff41; --red: #ff4444; }
         body { background-color: var(--bg); color: #e0e0e0; font-family: 'Inter', sans-serif; margin: 0; padding: 10px; overflow-x: hidden; }
+        
         canvas { position: fixed; top: 0; left: 0; z-index: -1; display: none; pointer-events: none; }
+        .container { width: 100%; max-width: 550px; margin: auto; background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 25px; box-shadow: 0 30px 100px rgba(0,0,0,1); backdrop-filter: blur(15px); }
         
-        .container { width: 100%; max-width: 550px; margin: auto; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 20px; box-shadow: 0 40px 100px rgba(0,0,0,1); backdrop-filter: blur(15px); }
-        
-        /* HEADER & NORDVPN OLOGRAPHIC BADGE */
-        .header { text-align: center; margin-bottom: 20px; }
-        .nord-banner {
-            display: inline-block; background: linear-gradient(90deg, rgba(0,123,255,0.1), rgba(0,255,65,0.1));
-            border: 1px solid rgba(0,123,255,0.3); padding: 5px 15px; border-radius: 50px;
-            font-size: 9px; font-weight: 900; color: var(--blue); text-transform: uppercase; letter-spacing: 2px;
-            box-shadow: 0 0 20px rgba(0,123,255,0.2); margin-bottom: 15px;
-        }
-        .main-logo { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--gold); padding: 3px; background: #000; box-shadow: 0 0 30px rgba(243, 186, 47, 0.2); }
+        .header { text-align: center; margin-bottom: 15px; }
+        .main-logo { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--gold); padding: 3px; background: #000; box-shadow: 0 0 20px rgba(243, 186, 47, 0.2); }
 
-        /* WHALE RADAR & NEWS */
-        .radar-box { position: relative; height: 60px; background: radial-gradient(circle, #0a0a0a, #000); border: 1px solid #111; border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
-        .sweep { position: absolute; width: 100%; height: 100%; background: conic-gradient(from 0deg, transparent, rgba(0,255,65,0.05)); animation: rotate 4s linear infinite; }
-        .news-ticker { background: #000; color: var(--gold); font-size: 9px; padding: 6px; border-radius: 8px; margin-bottom: 12px; font-family: 'JetBrains Mono'; overflow: hidden; white-space: nowrap; border: 1px solid #111; }
+        /* NORDVPN PREMIUM BADGE */
+        .nord-elite-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: linear-gradient(90deg, rgba(0,123,255,0.1), rgba(0,255,65,0.05));
+            border: 1px solid rgba(0,123,255,0.3); padding: 5px 15px; border-radius: 50px;
+            font-size: 9px; font-weight: 900; color: var(--blue); text-transform: uppercase; letter-spacing: 1.5px;
+            box-shadow: 0 0 25px rgba(0,123,255,0.1); margin-bottom: 15px;
+        }
+
+        /* RADAR & NEWS */
+        .radar-box { position: relative; height: 70px; background: radial-gradient(circle, #111, #000); border: 1px solid #222; border-radius: 15px; margin-bottom: 10px; overflow: hidden; }
+        .sweep { position: absolute; width: 100%; height: 100%; background: conic-gradient(from 0deg, transparent, rgba(0,255,65,0.1)); animation: rotate 3s linear infinite; }
+        .news-bar { background: #000; color: var(--gold); font-size: 9px; padding: 6px; border-radius: 8px; margin-bottom: 10px; font-family: 'JetBrains Mono'; overflow: hidden; white-space: nowrap; border: 1px solid #111; }
         .scroll { display: inline-block; animation: scroll 25s linear infinite; }
 
-        /* INFO GRID */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        .stat { background: #080808; border: 1px solid #111; padding: 10px; border-radius: 12px; text-align: center; }
-        .stat-lbl { font-size: 7px; color: #444; text-transform: uppercase; font-weight: 700; }
-        .stat-val { font-family: 'JetBrains Mono'; font-size: 13px; font-weight: 900; margin-top: 4px; }
+        /* TICKER & GRID */
+        .ticker-wrap { display: flex; overflow-x: auto; gap: 8px; margin-bottom: 10px; scrollbar-width: none; }
+        .t-chip { background: #111; padding: 6px 12px; border-radius: 10px; border: 1px solid #222; font-size: 10px; font-family: 'JetBrains Mono'; }
+        
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+        .stat { background: #000; border: 1px solid #222; padding: 10px; border-radius: 12px; text-align: center; }
+        .stat-lbl { font-size: 7px; color: #555; text-transform: uppercase; font-weight: 700; }
+        .stat-val { font-family: 'JetBrains Mono'; font-size: 11px; font-weight: 900; }
 
-        /* MASTER MODULES (ACCORDION) */
-        .master-card { background: #0a0a0a; border: 1px solid #111; border-radius: 16px; margin-bottom: 8px; overflow: hidden; }
-        .trigger { padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: rgba(0,0,0,0.5); }
-        .active .panel { max-height: 1200px; padding: 0 16px 16px 16px; border-top: 1px solid #111; }
+        /* CARDS & MODULES */
+        .master-card { background: #111; border: 1px solid #222; border-radius: 20px; margin-bottom: 10px; overflow: hidden; transition: 0.3s; }
+        .trigger { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 12px; text-transform: uppercase; }
+        .panel { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; background: rgba(0,0,0,0.5); }
+        .active .panel { max-height: 1500px; padding: 0 20px 20px 20px; }
 
-        /* BUTTONS & TOOLS */
-        .btn { display: block; text-decoration: none; padding: 14px; text-align: center; border-radius: 10px; font-weight: 900; font-size: 11px; text-transform: uppercase; margin-top: 10px; cursor: pointer; border: none; transition: 0.2s; }
+        /* VPN EXPERT AUDIT (LA PARTE MIGLIORATA) */
+        .audit-terminal { background: #000; padding: 15px; border-radius: 12px; font-family: 'JetBrains Mono'; font-size: 10px; border: 1px solid #222; line-height: 1.6; }
+        .verdict-box { background: rgba(255, 68, 68, 0.05); border-left: 3px solid var(--red); padding: 12px; border-radius: 0 8px 8px 0; margin-top: 15px; font-size: 10px; color: #ccc; }
+        .nord-tech-specs { margin-top: 10px; font-size: 9px; color: var(--blue); opacity: 0.8; }
+
+        /* BUTTONS */
+        .btn { display: block; text-decoration: none; padding: 15px; text-align: center; border-radius: 14px; font-weight: 900; font-size: 11px; text-transform: uppercase; margin-top: 12px; cursor: pointer; border: none; }
         .btn-gold { background: var(--gold); color: #000; }
-        .btn-blue { background: var(--blue); color: #fff; box-shadow: 0 5px 15px rgba(0,123,255,0.3); }
-        .btn-sys { background: transparent; border: 1px solid #333; color: #666; font-size: 8px; padding: 5px 10px; border-radius: 20px; }
+        .btn-blue { background: var(--blue); color: #fff; box-shadow: 0 0 20px rgba(0,123,255,0.3); }
+        .btn-matrix { background: transparent; border: 1px solid var(--green); color: var(--green); font-size: 8px; padding: 5px 12px; border-radius: 20px; margin-bottom: 15px; cursor: pointer; }
 
-        input, textarea { background: #111; color: #fff; border: 1px solid #222; padding: 10px; width: 100%; border-radius: 8px; box-sizing: border-box; font-family: 'JetBrains Mono'; margin-top: 5px; font-size: 12px; }
-        .expert-txt { background: rgba(255, 68, 68, 0.05); border-left: 2px solid var(--red); padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 9px; line-height: 1.4; color: #aaa; }
+        input, textarea { background: #1a1a1a; color: #fff; border: 1px solid #333; padding: 12px; width: 100%; border-radius: 10px; box-sizing: border-box; font-family: 'JetBrains Mono'; margin-top: 8px; font-size: 13px; }
 
         @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
@@ -59,62 +68,79 @@
 
 <div class="container">
     <div class="header">
-        <div class="nord-banner">Official Security Intel: NordVPN</div><br>
+        <div class="nord-elite-badge">Official Security Intel: NordVPN</div><br>
         <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/65'">
-        <h1 style="font-size: 20px; margin: 8px 0; font-weight: 900; letter-spacing: 1px;">THE SENTINEL v24.0</h1>
+        <h1 style="font-size: 20px; margin: 8px 0; font-weight: 900; letter-spacing: 1px;">THE SOVEREIGN v25.0</h1>
     </div>
 
-    <div class="news-ticker"><div class="scroll">> [SYS]: Monitoraggio balene attivo ... [SEC]: NordVPN NordLynx protocol rilevato ... [LIVE]: Binance data feed sincronizzato ...</div></div>
+    <div class="news-bar"><div class="scroll" id="news-txt">> [REPORT]: NordLynx protocol garantisce latenza < 10ms per il trading ... [SEC]: Analisi vulnerabilità IP attiva ... [LIVE]: Binance Data Feed OK ...</div></div>
 
-    <div class="radar-box"><div class="sweep"></div><div id="ping" style="position:absolute; width:4px; height:4px; background:var(--gold); border-radius:50%; display:none;"></div></div>
+    <div class="radar-box"><div class="sweep"></div><div id="ping" style="position:absolute; width:4px; height:4px; background:var(--gold); border-radius:50%; display:none; box-shadow:0 0 8px var(--gold);"></div></div>
+
+    <div class="ticker-wrap">
+        <div class="t-chip"><span style="color:var(--gold)">BTC:</span> <span id="t-BTC">...</span></div>
+        <div class="t-chip"><span style="color:var(--gold)">ETH:</span> <span id="t-ETH">...</span></div>
+        <div class="t-chip"><span style="color:var(--gold)">SOL:</span> <span id="t-SOL">...</span></div>
+    </div>
 
     <div class="grid">
-        <div class="stat"><div class="stat-lbl">Privacy Score</div><div class="val" id="ps" style="color:var(--red)">15/100</div></div>
-        <div class="stat"><div class="stat-lbl">Threat Level</div><div class="val" id="threat" style="color:var(--red)">CRITICO</div></div>
+        <div class="stat"><div class="stat-lbl">Privacy Score</div><div class="val" id="ps" style="color:var(--red)">VULNERABILE</div></div>
+        <div class="stat"><div class="stat-lbl">Security Level</div><div class="val" id="sec-lvl" style="color:var(--red)">CRITICO</div></div>
     </div>
 
     <div class="master-card" id="card-trade">
-        <div class="trigger" onclick="toggle('card-trade')"><span style="color:var(--gold)">[₿] ANALISI BINANCE LIVE</span><span id="btc-p" class="val">$---</span></div>
+        <div class="trigger" onclick="toggle('card-trade')"><span style="color:var(--gold)">[₿] MARKET ANALYSIS LIVE</span><span id="btc-main" class="val">$---</span></div>
         <div class="panel">
-            <div id="tv_chart" style="height: 300px; border-radius: 12px; overflow: hidden; border: 1px solid #111;"></div>
+            <div id="tv_chart" style="height: 280px; border-radius: 12px; overflow: hidden; border: 1px solid #222;"></div>
             <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="btn btn-gold">OPERAZIONE RAPIDA BINANCE</a>
         </div>
     </div>
 
     <div class="master-card" id="card-sec">
-        <div class="trigger" onclick="toggle('card-sec')"><span style="color:var(--blue)">[🛡️] GATTO-SHIELD AUDIT</span><span>Scanner ></span></div>
+        <div class="trigger" onclick="toggle('card-sec')"><span style="color:var(--blue)">[🛡️] GATTO-SHIELD PRO AUDIT</span><span>Scanner ></span></div>
         <div class="panel">
-            <div style="background:#000; padding:12px; border-radius:10px; font-family:'JetBrains Mono'; font-size:10px; border:1px solid #111;">
-                IP_DETECTED: <span id="ip" style="color:var(--red)">ANALISI...</span><br>
-                PROVIDER: <span id="isp">---</span><br>
-                STATUS: <span id="vpn-stat" style="color:var(--red)">ESPOSTO</span>
+            <div class="audit-terminal">
+                IP_ADDRESS: <span id="ip" style="color:var(--red)">ANALISI...</span><br>
+                ENCRYPTION: <span style="color:var(--red)">NESSUNA (AES-0)</span><br>
+                TUNNEL_PROTOCOL: <span style="color:var(--red)">NON RILEVATO</span><br>
+                LEAK_PROTECTION: <span style="color:var(--red)">FALLITA</span>
             </div>
-            <div class="expert-txt">
-                <b>SECURITY ALERT:</b> La tua sessione di trading su Binance è vulnerabile. Attivare <b>NordVPN</b> per criptare il traffico ed evitare il tracciamento dell'IP reale.
-            </div>
-            <a href="https://nordvpn.com/it/" target="_blank" class="btn btn-blue">PROTEGGI CON NORDVPN</a>
-        </div>
-    </div>
-
-    <div class="master-card" id="card-utils">
-        <div class="trigger" onclick="toggle('card-utils')"><span>[⚙️] TOOLS & UTILITIES</span><span>Apri ></span></div>
-        <div class="panel">
-            <div style="text-align:center; margin-bottom:10px;"><button class="btn-sys" onclick="toggleMatrix()">MATRIX OVERRIDE</button></div>
             
-            <div style="background:#000; padding:12px; border-radius:10px; margin-bottom:10px; border:1px solid #111;">
-                <label class="stat-lbl">STAKING CALC ($)</label><input type="number" id="stk" value="1000" oninput="calc()">
-                <div id="stk-res" class="val" style="color:var(--green); text-align:center; margin-top:8px;">EARN: $128/YEAR</div>
+            <div class="verdict-box">
+                <b>VERDETTO TECNICO:</b> Il traffico verso l'exchange è esposto agli ISP. Per prevenire il monitoraggio delle transazioni e ridurre la latenza di esecuzione, è obbligatorio l'uso di <b>NordVPN</b>.
+                <div class="nord-tech-specs">Tecnologia Certificata: NordLynx, Double VPN, AES-256-GCM.</div>
             </div>
 
-            <div style="background:#000; padding:12px; border-radius:10px; border:1px solid #111;">
-                <input type="text" id="pass" readonly style="color:var(--green); text-align:center; font-weight:bold;">
-                <button class="btn btn-blue" style="font-size:9px; padding:10px;" onclick="gen()">GENERA CHIAVE SICURA</button>
-                <textarea id="notes" rows="3" placeholder="Gatto-Vault: Note segrete..." oninput="save()" style="margin-top:10px;"></textarea>
-            </div>
+            <a href="https://nordvpn.com/it/" target="_blank" class="btn btn-blue">CRIPTA SESSIONE CON NORDVPN</a>
         </div>
     </div>
 
-    <div style="text-align:center; font-size:8px; color:#222; margin-top:20px; font-weight:700;">COMMANDER: TOMMY9832610 | ID: 1218709503</div>
+    <div class="master-card" id="card-income">
+        <div class="trigger" onclick="toggle('card-income')"><span style="color:var(--green)">[💰] EARN & COPY-TRADE</span><span>Income ></span></div>
+        <div class="panel">
+            <div style="background:#000; padding:12px; border-radius:10px; border:1px solid #222;">
+                <label class="stat-lbl">STAKING CALCULATOR ($)</label><input type="number" id="stk-amt" value="1000" oninput="runCalcs()">
+                <div id="stk-res" class="val" style="color:var(--green); text-align:center; margin-top:10px;">EARN: $128/YEAR</div>
+            </div>
+            <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="btn btn-gold">ATTIVA RENDITA SU BINANCE</a>
+        </div>
+    </div>
+
+    <div class="master-card" id="card-util">
+        <div class="trigger" onclick="toggle('card-util')"><span>[⚙️] TOOLS & UTILITIES</span><span>Apri ></span></div>
+        <div class="panel">
+            <div style="text-align:center;"><button class="btn-matrix" onclick="toggleMatrix()">MATRIX OVERRIDE</button></div>
+            <div style="background:#000; padding:12px; border-radius:10px; border:1px solid #222; margin-bottom:10px;">
+                <input type="text" id="ps-out" readonly style="color:var(--green); text-align:center; font-weight:bold;">
+                <button class="btn btn-blue" style="font-size:9px; padding:10px;" onclick="genPs()">GENERA CHIAVE SICURA</button>
+            </div>
+            <textarea id="notes" rows="3" placeholder="Gatto-Vault: Segna qui i tuoi segreti..." oninput="saveNotes()"></textarea>
+        </div>
+    </div>
+
+    <div style="text-align:center; font-size:8px; color:#222; margin-top:25px; letter-spacing: 1px;">
+        COMMANDER ID: 1218709503 | SYSTEM v25.0
+    </div>
 </div>
 
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -129,22 +155,27 @@
 
     async function update(){
         try {
-            const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').then(res=>res.json());
-            btcPrice = parseFloat(r.price); document.getElementById('btc-p').innerText = "$"+btcPrice.toLocaleString();
-            const ip = await fetch('https://ipapi.co/json/').then(res=>res.json());
-            document.getElementById('ip').innerText = ip.ip; document.getElementById('isp').innerText = ip.org;
-            if(ip.org.toLowerCase().includes('vpn')){
-                document.getElementById('vpn-stat').innerText="SICURO"; document.getElementById('vpn-stat').style.color="var(--green)";
-                document.getElementById('ps').innerText="99/100"; document.getElementById('ps').style.color="var(--green)";
-                document.getElementById('threat').innerText="MINIMO"; document.getElementById('threat').style.color="var(--green)";
+            const coins = ['BTC', 'ETH', 'SOL'];
+            for(const c of coins){
+                const r = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${c}USDT`).then(res=>res.json());
+                const p = parseFloat(r.price);
+                if(c==='BTC') { btcPrice = p; document.getElementById('btc-main').innerText = "$"+p.toLocaleString(); }
+                document.getElementById('t-'+c).innerText = "$"+p.toLocaleString();
             }
-            calc();
+            const ip = await fetch('https://ipapi.co/json/').then(res=>res.json());
+            document.getElementById('ip').innerText = ip.ip;
+            if(ip.org.toLowerCase().includes('vpn')){
+                document.getElementById('ps').innerText="BLINDATO"; document.getElementById('ps').style.color="var(--green)";
+                document.getElementById('sec-lvl').innerText="MASSIMO"; document.getElementById('sec-lvl').style.color="var(--green)";
+                document.getElementById('ip').style.color="var(--green)";
+            }
+            runCalcs();
         } catch(e){}
     }
 
-    function calc(){ document.getElementById('stk-res').innerText = "EARN: $"+(document.getElementById('stk').value*0.128).toFixed(0)+"/YEAR"; }
-    function gen(){ const c="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%"; let p=""; for(let i=0; i<16; i++) p+=c.charAt(Math.floor(Math.random()*c.length)); document.getElementById('pass').value=p; }
-    function save(){ localStorage.setItem('n', document.getElementById('notes').value); }
+    function runCalcs(){ document.getElementById('stk-res').innerText = "EARN: $"+(document.getElementById('stk-amt').value*0.128).toFixed(0)+"/YEAR"; }
+    function genPs(){ const c="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%"; let p=""; for(let i=0; i<18; i++) p+=c.charAt(Math.floor(Math.random()*c.length)); document.getElementById('ps-out').value=p; }
+    function saveNotes(){ localStorage.setItem('n', document.getElementById('notes').value); }
     
     function toggleMatrix(){ const c=document.getElementById('matrix-canvas'); c.style.display=c.style.display==='block'?'none':'block'; if(c.style.display==='block')runMatrix(); }
     function runMatrix(){ const c=document.getElementById('matrix-canvas'), ctx=c.getContext('2d'); c.height=window.innerHeight; c.width=window.innerWidth; const chars="01BTCGATTONORD", fontSize=14, columns=c.width/fontSize, drops=[]; for(let x=0; x<columns; x++) drops[x]=1; setInterval(()=>{ ctx.fillStyle="rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height); ctx.fillStyle="#0F0"; ctx.font=fontSize+"px arial"; for(let i=0; i<drops.length; i++){ ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, drops[i]*fontSize); if(drops[i]*fontSize>c.height&&Math.random()>0.975) drops[i]=0; drops[i]++; } },33); }
@@ -153,7 +184,7 @@
 
     update(); setInterval(update, 20000); 
     document.getElementById('notes').value = localStorage.getItem('n')||"";
-    gen();
+    genPs();
 </script>
 </body>
 </html>
