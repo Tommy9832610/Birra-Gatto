@@ -3,38 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birra-Gatto: THE FORTRESS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <title>Birra-Gatto: FORTRESS ELITE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f3ba2f; --blue: #4669ff; --bg: #050505; --card: rgba(18, 18, 18, 0.98); --border: #222; --green: #00ff41; --red: #ff4444; }
-        body { background-color: var(--bg); color: #e0e0e0; font-family: 'Inter', sans-serif; margin: 0; padding: 10px; overflow-x: hidden; }
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; display: none; }
-        .container { width: 100%; max-width: 550px; margin: auto; background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 20px; box-shadow: 0 30px 80px rgba(0,0,0,1); }
-        .header { text-align: center; margin-bottom: 10px; }
-        .main-logo { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--gold); padding: 3px; background: #000; }
+        :root {
+            --gold: #ffd700; --blue: #007bff; --blue-dark: #0056b3; --bg: #050505;
+            --card-surface: linear-gradient(160deg, #1a1a1a 0%, #0a0a0a 100%);
+            --border: #2a2a2a; --green: #00c851; --red: #ff4444;
+            --neon-blue: rgba(0, 123, 255, 0.5); --neon-gold: rgba(255, 215, 0, 0.3);
+        }
+        body { background-color: var(--bg); color: #e0e0e0; font-family: 'Inter', sans-serif; margin: 0; padding: 15px; overflow-x: hidden; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; display: none; pointer-events: none; }
+        
+        .container {
+            width: 100%; max-width: 500px; background: var(--card-surface); border: 1px solid var(--border);
+            border-radius: 30px; padding: 30px; box-shadow: 0 30px 80px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.02);
+            backdrop-filter: blur(10px); position: relative; overflow: hidden;
+        }
+        /* Effetto luce bordi */
+        .container::before { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(45deg, var(--blue), transparent, var(--gold)); z-index: -1; border-radius: 32px; opacity: 0.1; filter: blur(10px); }
 
-        /* NORDVPN ELITE BRANDING */
-        .nord-partner { font-size: 8px; color: var(--blue); border: 1px solid var(--blue); padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 15px; display: inline-block; background: rgba(70, 105, 255, 0.05); }
+        .header { text-align: center; margin-bottom: 25px; }
+        .main-logo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--gold); padding: 4px; background: #000; box-shadow: 0 0 25px var(--neon-gold); }
+        h1 { font-weight: 800; letter-spacing: 1px; margin: 10px 0; text-transform: uppercase; font-size: 22px; background: linear-gradient(to right, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .news-bar { background: #000; color: var(--gold); font-size: 9px; padding: 6px; border-radius: 8px; margin-bottom: 15px; font-family: 'JetBrains Mono'; overflow: hidden; white-space: nowrap; border: 1px solid #111; }
-        .scroll { display: inline-block; animation: scroll 25s linear infinite; }
+        /* NUOVO BANNER NORDVPN "PREMIUM" */
+        .nord-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(90deg, rgba(0, 123, 255, 0.15), rgba(100, 50, 255, 0.15));
+            border: 1px solid rgba(0, 123, 255, 0.4); padding: 6px 16px; border-radius: 30px;
+            font-size: 10px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 0 20px var(--neon-blue); margin-bottom: 15px; white-space: nowrap;
+        }
+        .nord-badge svg { width: 14px; height: 14px; fill: var(--blue); }
 
-        /* GRID & MODULES */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .box { background: #000; border: 1px solid #222; padding: 10px; border-radius: 12px; text-align: center; }
-        .lbl { font-size: 8px; color: #555; text-transform: uppercase; }
-        .val { font-family: 'JetBrains Mono'; font-size: 12px; font-weight: bold; }
+        .news-bar { background: #0a0a0a; border: 1px solid #222; color: var(--gold); font-size: 10px; padding: 8px; border-radius: 10px; margin-bottom: 20px; font-family: 'JetBrains Mono'; overflow: hidden; white-space: nowrap; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        .scroll { display: inline-block; animation: scroll 30s linear infinite; }
 
-        .master-card { background: #111; border: 1px solid #222; border-radius: 20px; margin-bottom: 10px; overflow: hidden; }
-        .trigger { padding: 15px 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 12px; }
-        .panel { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; background: rgba(0,0,0,0.5); }
-        .active .panel { max-height: 1500px; padding: 0 18px 18px 18px; }
+        /* GRIGLIA DATI MIGLIORATA */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .box {
+            background: linear-gradient(145deg, #111, #0a0a0a); border: 1px solid #222; padding: 15px; border-radius: 15px;
+            text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: transform 0.2s;
+        }
+        .box:hover { transform: translateY(-2px); border-color: #333; }
+        .lbl { font-size: 9px; color: #666; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+        .val { font-family: 'JetBrains Mono'; font-size: 15px; font-weight: 700; margin-top: 5px; text-shadow: 0 0 10px rgba(255,255,255,0.1); }
 
-        .btn { display: block; text-decoration: none; padding: 15px; text-align: center; border-radius: 14px; font-weight: 700; font-size: 11px; text-transform: uppercase; margin-top: 10px; cursor: pointer; border: none; transition: 0.3s; }
-        .btn-gold { background: var(--gold); color: #000; }
-        .btn-blue { background: var(--blue); color: #fff; box-shadow: 0 0 20px rgba(70, 105, 255, 0.4); }
+        /* SCHEDE MODULI PROFESSIONALI */
+        .master-card {
+            background: var(--card-surface); border: 1px solid var(--border); border-radius: 18px; margin-bottom: 12px;
+            overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.2); transition: all 0.3s ease;
+        }
+        .master-card:hover { border-color: #333; box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+        .trigger {
+            padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            font-weight: 700; font-size: 13px; background: rgba(255,255,255,0.01);
+        }
+        .panel { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(0,0,0,0.3); }
+        .active .panel { max-height: 1500px; padding: 0 22px 22px 22px; border-top: 1px solid #222; }
 
-        .expert-note { background: rgba(255, 68, 68, 0.05); border-left: 3px solid var(--red); padding: 10px; border-radius: 0 8px 8px 0; margin: 10px 0; font-size: 10px; color: #ccc; }
+        /* BOTTONI PREMIUM */
+        .btn {
+            display: block; width: 100%; padding: 16px; text-align: center; border-radius: 14px; font-weight: 800;
+            font-size: 12px; text-transform: uppercase; margin-top: 15px; cursor: pointer; border: none;
+            transition: all 0.2s; position: relative; overflow: hidden;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), #d4a017); color: #000;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        .btn-blue {
+            background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.4);
+        }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn:active { transform: translateY(0); }
+
+        .btn-matrix {
+            background: transparent; border: 1px solid var(--green); color: var(--green); font-size: 9px;
+            padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-family: 'JetBrains Mono';
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-matrix:hover { background: rgba(0, 200, 81, 0.1); box-shadow: 0 0 15px rgba(0, 200, 81, 0.3); }
+
+        .expert-note {
+            background: rgba(255, 68, 68, 0.08); border-left: 3px solid var(--red); padding: 12px;
+            border-radius: 8px; margin: 15px 0; font-size: 11px; color: #ddd; line-height: 1.5;
+        }
+        .audit-box { background: #0a0a0a; padding: 15px; border-radius: 12px; font-family: 'JetBrains Mono'; font-size: 11px; line-height: 1.8; border: 1px solid #222; }
 
         @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     </style>
@@ -45,107 +102,25 @@
 
 <div class="container">
     <div class="header">
-        <div class="nord-partner">Official Security Intelligence: NordVPN</div><br>
-        <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/65'">
-        <h1 style="font-size: 18px; margin: 5px 0;">FORTRESS v22.0</h1>
+        <div class="nord-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+            Official Security Intelligence: NordVPN
+        </div><br>
+        <img src="logo.png" class="main-logo" onerror="this.src='https://via.placeholder.com/80'">
+        <h1>FORTRESS ELITE v23.0</h1>
     </div>
 
     <div class="news-bar">
         <div class="scroll">
-            > [ALERTA]: Rilevato traffico non criptato ... [INFO]: NordVPN offre crittografia AES-256 di grado militare per proteggere i tuoi Bitcoin ... [MERCATO]: Binance Live Feed Attivo ...
+            > [SISTEMA]: Inizializzazione protocolli di sicurezza ... [NORDVPN]: Crittografia AES-256 attiva sui server Premium ... [MERCATO]: Analisi flussi di liquidità in corso ...
         </div>
     </div>
 
     <div class="grid">
         <div class="box"><div class="lbl">Privacy Score</div><div class="val" id="ps" style="color:var(--red)">VULNERABILE</div></div>
-        <div class="box"><div class="lbl">Threat Level</div><div class="val" id="threat" style="color:var(--red)">ALTO</div></div>
+        <div class="box"><div class="lbl">Threat Level</div><div class="val" id="threat" style="color:var(--red)">CRITICO</div></div>
     </div>
 
     <div class="master-card" id="card-trade">
         <div class="trigger" onclick="toggle('card-trade')">
-            <span style="color:var(--gold)">[₿] ANALISI BINANCE LIVE</span>
-            <span id="btc-p" class="val">$---</span>
-        </div>
-        <div class="panel">
-            <div id="tradingview_chart" style="height: 280px; border-radius: 12px; overflow: hidden; border: 1px solid #222;"></div>
-            <a href="https://www.binance.com/it/register?ref=1218709503" target="_blank" class="btn btn-gold">OPERAZIONE RAPIDA BINANCE</a>
-        </div>
-    </div>
-
-    <div class="master-card" id="card-sec">
-        <div class="trigger" onclick="toggle('card-sec')">
-            <span style="color:var(--blue)">[🛡️] GATTO-SHIELD AUDIT</span>
-            <span style="font-size:10px; opacity:0.5;">Analisi...</span>
-        </div>
-        <div class="panel">
-            <div style="background:#000; padding:15px; border-radius:12px; font-family:'JetBrains Mono'; font-size:10px; line-height:1.6;">
-                IP_DETECTED: <span id="ip" style="color:var(--red)">CHECKING...</span><br>
-                ENCRYPTION: <span style="color:var(--red)">DISATTIVATA</span><br>
-                VPN_PARTNER: <span style="color:var(--blue)">NORDVPN (CONSIGLIATO)</span>
-            </div>
-            
-            <div class="expert-note">
-                <b>SECURITY ALERT:</b> La tua sessione di trading è esposta. Senza il protocollo <b>NordLynx</b> di NordVPN, i tuoi dati sensibili e il tuo IP reale sono visibili agli ISP.
-            </div>
-
-            <a href="https://nordvpn.com/it/" id="nord-btn" target="_blank" class="btn btn-blue">PROTEGGI LA TUA CONNESSIONE ORA</a>
-        </div>
-    </div>
-
-    <div class="master-card" id="card-util">
-        <div class="trigger" onclick="toggle('card-util')">
-            <span>[⚙️] SISTEMA & MATRIX</span>
-            <span style="font-size:10px; opacity:0.5;">Opzioni ></span>
-        </div>
-        <div class="panel">
-            <button class="btn btn-blue" style="font-size:10px; border:1px solid #333; background:transparent;" onclick="toggleMatrix()">ATTIVA MATRIX VISUAL</button>
-            <div style="margin-top:10px;">
-                <input type="text" id="ps-out" readonly style="background:#1a1a1a; color:var(--green); border:none; padding:12px; width:100%; border-radius:10px; text-align:center; font-family:'JetBrains Mono';">
-                <button class="btn btn-blue" style="margin-top:5px; font-size:10px;" onclick="genPs()">GENERA PASSWORD SICURA</button>
-            </div>
-        </div>
-    </div>
-
-    <div style="text-align:center; font-size:8px; color:#222; margin-top:20px;">COMMANDER: TOMMY9832610 | ID: 1218709503</div>
-</div>
-
-<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-<script>
-    let btcPrice = 0;
-    function toggle(id){
-        document.querySelectorAll('.master-card').forEach(c=>{
-            if(c.id===id) c.classList.toggle('active');
-            else c.classList.remove('active');
-        });
-        // Carica il grafico solo quando si apre il modulo
-        if(id==='card-trade' && document.getElementById(id).classList.contains('active')){
-            new TradingView.widget({"autosize":true,"symbol":"BINANCE:BTCUSDT","theme":"dark","container_id":"tradingview_chart","hide_top_toolbar":true,"interval":"1","timezone":"Etc/UTC","style":"1","locale":"it","toolbar_bg":"#f1f3f6","enable_publishing":false,"hide_legend":true,"save_image":false});
-        }
-    }
-
-    async function update(){
-        try {
-            const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').then(res=>res.json());
-            btcPrice = parseFloat(r.price); 
-            document.getElementById('btc-p').innerText = "$"+btcPrice.toLocaleString();
-            
-            const ipData = await fetch('https://ipapi.co/json/').then(res=>res.json());
-            document.getElementById('ip').innerText = ipData.ip;
-            
-            if(ipData.org.toLowerCase().includes('vpn')){
-                document.getElementById('ps').innerText="SICURO"; document.getElementById('ps').style.color="var(--green)";
-                document.getElementById('threat').innerText="MINIMO"; document.getElementById('threat').style.color="var(--green)";
-            }
-        } catch(e){}
-    }
-
-    function genPs(){ const c="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%"; let p=""; for(let i=0; i<16; i++) p+=c.charAt(Math.floor(Math.random()*c.length)); document.getElementById('ps-out').value=p; }
-
-    // MATRIX LOGIC
-    function toggleMatrix(){ const c=document.getElementById('matrix-canvas'); c.style.display=c.style.display==='block'?'none':'block'; if(c.style.display==='block')runMatrix(); }
-    function runMatrix(){ const c=document.getElementById('matrix-canvas'), ctx=c.getContext('2d'); c.height=window.innerHeight; c.width=window.innerWidth; const chars="01BTCGATTONORD", fontSize=14, columns=c.width/fontSize, drops=[]; for(let x=0; x<columns; x++) drops[x]=1; setInterval(()=>{ ctx.fillStyle="rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height); ctx.fillStyle="#0F0"; ctx.font=fontSize+"px arial"; for(let i=0; i<drops.length; i++){ ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, drops[i]*fontSize); if(drops[i]*fontSize>c.height&&Math.random()>0.975) drops[i]=0; drops[i]++; } },33); }
-
-    update(); setInterval(update, 20000); genPs();
-</script>
-</body>
-</html>
+            <span style="color:var
